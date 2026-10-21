@@ -1,5 +1,156 @@
-  <!doctype html>
-   <html lang="th">
-   <head><meta charset="utf-8"><title>Apiwat Kamsiri</title></head>
-   <body><h1>Apiwat Kamsiri</h1><p>เว็บกำลังสร้าง</p></body>
-   </html>
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apiwat Kamsiri</title>
+  <meta name="description" content="Apiwat Kamsiri — developer portfolio, work log and task board">
+  <meta name="theme-color" content="#05070b">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=20261021">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2305070b'/><text x='5' y='22' font-family='monospace' font-size='16' font-weight='bold' fill='%2336f1a0'>&gt;_</text></svg>">
+</head>
+<body class="locked">
+
+<div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+<!-- ================= INTRO ================= -->
+<div id="intro" role="dialog" data-i18n-label="intro.title">
+  <canvas id="rain" aria-hidden="true"></canvas>
+  <div class="lang-switch intro-lang" role="group" data-i18n-label="lang.switch"><button class="lang-btn" data-lang="en" type="button">EN</button><button class="lang-btn" data-lang="th" type="button">TH</button></div>
+  <div class="intro-inner">
+    <div class="intro-boot" id="boot"></div>
+    <h1 class="intro-title" id="intro-title" data-i18n-label="intro.title"></h1>
+    <div class="intro-sub" id="intro-sub" data-i18n="intro.sub"></div>
+    <button class="enter-btn" id="enter-btn" type="button"><span data-i18n="intro.enter"></span><span class="arr">→</span></button>
+    <div class="intro-hint" id="intro-hint" data-i18n="intro.hint"></div>
+  </div>
+</div>
+
+<!-- ================= SITE ================= -->
+<div id="site">
+  <nav>
+    <div class="wrap">
+      <div class="nav-pill">
+        <a class="brand" href="#top">~/<b id="brand-handle">apiwat</b></a>
+        <a class="lnk" href="#top" data-i18n="nav.home"></a>
+        <a class="lnk" href="#tasks" data-i18n="nav.tasks"></a>
+        <a class="lnk" href="#links" data-i18n="nav.links"></a>
+        <div class="lang-switch" role="group" data-i18n-label="lang.switch"><button class="lang-btn" data-lang="en" type="button">EN</button><button class="lang-btn" data-lang="th" type="button">TH</button></div>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div class="reveal">
+        <span class="status"><i></i><span data-i18n="hero.status"></span></span>
+        <h1><span data-i18n="hero.hi"></span><br><span class="grad" id="name">Apiwat Kamsiri</span></h1>
+        <p class="lead"><span id="role"></span> <span data-i18n="hero.lead"></span> <span class="typed" id="typed"></span><span class="cursor"></span></p>
+        <div class="hero-links">
+          <a class="btn primary" href="#tasks" data-i18n="hero.cta"></a>
+          <button class="btn" id="contact-btn" type="button" data-i18n="hero.contact"></button>
+        </div>
+      </div>
+
+      <div class="term pcard reveal" style="transition-delay:.15s">
+        <div class="term-bar">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="title">about.md</span>
+        </div>
+        <div class="pc-body" id="profile-card"></div>
+      </div>
+    </div>
+    <div class="scroll-cue"><b data-i18n="hero.scroll" style="font-weight:400"></b><span></span></div>
+  </header>
+
+  <main>
+    <section id="tasks">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div class="eyebrow">tasks ls --sort=due</div>
+          <h2 data-i18n="tasks.title"></h2>
+        </div>
+        <div class="clocks reveal" id="clocks"></div>
+        <div class="stats reveal" id="stats"></div>
+
+        <div class="toolbar reveal view-bar">
+          <div class="seg" role="tablist" id="view-switch">
+            <button class="seg-btn on" data-view="calendar" role="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4m8-4v4"/></svg><span data-i18n="view.calendar"></span></button>
+            <button class="seg-btn" data-view="list" role="tab"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span data-i18n="view.list"></span></button>
+          </div>
+          <span class="view-hint" data-i18n="view.hint"></span>
+          <span class="grow"></span>
+          <button class="btn sm" id="holidays-btn" data-i18n="hol.btn"></button>
+          <button class="btn sm primary edit-only" id="add-task" data-i18n="edit.add"></button>
+          <button class="btn sm" id="edit-toggle"></button>
+        </div>
+
+        <!-- calendar view -->
+        <div class="card cal reveal" id="view-calendar">
+          <div class="cal-head">
+            <div class="cal-nav">
+              <button class="icon-btn" id="cal-prev" data-i18n-label="cal.prev">‹</button>
+              <button class="icon-btn" id="cal-next" data-i18n-label="cal.next">›</button>
+              <span class="cal-month" id="cal-month"></span>
+              <button class="cal-today" id="cal-today" data-i18n="cal.today"></button>
+            </div>
+            <div class="legend">
+              <span><i style="background:var(--red)"></i><b data-i18n="tasks.overdue"></b></span>
+              <span><i style="background:var(--amber)"></i><b data-i18n="status.doing"></b></span>
+              <span><i style="background:var(--violet)"></i><b data-i18n="status.todo"></b></span>
+              <span><i style="background:var(--green)"></i><b data-i18n="status.done"></b></span>
+            </div>
+          </div>
+          <div class="cal-scroll">
+            <div class="cal-grid">
+              <div class="dow" id="cal-dow"></div>
+              <div id="cal-weeks"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- list view -->
+        <div class="hidden" id="view-list">
+          <div class="toolbar" id="filters">
+            <button class="filter on" data-f="all" data-i18n="filter.all"></button>
+            <button class="filter" data-f="doing" data-i18n="filter.doing"></button>
+            <button class="filter" data-f="todo" data-i18n="filter.todo"></button>
+            <button class="filter" data-f="done" data-i18n="filter.done"></button>
+          </div>
+          <div class="task-list" id="task-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="links">
+      <div class="wrap">
+        <div class="sec-head reveal">
+          <div class="eyebrow">open --app</div>
+          <h2 data-i18n="links.title"></h2>
+          <button class="btn sm sec-edit" id="edit-links" data-i18n="links.edit"></button>
+        </div>
+        <div class="groups reveal" id="link-groups"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span id="foot-date"></span>
+      <span id="foot-name">Apiwat Kamsiri</span>
+    </div>
+  </footer>
+</div>
+
+<script src="assets/data.js?v=20261021"></script>
+<script src="assets/i18n.js?v=20261021"></script>
+<script src="assets/tasks-store.js?v=20261021"></script>
+<script src="assets/task-editor.js?v=20261021"></script>
+<script src="assets/vault-crypto.js?v=20261021"></script>
+<script src="assets/intro.js?v=20261021"></script>
+<script src="assets/main.js?v=20261021"></script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+{
+  "updated": "2026-10-21T00:00:00.000Z",
+  "tasks": [],
+  "holidays": [],
+  "links": [
+    {
+      "title": {
+        "en": "Software Center File",
+        "th": "ไฟล์ Software Center"
+      },
+      "icon": "folder",
+      "items": [
+        {
+          "name": "Arcelik software release",
+          "icon": "star",
+          "url": ""
+        },
+        {
+          "name": "EEPROM software",
+          "icon": "folder",
+          "url": ""
+        },
+        {
+          "name": "Software specification",
+          "icon": "search",
+          "url": ""
+        },
+        {
+          "name": "CT document",
+          "icon": "star",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": {
+        "en": "Software Development Tools",
+        "th": "เครื่องมือพัฒนาซอฟต์แวร์"
+      },
+      "icon": "chip",
+      "items": [
+        {
+          "name": "Appliance Data Collection",
+          "icon": "sync",
+          "url": ""
+        },
+        {
+          "name": "PWRs official version",
+          "icon": "sync",
+          "url": ""
+        },
+        {
+          "name": "Arcelik-Hitachi Writer",
+          "icon": "shield",
+          "url": ""
+        },
+        {
+          "name": "EEPROM Write/Read",
+          "icon": "shield",
+          "url": ""
+        },
+        {
+          "name": "Install Quartz card tools",
+          "icon": "install",
+          "url": ""
+        }
+      ]
+    },
+    {
+      "title": {
+        "en": "Software Development web",
+        "th": "เว็บพัฒนาซอฟต์แวร์"
+      },
+      "icon": "tool",
+      "member": true,
+      "items": [
+        {
+          "name": "Arcelik software portal",
+          "icon": "tool",
+          "url": ""
+        },
+        {
+          "name": "Arcelik software (RD)",
+          "icon": "tool",
+          "url": ""
+        },
+        {
+          "name": "Quartz card AMZ register",
+          "icon": "db",
+          "url": ""
+        },
+        {
+          "name": "HomeWhiz config app",
+          "icon": "sync",
+          "url": ""
+        },
+        {
+          "name": "Matching SKU and Quartz",
+          "icon": "db",
+          "url": ""
+        },
+        {
+          "name": "OTA for update software",
+          "icon": "db",
+          "url": ""
+        },
+        {
+          "name": "Datascope",
+          "icon": "db",
+          "url": ""
+        }
+      ]
+    }
+  ]
+}

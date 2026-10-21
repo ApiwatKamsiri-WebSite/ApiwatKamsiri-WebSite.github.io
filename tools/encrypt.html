@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Vault Encryptor</title>
+  <link rel="stylesheet" href="../assets/style.css?v=20261021">
+  <style>
+    textarea { width: 100%; min-height: 180px; font-family: var(--mono); font-size: 13px; background: var(--bg); color: var(--text); border: 1px solid var(--line); border-radius: 6px; padding: 12px; }
+    input[type=password] { font-family: var(--mono); background: var(--bg); color: var(--green); border: 1px solid var(--line); border-radius: 6px; padding: 9px 12px; min-width: 240px; }
+    label { display: block; font-family: var(--mono); font-size: 13px; color: var(--muted); margin: 16px 0 6px; }
+  </style>
+</head>
+<body>
+<section>
+  <div class="wrap">
+    <div class="sec-head"><h2>vault encryptor</h2><span class="cmd">// ทำงานในเบราว์เซอร์ทั้งหมด ไม่ส่งข้อมูลออกไปไหน</span></div>
+
+    <label for="src">1. รายการไฟล์ (JSON) — ชื่อ/คำอธิบายใส่ได้ทั้ง "ข้อความ" หรือ { "en": "...", "th": "..." }</label>
+    <textarea id="src">[
+  { "name": { "en": "Monthly report", "th": "รายงานประจำเดือน" }, "url": "https://drive.google.com/...", "type": "pdf", "desc": { "en": "Oct 2026", "th": "ต.ค. 2026" } },
+  { "name": "Source code", "url": "https://github.com/...", "type": "repo" }
+]</textarea>
+
+    <label for="pw">2. รหัสผ่าน / PIN (ยิ่งยาวยิ่งปลอดภัย)</label>
+    <input id="pw" type="password" autocomplete="new-password">
+    <button class="btn primary" id="go">encrypt</button>
+
+    <label for="out">3. คัดลอกไปวางแทน <code>window.VAULT = ...</code> ใน assets/data.js</label>
+    <textarea id="out" readonly></textarea>
+    <div class="msg" id="msg"></div>
+  </div>
+</section>
+<script src="../assets/vault-crypto.js?v=20261021"></script>
+<script>
+  document.getElementById("go").onclick = async () => {
+    const msg = document.getElementById("msg");
+    try {
+      const files = JSON.parse(document.getElementById("src").value);
+      const pw = document.getElementById("pw").value;
+      if (pw.length < 4) throw new Error("รหัสผ่าน/PIN ต้องยาวอย่างน้อย 4 ตัว");
+      const blob = await VaultCrypto.encryptJSON(files, pw);
+      document.getElementById("out").value = "window.VAULT = " + JSON.stringify(blob, null, 2) + ";";
+      msg.textContent = "✔ done"; msg.className = "msg ok";
+    } catch (e) { msg.textContent = "✘ " + e.message; msg.className = "msg err"; }
+  };
+</script>
+</body>
+</html>
