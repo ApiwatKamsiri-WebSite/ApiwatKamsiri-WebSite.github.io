@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T03:02:47.922Z",
+  "updated": "2026-10-21T03:28:57.781Z",
   "tasks": [
     {
       "id": 1,
@@ -48,6 +48,40 @@
           "status": "todo",
           "start": "2026-10-19",
           "due": "2026-11-06"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": {
+        "en": "Support customer for service part",
+        "th": "ให้การสนับสนุนลูกค้าในส่วนของอะไหล่"
+      },
+      "project": "BIG model",
+      "status": "doing",
+      "start": "2026-10-14",
+      "due": "2026-10-23",
+      "subtasks": [
+        {
+          "id": "2.1",
+          "name": {
+            "en": "Export model",
+            "th": "โมเดล Export"
+          },
+          "status": "done",
+          "start": "2026-10-14",
+          "due": "2026-10-20",
+          "done": "2026-10-21"
+        },
+        {
+          "id": "2.2",
+          "name": {
+            "en": "Taiwan model",
+            "th": "โมเดลไตหวัน"
+          },
+          "status": "doing",
+          "start": "2026-10-21",
+          "due": "2026-10-26"
         }
       ]
     }
