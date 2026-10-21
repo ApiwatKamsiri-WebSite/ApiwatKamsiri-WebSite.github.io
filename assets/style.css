@@ -439,7 +439,17 @@ body.modal-open { overflow: hidden; }
 .sub-meta { display: grid; grid-template-columns: 1fr 1fr 1fr 84px auto auto; gap: 8px; align-items: center; }
 .links { display: grid; gap: 6px; }
 .links:empty { display: none; }
-.link-row { display: grid; grid-template-columns: auto 1fr 1.6fr auto; gap: 8px; align-items: center; }
+.link-row { display: grid; grid-template-columns: auto 1fr 2fr auto; gap: 8px; align-items: center; }
+/* ช่อง URL + ปุ่ม Web / Server */
+.url-field { display: flex; align-items: stretch; min-width: 0; border: 1px solid var(--line-2); border-radius: 10px; background: rgba(0, 0, 0, 0.35); overflow: hidden; transition: border-color 0.2s, box-shadow 0.2s; }
+.url-field:focus-within { border-color: var(--green); box-shadow: 0 0 0 3px rgba(54, 241, 160, 0.12); }
+.url-kind { display: flex; flex: none; padding: 3px; gap: 2px; border-right: 1px solid var(--line); }
+.url-kind button { font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 3px 8px; border: 0; border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; }
+.url-kind button.on { background: var(--cyan); color: var(--bg); }
+.url-field[data-kind="net"] .url-kind button.on { background: var(--amber); }
+.url-pre { flex: none; display: flex; align-items: center; padding-left: 8px; font-family: var(--mono); font-size: 12.5px; color: var(--cyan); white-space: nowrap; }
+.url-field[data-kind="net"] .url-pre { color: var(--amber); }
+.form .url-field input { flex: 1; min-width: 0; border: 0 !important; background: transparent !important; box-shadow: none !important; padding-left: 2px !important; font-family: var(--mono); font-size: 12.5px; }
 .link-ico { color: var(--cyan); display: grid; place-items: center; }
 .form .link-row input { padding: 7px 10px; font-size: 13px; }
 .sub-pct { display: flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 12px; color: var(--muted); }
@@ -498,6 +508,7 @@ body.modal-open { overflow: hidden; }
 .doc-pop a { display: flex; align-items: center; gap: 10px; padding: 8px; border-radius: 8px; color: var(--text); }
 .doc-pop a:hover { background: rgba(56, 214, 255, 0.08); color: var(--white); text-decoration: none; }
 .doc-type { flex: none; min-width: 44px; text-align: center; font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 5px; color: var(--bg); background: var(--grad); }
+.doc-type.net { background: transparent; color: var(--amber); border: 1px solid rgba(255, 190, 85, 0.5); }
 .doc-name { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 13.5px; }
 .doc-go { color: var(--muted); font-family: var(--mono); }
 .doc-empty { padding: 10px 6px; font-size: 13px; color: var(--muted); }
@@ -566,7 +577,7 @@ body.modal-open { overflow: hidden; }
 .le-opts { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
 .le-opts .fld { width: 140px; }
 .le-items { display: grid; gap: 8px; }
-.le-item { display: grid; grid-template-columns: 110px 1fr 1.4fr auto; gap: 8px; align-items: center; }
+.le-item { display: grid; grid-template-columns: 110px 1fr 2fr auto; gap: 8px; align-items: center; }
 .form .le-item input, .form .le-item select, .form .hol-row input { padding: 7px 10px; font-size: 13px; }
 .le-group > .btn, #add-group { justify-self: start; }
 
@@ -614,7 +625,7 @@ body.modal-open { overflow: hidden; }
   .grid4, .sub-meta { grid-template-columns: 1fr 1fr; }
   .link-row { grid-template-columns: 1fr auto; }
   .link-row .link-ico { display: none; }
-  .link-row [data-l="url"] { grid-column: 1; }
+  .link-row .url-field { grid-column: 1; }
   .modal { padding: 18px 16px; }
   .gantt { --gl: 190px; }
   .g-left { padding: 8px 10px; gap: 6px; }
@@ -630,7 +641,7 @@ body.modal-open { overflow: hidden; }
   .hol-row { grid-template-columns: 1fr auto; }
   .hol-row [data-h="en"], .hol-row [data-h="th"] { grid-column: 1; }
   .le-item { grid-template-columns: 1fr auto; }
-  .le-item [data-if="name"], .le-item [data-if="url"] { grid-column: 1; }
+  .le-item [data-if="name"], .le-item .url-field { grid-column: 1; }
   .sec-edit { position: static; margin-top: 12px; }
   .group { padding: 18px; }
   .stat .n { font-size: 32px; }

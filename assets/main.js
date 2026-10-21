@@ -323,7 +323,7 @@
           ${g.member ? `<span class="member">${esc(t("links.member"))}</span>` : ""}
         </div>
         <div class="lk-grid">${g.items.map((x) => x.url
-          ? `<a class="lk" href="${esc(x.url)}" target="_blank" rel="noopener noreferrer" title="${esc(L(x.name))}">${svg(x.icon)}<span>${esc(L(x.name))}</span><b class="go">↗</b></a>`
+          ? `<a class="lk" ${TE.linkAttrs(x.url)}>${svg(x.icon)}<span>${esc(L(x.name))}</span><b class="go">${TS.isNetPath(x.url) ? "⧉" : "↗"}</b></a>`
           : `<span class="lk unset" title="${esc(t("links.unset"))}">${svg(x.icon)}<span>${esc(L(x.name))}</span></span>`).join("")}
         </div>
       </div>`).join("");
@@ -337,7 +337,7 @@
         </div>
         ${open
           ? (vaultFiles.length
-            ? `<div class="lk-grid">${vaultFiles.map((f) => `<a class="lk" href="${esc(f.url)}" target="_blank" rel="noopener noreferrer"><span class="vt">${esc((f.type || TS.linkType(f.url)).slice(0, 6))}</span><span>${esc(L(f.name))}</span><b class="go">↗</b></a>`).join("")}</div>`
+            ? `<div class="lk-grid">${vaultFiles.map((f) => `<a class="lk" ${TE.linkAttrs(f.url)}><span class="vt">${esc((f.type || TS.linkType(f.url)).slice(0, 6))}</span><span>${esc(L(f.name))}</span><b class="go">↗</b></a>`).join("")}</div>`
             : `<div class="vault-empty">${esc(t("vault.empty"))}</div>`)
           : `<form class="pin-form" id="pin-form" autocomplete="off">
               <div class="pin-lock">${svg("lock", 28)}</div>

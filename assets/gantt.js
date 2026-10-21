@@ -22,7 +22,10 @@
   try { hideDone = localStorage.getItem("g_hideDone") === "1"; } catch {}
   const gl = () => parseFloat(getComputedStyle(document.querySelector(".gantt")).getPropertyValue("--gl")) || 320;
   // กว้างกี่ px ต่อ 1 วัน ให้ช่วงเวลาที่เลือกพอดีหน้าจอ
-  const dayW = () => { const [a, b] = period(view); return Math.max(1, ($("g-scroll").clientWidth - gl()) / (days(a, b) + 1)); };
+  // จำนวนวันที่เห็นบนจอ: ตามปุ่ม Week/Month/… หรือค่าที่ zoom ด้วยล้อเมาส์ (customDays)
+  let customDays = null;
+  const spanDays = () => customDays ?? (days(...period(view)) + 1);
+  const dayW = () => Math.max(0.5, ($("g-scroll").clientWidth - gl()) / spanDays());
   const expanded = new Set();
   const focusId = new URLSearchParams(location.search).get("id");
   let focused = false;
@@ -34,7 +37,9 @@
 
   // ช่วงวันที่ของทั้งกราฟ
   function range() {
-    const ds = [today, ...period(view)];
+    const pad = new Date(today); pad.setDate(pad.getDate() + Math.ceil(spanDays()));
+    const padB = new Date(today); padB.setDate(padB.getDate() - Math.ceil(spanDays()));
+    const ds = [today, ...period(view), pad, padB];
     TS.tasks.forEach((x) => {
       [x.start, x.due, x.done].forEach((d) => d && ds.push(parse(d)));
       (x.subtasks || []).forEach((s) => [s.start, s.due, s.done].forEach((d) => d && ds.push(parse(d))));
@@ -128,8 +133,8 @@
     pop.innerHTML = `
       <div class="doc-pop-head">${TE.CLIP}<b>${esc(L(item.name))}</b></div>
       ${links.length ? `<ul>${links.map((l) => `
-        <li><a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">
-          <span class="doc-type">${esc(TS.linkType(l.url))}</span><span class="doc-name">${esc(l.name || l.url)}</span><span class="doc-go">↗</span></a></li>`).join("")}</ul>`
+        <li><a ${TE.linkAttrs(l.url)}>
+          <span class="doc-type ${TS.isNetPath(l.url) ? "net" : ""}">${esc(TS.linkType(l.url))}</span><span class="doc-name">${esc(l.name || l.url)}</span><span class="doc-go">${TS.isNetPath(l.url) ? "⧉" : "↗"}</span></a></li>`).join("")}</ul>`
         : `<div class="doc-empty">${t("doc.none")}${TS.editing ? "" : `<br><small>${t("doc.addHint")}</small>`}</div>`}
       ${TS.editing ? `<button class="btn sm doc-edit" data-edit="${esc(btn.dataset.docs)}">${t("ed.addLink")}</button>` : ""}`;
     pop.classList.remove("hidden");
@@ -278,12 +283,44 @@
   // เลื่อนให้ช่วงเวลาที่เลือกอยู่พอดีหน้าจอ
   function toPeriod(smooth) {
     const r = range(), sc = $("g-scroll");
-    sc.scrollTo({ left: days(r.start, period(view)[0]) * dayW(), behavior: smooth ? "smooth" : "auto" });
+    // zoom อิสระอยู่ → ให้วันนี้อยู่ราว 1/4 ของจอ, ไม่งั้นเริ่มที่ต้นช่วง (สัปดาห์/เดือน/…)
+    const left = customDays ? (days(r.start, today) - spanDays() / 4) * dayW() : days(r.start, period(view)[0]) * dayW();
+    sc.scrollTo({ left, behavior: smooth ? "smooth" : "auto" });
   }
+
+  // ---------- หมุนล้อเมาส์บนตาราง = zoom in/out (ทีละ 1–2 วัน) ----------
+  (function wheelZoom() {
+    const sc = $("g-scroll");
+    let acc = 0, anchor = null, pending = false;
+    sc.addEventListener("wheel", (e) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // เลื่อนแนวนอน (touchpad) ปล่อยตามปกติ
+      e.preventDefault();
+      const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaMode === 2 ? e.deltaY * 300 : e.deltaY;
+      acc += dy;
+      if (Math.abs(acc) < 60) return;                       // 1 คลิกล้อ ≈ 100
+      const dir = Math.sign(acc); acc = 0;
+      const r = range(), dw = dayW();
+      const px = Math.max(0, e.clientX - sc.getBoundingClientRect().left - gl());
+      // จำวันที่ใต้เคอร์เซอร์ไว้ ให้อยู่ที่เดิมหลัง zoom
+      anchor = { ms: r.start.getTime() + ((sc.scrollLeft + px) / dw) * DAY, px };
+      const cur = spanDays();
+      const step = cur <= 31 ? 1 : cur <= 62 ? 2 : Math.max(2, Math.round(cur * 0.04));
+      customDays = Math.min(730, Math.max(3, Math.round(cur + dir * step)));
+      document.querySelectorAll("#zoom .seg-btn").forEach((x) => x.classList.remove("on"));
+      if (pending) return;
+      pending = true;
+      setTimeout(() => {
+        pending = false;
+        focused = true; render();
+        const r2 = range();
+        sc.scrollLeft = ((anchor.ms - r2.start.getTime()) / DAY) * dayW() - anchor.px;
+      }, 16);
+    }, { passive: false });
+  })();
   $("zoom").addEventListener("click", (e) => {
     const b = e.target.closest(".seg-btn"); if (!b) return;
     document.querySelectorAll("#zoom .seg-btn").forEach((x) => x.classList.toggle("on", x === b));
-    view = b.dataset.z; focused = true; render(); toPeriod(false);
+    view = b.dataset.z; customDays = null; focused = true; render(); toPeriod(false);
   });
   $("g-today").addEventListener("click", () => toPeriod(true));
   $("g-hide").addEventListener("click", () => {

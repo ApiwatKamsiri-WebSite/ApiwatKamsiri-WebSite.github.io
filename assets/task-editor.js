@@ -92,13 +92,56 @@
     renderTask();
   }
 
+  // ---------- ช่อง URL: ปุ่มเลือก Web (เติม https://) / Server (เติม \\) ----------
+  function splitUrl(url) {
+    const u = String(url || "").trim();
+    if (TS.isNetPath(u)) return { kind: "net", pre: "\\\\", rest: TS.netPath(u).replace(/^\\+/, "") };
+    const m = u.match(/^(https?:\/\/)/i);
+    return { kind: "web", pre: m ? m[1].toLowerCase() : "https://", rest: m ? u.slice(m[1].length) : u };
+  }
+  function urlField(url, attr) {
+    const p = splitUrl(url);
+    return `<div class="url-field" data-kind="${p.kind}" data-pre="${esc(p.pre)}">
+      <div class="url-kind" role="group">
+        <button type="button" data-kind="web" class="${p.kind === "web" ? "on" : ""}">${t("kind.web")}</button>
+        <button type="button" data-kind="net" class="${p.kind === "net" ? "on" : ""}">${t("kind.net")}</button>
+      </div>
+      <span class="url-pre">${esc(p.pre)}</span>
+      <input ${attr} value="${esc(p.rest)}" placeholder="${p.kind === "net" ? "server\\folder\\file.xlsx" : "example.com/…"}" inputmode="url" spellcheck="false">
+    </div>`;
+  }
+  function setKind(f, kind, pre) {
+    f.dataset.kind = kind;
+    f.dataset.pre = pre || (kind === "net" ? "\\\\" : "https://");
+    f.querySelector(".url-pre").textContent = f.dataset.pre;
+    f.querySelectorAll(".url-kind button").forEach((b) => b.classList.toggle("on", b.dataset.kind === kind));
+    f.querySelector("input").placeholder = kind === "net" ? "server\\folder\\file.xlsx" : "example.com/…";
+  }
+  function readUrl(f) {
+    const rest = f.querySelector("input").value.trim();
+    if (!rest) return "";
+    return f.dataset.kind === "net" ? "\\\\" + rest.replace(/^\\+/, "") : f.dataset.pre + rest.replace(/^https?:\/\//i, "");
+  }
+  // กดปุ่มเลือกชนิด
+  box.addEventListener("click", (e) => {
+    const b = e.target.closest(".url-kind button"); if (!b) return;
+    const f = b.closest(".url-field"); setKind(f, b.dataset.kind); f.querySelector("input").focus();
+  });
+  // วางลิงก์เต็มมา (มี https:// หรือ \\ หรือ file://) → เลือกชนิดให้และตัดส่วนหน้าออก
+  box.addEventListener("input", (e) => {
+    const f = e.target.closest(".url-field"); if (!f || e.target.tagName !== "INPUT") return;
+    const v = e.target.value.trim();
+    if (TS.isNetPath(v)) { setKind(f, "net"); e.target.value = TS.netPath(v).replace(/^\\+/, ""); }
+    else { const m = v.match(/^(https?:\/\/)/i); if (m) { setKind(f, "web", m[1].toLowerCase()); e.target.value = v.slice(m[1].length); } }
+  });
+
   // แถวลิงก์เอกสาร (scope = "t" ของหัวข้อใหญ่ หรือเลข index ของงานย่อย)
   function linkRows(links, scope) {
     return (links || []).map((l, j) => `
       <div class="link-row" data-scope="${scope}" data-li="${j}">
         <span class="link-ico">${CLIP}</span>
         <input data-l="name" value="${esc(l.name || "")}" placeholder="${t("ed.linkName")}">
-        <input data-l="url" value="${esc(l.url || "")}" placeholder="https://…" inputmode="url">
+        ${urlField(l.url, 'data-l="url"')}
         <button type="button" class="icon-btn sm" data-del-link="${scope}:${j}" aria-label="${t("ed.remove")}" title="${t("ed.remove")}">✕</button>
       </div>`).join("");
   }
@@ -228,7 +271,7 @@
     });
     // ลิงก์เอกสาร
     const read = (scope) => [...box.querySelectorAll(`.link-row[data-scope="${scope}"]`)].map((r) => ({
-      name: r.querySelector('[data-l="name"]').value.trim(), url: r.querySelector('[data-l="url"]').value.trim() }));
+      name: r.querySelector('[data-l="name"]').value.trim(), url: readUrl(r.querySelector(".url-field")) }));
     draft.links = read("t");
     draft.subtasks.forEach((s, i) => (s.links = read(String(i))));
     // หัวข้อใหญ่: ค่าเริ่มต้นของ "วันที่เสร็จ" = วันกำหนดเสร็จที่เลือก (แก้เองได้ในช่องวันที่เสร็จ)
@@ -250,8 +293,7 @@
     if (!d.subtasks.length && d.status !== "done" && d.progress) out.progress = d.progress;
     if (d.desc.en || d.desc.th) out.desc = two(d.desc);
     const cleanLinks = (ls) => (ls || []).filter((l) => l.url).map((l) => ({
-      name: l.name || l.url.replace(/^https?:\/\//, "").split(/[/?#]/)[0],
-      url: /^https?:\/\//i.test(l.url) ? l.url : "https://" + l.url }));
+      name: l.name || TS.defaultName(l.url), url: TS.normalizeUrl(l.url) }));
     if (cleanLinks(d.links).length) out.links = cleanLinks(d.links);
     out.subtasks = d.subtasks.filter((s) => s.name.en || s.name.th).map((s, i) => {
       const o = { id: `${d.id}.${i + 1}`, name: two(s.name), status: s.status, start: s.start, due: s.due };
@@ -360,7 +402,7 @@
             <div class="le-item" data-i="${ii}">
               <select data-if="icon" aria-label="${t("le.icon")}">${iconOpts(x.icon)}</select>
               <input data-if="name" value="${esc(nameOf(x.name, "en"))}" placeholder="${t("le.name")}">
-              <input data-if="url" value="${esc(x.url || "")}" placeholder="https://…" inputmode="url">
+              ${urlField(x.url, 'data-if="url"')}
               <button type="button" class="icon-btn sm" data-del-item="${gi}:${ii}" aria-label="${t("ed.remove")}">✕</button>
             </div>`).join("")}
           </div>
@@ -391,7 +433,7 @@
       e.preventDefault();
       collectLinks();
       const two = (v) => ({ en: v.en || v.th, th: v.th || v.en });
-      const fix = (u) => (!u ? "" : /^https?:\/\//i.test(u) ? u : "https://" + u);
+      const fix = (u) => TS.normalizeUrl(u);
       const groups = ldraft.filter((g) => g.title.en || g.title.th).map((g) => {
         const o = { title: two(g.title), icon: g.icon, items: (g.items || []).filter((x) => x.name || x.url)
           .map((x) => ({ name: x.name || x.url, icon: x.icon, url: fix(x.url) })) };
@@ -412,7 +454,7 @@
         const x = g.items[+r.dataset.i];
         x.icon = r.querySelector('[data-if="icon"]').value;
         x.name = r.querySelector('[data-if="name"]').value.trim();
-        x.url = r.querySelector('[data-if="url"]').value.trim();
+        x.url = readUrl(r.querySelector(".url-field"));
       });
     });
   }
@@ -445,6 +487,26 @@
     else if (mode === "unlock") openUnlock();
   });
 
+  // ---------- path บน server บริษัท: คลิก = คัดลอก path ----------
+  // (เบราว์เซอร์ไม่ยอมให้เว็บเปิดไฟล์ในเครือข่ายโดยตรง จึงคัดลอกไปวางใน File Explorer แทน)
+  document.addEventListener("click", async (e) => {
+    const el = e.target.closest("[data-copy-path]"); if (!el) return;
+    e.preventDefault();
+    const path = el.dataset.copyPath;
+    try { await navigator.clipboard.writeText(path); }
+    catch {
+      const ta = document.createElement("textarea"); ta.value = path; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch {} ta.remove();
+    }
+    toast(t("net.copied"), "ok");
+  });
+  // แท็กลิงก์: เว็บ = เปิดแท็บใหม่, path server = คลิกเพื่อคัดลอก
+  function linkAttrs(url) {
+    return TS.isNetPath(url)
+      ? `href="#" data-copy-path="${esc(TS.netPath(url))}" title="${esc(t("net.hint") + "\n" + TS.netPath(url))}"`
+      : `href="${esc(url)}" target="_blank" rel="noopener noreferrer"`;
+  }
+
   // ---------- ดับเบิลคลิก / แตะ 2 ครั้ง ----------
   function onDouble(root, selector, fn) {
     root.addEventListener("dblclick", (e) => { const el = e.target.closest(selector); if (el) fn(el); });
@@ -459,5 +521,5 @@
   }
 
   document.body.classList.toggle("editing", TS.editing);
-  window.TaskEditor = { openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
+  window.TaskEditor = { linkAttrs, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
 })();

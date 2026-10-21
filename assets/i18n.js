@@ -166,6 +166,10 @@
       "save.fail": "Save failed: {e}",
       "save.conflict": "The file was changed elsewhere. Loaded the latest version — please try again.",
 
+      "kind.web": "Web",
+      "kind.net": "Server",
+      "net.hint": "Company server file — click to copy the path, then paste it into File Explorer (company network only)",
+      "net.copied": "Path copied ✔ — paste it into File Explorer's address bar (company network only)",
       "doc.count": "{n} documents",
       "doc.count1": "1 document",
       "doc.none": "No documents yet",
@@ -351,6 +355,10 @@
       "save.fail": "บันทึกไม่สำเร็จ: {e}",
       "save.conflict": "ไฟล์ถูกแก้จากที่อื่น โหลดเวอร์ชันล่าสุดแล้ว — ลองอีกครั้ง",
 
+      "kind.web": "เว็บ",
+      "kind.net": "Server",
+      "net.hint": "ไฟล์บน server บริษัท — คลิกเพื่อคัดลอก path แล้วไปวางใน File Explorer (ต้องอยู่ในเครือข่ายบริษัท)",
+      "net.copied": "คัดลอก path แล้ว ✔ — วางในช่อง address ของ File Explorer (ต้องอยู่ในเครือข่ายบริษัท)",
       "doc.count": "เอกสาร {n} รายการ",
       "doc.count1": "เอกสาร 1 รายการ",
       "doc.none": "ยังไม่มีเอกสาร",

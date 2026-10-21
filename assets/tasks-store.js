@@ -160,6 +160,27 @@
       for (const d = new Date(a); d <= b; d.setDate(d.getDate() + 1)) if (!S.isOff(d)) n++;
       return n;
     },
+    // path บน server บริษัท เช่น \\server\share\file.xlsx หรือ file://server/share/...
+    isNetPath(url) { return /^(\\\\|file:)/i.test(String(url || "").trim()); },
+    // แปลงเป็นรูปแบบที่วางใน File Explorer ได้ (\\server\share\...)
+    netPath(url) {
+      const u = String(url || "").trim();
+      if (!/^file:/i.test(u)) return u;
+      let p = decodeURIComponent(u.replace(/^file:\/*/i, ""));
+      return /^[a-z]:/i.test(p) ? p.replace(/\//g, "\\") : "\\\\" + p.replace(/\//g, "\\");
+    },
+    // เก็บลิงก์: path server เก็บตามเดิม, เว็บที่ไม่มี http(s) เติม https:// ให้
+    normalizeUrl(u) {
+      u = String(u || "").trim();
+      if (!u || S.isNetPath(u) || /^[a-z][a-z0-9+.-]*:/i.test(u)) return u;
+      return "https://" + u;
+    },
+    // ชื่อเริ่มต้นจากลิงก์: path → ชื่อไฟล์, เว็บ → ชื่อโดเมน
+    defaultName(u) {
+      u = String(u || "").trim();
+      if (S.isNetPath(u)) return S.netPath(u).split("\\").filter(Boolean).pop() || u;
+      return u.replace(/^https?:\/\//, "").split(/[/?#]/)[0];
+    },
     // ชนิดเอกสารจากลิงก์ (แสดงเป็นป้ายเล็ก)
     linkType(url) {
       const u = String(url || "").toLowerCase();
@@ -169,8 +190,8 @@
       if (/onedrive|1drv\.ms/.test(u)) return "OneDrive";
       if (/docs\.google|drive\.google/.test(u)) return "Drive";
       if (/github\.com/.test(u)) return "GitHub";
-      if (ext && ["pdf", "xlsx", "xls", "csv", "docx", "doc", "pptx", "ppt", "zip", "txt", "png", "jpg"].includes(ext)) return ext.toUpperCase();
-      return "LINK";
+      if (ext && ["pdf", "xlsx", "xls", "xlsm", "csv", "docx", "doc", "pptx", "ppt", "zip", "txt", "png", "jpg"].includes(ext)) return ext.toUpperCase();
+      return S.isNetPath(u) ? "FOLDER" : "LINK";
     },
     links(x) { return Array.isArray(x.links) ? x.links.filter((l) => l && l.url) : []; },
     // วันที่จบที่ใช้วาด: เสร็จแล้วใช้วันเสร็จจริง
