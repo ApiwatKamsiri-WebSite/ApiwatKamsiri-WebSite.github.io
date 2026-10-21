@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T03:39:30.151Z",
+  "updated": "2026-10-21T03:54:36.214Z",
   "tasks": [
     {
       "id": 1,
@@ -82,6 +82,30 @@
           "status": "doing",
           "start": "2026-10-20",
           "due": "2026-10-26"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": {
+        "en": "Make and update software for Bangladesh",
+        "th": "ทำและอัพเดทซอฟแวร์สำหรับบังคลาเทศ"
+      },
+      "project": "BONA and HOSHI",
+      "status": "done",
+      "start": "2026-10-19",
+      "due": "2026-10-20",
+      "done": "2026-10-19",
+      "subtasks": [
+        {
+          "id": "3.1",
+          "name": {
+            "en": "Pulldown software for HOSHI model",
+            "th": "ซอฟแวร์ Pulldown สำหรับรุ่น HOSHI"
+          },
+          "status": "todo",
+          "start": "2026-10-19",
+          "due": "2026-10-19"
         }
       ]
     }
