@@ -625,7 +625,10 @@ body.modal-open { overflow: hidden; }
 /* จอกว้าง: ตัวหนังสือขนาดเดิม แต่ส่วนตาราง/ไทม์ไลน์ขยายเต็มพื้นที่จอ */
 @media (min-width: 1400px) {
   .wrap.wide { max-width: min(calc(100vw - 96px), 2400px); }
+  .gantt { --gl: 460px; }   /* คอลัมน์ชื่องานกว้างขึ้นตามจอ */
 }
+@media (min-width: 1700px) { .gantt { --gl: 540px; } }
+@media (min-width: 2100px) { .gantt { --gl: 640px; } }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }

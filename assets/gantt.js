@@ -152,7 +152,7 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 6 6 6-6 6"/></svg>
             </button>
             <i class="g-dot"></i>
-            <div class="g-name"><b>${esc(L(x.name))}</b><small>${stLabel(st)}${subs.length ? " · " + t("task.subs", { n: subs.length }) : ""}</small></div>
+            <div class="g-name" title="${esc(L(x.name))}"><b>${esc(L(x.name))}</b><small>${stLabel(st)}${subs.length ? " · " + t("task.subs", { n: subs.length }) : ""}</small></div>
             ${docBtn(x, id, "")}
             <span class="g-pctbox"><span class="g-pct">${p}%</span>${wd(x)}</span>
             <button class="icon-btn sm edit-only g-edit" data-edit="${esc(id)}" aria-label="${t("edit.row")}" title="${t("edit.row")}">✎</button>
@@ -167,7 +167,7 @@
         <div class="g-row g-sub g-body-row st-${sst} ${i === subs.length - 1 ? "last" : ""}">
           <div class="g-left">
             <i class="g-dot"></i>
-            <div class="g-name"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
+            <div class="g-name" title="${esc(L(s.name))}"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
             ${docBtn(s, id, i)}
             <span class="g-pctbox"><span class="g-pct">${sp}%</span>${wd(s)}</span>
           </div>
