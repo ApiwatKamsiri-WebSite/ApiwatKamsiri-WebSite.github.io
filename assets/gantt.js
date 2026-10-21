@@ -27,7 +27,10 @@
   const spanDays = () => customDays ?? (days(...period(view)) + 1);
   const dayW = () => Math.max(0.5, ($("g-scroll").clientWidth - gl()) / spanDays());
   const expanded = new Set();
-  const focusId = new URLSearchParams(location.search).get("id");
+  // มาจากการดับเบิลคลิกหน้าหลัก: ?id=งาน (ขยายเฉพาะงานนั้น) หรือ ?date=วันที่ (ย่อทั้งหมด แล้วเลื่อนไปวันนั้น)
+  const params = new URLSearchParams(location.search);
+  const focusId = params.get("id");
+  const focusDate = /^\d{4}-\d{2}-\d{2}$/.test(params.get("date") || "") ? params.get("date") : "";
   let focused = false;
 
   const locale = () => (I.lang === "th" ? "th-TH" : "en-GB");
@@ -106,6 +109,45 @@
     return `${t("fin.on", { d: fmt(TS.finishDate(x)) })} · ${rel}`;
   }
 
+  // ป้าย "Today" ในแถวชื่อเดือน: ปกติอยู่ซ้ายของเส้น (ลูกศร ▸ ชี้เส้น)
+  // ถ้าจะทับชื่อเดือน (วันนี้อยู่ต้นเดือน) → ย้ายไปต่อท้ายชื่อเดือน แล้วลากลูกศรชี้กลับมาที่เส้น
+  let lastTodayX = 0;
+  function placeTodayTag(root, todayX = lastTodayX) {
+    lastTodayX = todayX;
+    root.querySelectorAll(".g-tag").forEach((el) => el.remove());
+    const spans = [...root.querySelectorAll(".g-months span")];
+    spans.forEach((s) => { const e = s.querySelector("em"); if (e) e.style.visibility = ""; });
+    const base = root.getBoundingClientRect().left;          // ตำแหน่งในตาราง (รวมการเลื่อนแล้ว)
+    const lineX = gl() + todayX;
+    const label = t("g.todayTag");
+    const tag = document.createElement("div");
+    tag.className = "g-tag";
+    root.appendChild(tag);
+    // ชื่อเดือนของเดือนนี้ — ใช้ตำแหน่งที่เห็นจริง (ชื่อเดือนเกาะขอบซ้ายตอนเลื่อน)
+    const own = spans.find((s) => parseFloat(s.style.left) <= todayX && todayX < parseFloat(s.style.left) + parseFloat(s.style.width));
+    const em = own && own.querySelector("em");
+    const nameRight = em && em.textContent ? em.getBoundingClientRect().right - base : -Infinity;
+
+    tag.innerHTML = `<span>${esc(label)}</span><i>▸</i>`;
+    const w = tag.offsetWidth;
+    let left = lineX - 3 - w;
+    if (left >= nameRight + 8) {
+      tag.classList.add("before");                       // today ▸|
+    } else {
+      tag.innerHTML = `<i>◂</i><span>${esc(label)}</span>`;
+      left = Math.max(lineX + 3, nameRight + 8);          // |… ◂ today (ต่อท้ายชื่อเดือน ไม่มีเส้นลาก)
+      tag.classList.add("after");
+    }
+    tag.style.left = left + "px";
+    // ซ่อนชื่อเดือนอื่นที่ป้ายไปทับ (เช่นมุมมองปีที่เดือนแคบ)
+    const tr = tag.getBoundingClientRect();
+    spans.forEach((s) => {
+      const e = s.querySelector("em"); if (!e || s === own || !e.textContent) return;
+      const r = e.getBoundingClientRect();
+      if (r.right > tr.left - 4 && r.left < tr.right + 4) e.style.visibility = "hidden";
+    });
+  }
+
   // จำนวนวันทำงาน (เล็ก ๆ ใต้ %)
   const wd = (x) => { const n = TS.workdays(x); return `<small class="g-wd" title="${esc(t(n === 1 ? "wd.one" : "wd.count", { n }))}">${t("wd.short", { n })}</small>`; };
 
@@ -171,7 +213,7 @@
       // 1 กลุ่ม = หัวข้องาน + งานย่อย + สรุป (ไม่มีเส้นคั่นภายในกลุ่ม)
       html += `
       <div class="g-group st-${st} ${open ? "open" : ""}">
-        <div class="g-row g-task g-body-row ${id === focusId ? "focus" : ""}" data-id="${esc(id)}">
+        <div class="g-row g-task g-body-row" data-id="${esc(id)}">
           <div class="g-left">
             <button class="g-chev" data-toggle="${esc(id)}" aria-expanded="${open}" aria-label="${esc(L(x.name))}">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 6 6 6-6 6"/></svg>
@@ -221,11 +263,13 @@
       const hol = TS.holidayOn(TS.iso(d)), we = d.getDay() === 0 || d.getDay() === 6;
       if (hol || (we && dw >= 4)) off += `<div class="g-off ${hol ? "hol" : ""}" style="left:calc(var(--gl) + ${i * dw}px);width:${Math.max(dw, hol ? 2 : 0)}px" ${hol ? `title="${esc(L(hol.name))}"` : ""}></div>`;
     }
-    html = html.replace("<!--off-->", off);
     const todayX = days(r.start, today) * dw + dw / 2;
-    html += `<div class="g-today" style="left:calc(var(--gl) + ${todayX}px)"></div>`;
+    // เส้นวันนี้: เริ่มใต้หัวตาราง และอยู่หลังแถบงาน/ตัวหนังสือ (ไม่ขีดทับข้อความ)
+    off += `<div class="g-today" style="left:calc(var(--gl) + ${todayX}px)"></div>`;
+    html = html.replace("<!--off-->", off);
     root.innerHTML = html;
     root.style.setProperty("--dw", dw + "px");
+    placeTodayTag(root, todayX);
 
     // ครั้งแรก: เปิดงานที่ดับเบิลคลิกมา แล้วเลื่อนไปหา
     if (!focused) {
@@ -236,11 +280,16 @@
         const x = TS.find(focusId);
         sc.scrollLeft = days(r.start, parse(x.start || x.due)) * dw - 24;
         row.scrollIntoView({ block: "center" });
+      } else if (focusDate) {
+        sc.scrollLeft = days(r.start, parse(focusDate)) * dw - (sc.clientWidth - gl()) / 4;
       } else {
         toPeriod(false);
       }
     }
   }
+
+  // เลื่อนตาราง → จัดตำแหน่งป้าย Today ใหม่ (ชื่อเดือนเกาะขอบซ้าย)
+  $("g-scroll").addEventListener("scroll", () => { if ($("gantt").querySelector(".g-today")) placeTodayTag($("gantt")); }, { passive: true });
 
   // ---------- คลิกซ้ายค้างแล้วลาก = เลื่อนตาราง ----------
   (function dragScroll() {

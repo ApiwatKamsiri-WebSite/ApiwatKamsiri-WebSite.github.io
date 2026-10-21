@@ -141,6 +141,8 @@
   const openDetail = (el) => { location.href = `tasks.html?id=${encodeURIComponent(el.dataset.id)}`; };
   TE.onDouble($("task-list"), ".tl-item", openDetail);
   TE.onDouble($("cal-weeks"), ".cbar", openDetail);
+  // ดับเบิลคลิกวันว่างในปฏิทิน → หน้า timeline แบบย่อทั้งหมด เลื่อนไปวันนั้น
+  TE.onDouble($("cal-weeks"), "[data-date]", (el) => { location.href = `tasks.html?date=${el.dataset.date}`; });
   $("task-list").addEventListener("keydown", (e) => { const el = e.target.closest(".tl-item"); if (el && e.key === "Enter") openDetail(el); });
 
   // ปุ่มแก้ไข
@@ -213,8 +215,9 @@
         const out = d.getMonth() !== calView.getMonth() ? " out" : "";
         const now = d.getTime() === today.getTime() ? " today" : "";
         const hol = TS.holidayOn(TS.iso(d));
-        cells += `<div class="bgcell${out}${now}${hol ? " hol" : ""}" style="grid-column:${i + 1}"></div>
-                  <div class="dnum${out}${now}" style="grid-column:${i + 1}"><span>${d.getDate()}</span>${hol ? `<em class="hname" title="${esc(L(hol.name))}">${esc(L(hol.name))}</em>` : ""}</div>`;
+        const ds = TS.iso(d);
+        cells += `<div class="bgcell${out}${now}${hol ? " hol" : ""}" style="grid-column:${i + 1}" data-date="${ds}"></div>
+                  <div class="dnum${out}${now}" style="grid-column:${i + 1}" data-date="${ds}"><span>${d.getDate()}</span>${hol ? `<em class="hname" title="${esc(L(hol.name))}">${esc(L(hol.name))}</em>` : ""}</div>`;
       }
       // วางแถบงานเป็นเลน ไม่ให้ทับกัน
       const segs = tasks.map((x) => ({ x, s: parse(x.start || x.due), e: parse(TS.endDate(x)) }))
