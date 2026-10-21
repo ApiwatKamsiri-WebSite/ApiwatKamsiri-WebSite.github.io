@@ -388,6 +388,11 @@
       <form id="links-form" class="form" novalidate>
         ${ldraft.map((g, gi) => `
         <div class="le-group" data-g="${gi}">
+          <div class="le-order">
+            <span class="le-num">${t("le.groupNo", { n: gi + 1 })}</span>
+            <button type="button" class="icon-btn sm" data-move-group="${gi}:-1" ${gi === 0 ? "disabled" : ""} title="${t("le.up")}" aria-label="${t("le.up")}">↑</button>
+            <button type="button" class="icon-btn sm" data-move-group="${gi}:1" ${gi === ldraft.length - 1 ? "disabled" : ""} title="${t("le.down")}" aria-label="${t("le.down")}">↓</button>
+          </div>
           <div class="grid2">
             <label class="fld"><span>${t("le.groupEn")}</span><input data-gf="en" value="${esc(nameOf(g.title, "en"))}"></label>
             <label class="fld"><span>${t("le.groupTh")}</span><input data-gf="th" value="${esc(nameOf(g.title, "th"))}"></label>
@@ -403,6 +408,10 @@
               <select data-if="icon" aria-label="${t("le.icon")}">${iconOpts(x.icon)}</select>
               <input data-if="name" value="${esc(nameOf(x.name, "en"))}" placeholder="${t("le.name")}">
               ${urlField(x.url, 'data-if="url"')}
+              <span class="mv">
+                <button type="button" data-move-item="${gi}:${ii}:-1" ${ii === 0 ? "disabled" : ""} title="${t("le.up")}" aria-label="${t("le.up")}">▲</button>
+                <button type="button" data-move-item="${gi}:${ii}:1" ${ii === g.items.length - 1 ? "disabled" : ""} title="${t("le.down")}" aria-label="${t("le.down")}">▼</button>
+              </span>
               <button type="button" class="icon-btn sm" data-del-item="${gi}:${ii}" aria-label="${t("ed.remove")}">✕</button>
             </div>`).join("")}
           </div>
@@ -422,6 +431,14 @@
     })));
     box.querySelectorAll("[data-del-item]").forEach((b) => b.addEventListener("click", keep(() => {
       const [gi, ii] = b.dataset.delItem.split(":"); ldraft[+gi].items.splice(+ii, 1);
+    })));
+    // เปลี่ยนลำดับกลุ่ม / ลิงก์
+    const swap = (arr, i, d) => { const j = i + d; if (j < 0 || j >= arr.length) return; [arr[i], arr[j]] = [arr[j], arr[i]]; };
+    box.querySelectorAll("[data-move-group]").forEach((b) => b.addEventListener("click", keep(() => {
+      const [gi, d] = b.dataset.moveGroup.split(":").map(Number); swap(ldraft, gi, d);
+    })));
+    box.querySelectorAll("[data-move-item]").forEach((b) => b.addEventListener("click", keep(() => {
+      const [gi, ii, d] = b.dataset.moveItem.split(":").map(Number); swap(ldraft[gi].items, ii, d);
     })));
     box.querySelectorAll("[data-del-group]").forEach((b) => b.addEventListener("click", keep(() => {
       if (confirm(t("le.confirmDel"))) ldraft.splice(+b.dataset.delGroup, 1);
