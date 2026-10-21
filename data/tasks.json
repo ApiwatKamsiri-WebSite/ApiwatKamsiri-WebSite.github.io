@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T06:51:55.331Z",
+  "updated": "2026-10-21T06:52:21.468Z",
   "tasks": [
     {
       "id": 1,
@@ -1069,6 +1069,20 @@
   "links": [
     {
       "title": {
+        "en": "Website",
+        "th": "เว็บไซต์"
+      },
+      "icon": "shield",
+      "items": [
+        {
+          "name": "ahth-graph-generator",
+          "icon": "folder",
+          "url": "https://ahth-graph-generator.github.io/"
+        }
+      ]
+    },
+    {
+      "title": {
         "en": "Software Center File",
         "th": "ไฟล์ Software Center"
       },
@@ -1174,20 +1188,6 @@
         }
       ],
       "member": true
-    },
-    {
-      "title": {
-        "en": "Website",
-        "th": "เว็บไซต์"
-      },
-      "icon": "sync",
-      "items": [
-        {
-          "name": "ahth-graph-generator",
-          "icon": "folder",
-          "url": "https://ahth-graph-generator.github.io/"
-        }
-      ]
     }
   ]
 }
