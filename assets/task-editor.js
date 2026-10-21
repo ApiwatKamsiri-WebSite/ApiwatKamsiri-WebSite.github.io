@@ -66,15 +66,59 @@
     if (TS.editing) { TS.exitEdit(); TS.load(); }
     else ensureEdit(() => toast(t("edit.on"), "ok"));
   }
-  // เข้าโหมดแก้ไข: มี token ที่จำไว้ → เข้าได้เลย, ไม่มี → ถาม token
+  // เข้าโหมดแก้ไข: login อยู่แล้ว / จำ token ไว้ → เข้าได้เลย, ไม่มี → Login with GitHub (สำรอง: token)
   async function ensureEdit(then) {
     if (TS.editing) return then && then();
     if (TS.resumeEdit()) { await TS.load(); if (TS.editing && then) then(); return; }
     afterUnlock = then || null;
-    openUnlock();
+    if (window.GHAuth && GHAuth.enabled) openSignIn(); else openUnlock();
   }
+
+  // ---------- Login with GitHub ----------
+  function openSignIn() {
+    mode = "signin";
+    const popup = GHAuth.start();   // เปิดจากการกดปุ่มโดยตรง เบราว์เซอร์จึงไม่บล็อก popup
+    show(`
+      <div class="modal-head"><h3>${t("auth.title")}</h3><button class="icon-btn" data-close aria-label="${t("common.close")}">✕</button></div>
+      <div class="signin-wait">
+        <div class="spin-sm ${popup ? "" : "stop"}"></div>
+        <p class="modal-desc" id="signin-msg">${t(popup ? "auth.waiting" : "auth.blocked")}</p>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn sm" id="use-token">${t("auth.useToken")}</button>
+        <span class="grow"></span>
+        <button type="button" class="btn primary" id="signin-here">${t(popup ? "auth.retry" : "auth.signinHere")}</button>
+      </div>`);
+    box.querySelector("#use-token").addEventListener("click", () => openUnlock());
+    box.querySelector("#signin-here").addEventListener("click", () => (popup ? openSignIn() : GHAuth.start({ redirect: true })));
+  }
+  if (window.GHAuth) GHAuth.onResult(async (r) => {
+    const msg = box.querySelector("#signin-msg");
+    if (!r.ok) {
+      const text = r.error === "not_allowed" ? t("auth.notAllowed") : t("auth.failed", { e: r.error });
+      if (mode === "signin" && msg) { msg.textContent = text; msg.classList.add("err"); box.querySelector(".spin-sm")?.classList.add("stop"); }
+      else toast(text, "err");
+      return;
+    }
+    // ตรวจสิทธิ์เขียน repo อีกชั้น
+    let ok = false;
+    try { ok = await TS.verifyToken(await GHAuth.ensureFresh()); } catch {}
+    if (!ok) {
+      GHAuth.logout();
+      const text = t("auth.noPush", { u: r.login });
+      if (mode === "signin" && msg) { msg.textContent = text; msg.classList.add("err"); box.querySelector(".spin-sm")?.classList.add("stop"); }
+      else toast(text, "err");
+      return;
+    }
+    TS.resumeEdit();
+    if (mode === "signin") close();
+    await TS.load();
+    toast(t("auth.signedIn", { u: r.login }), "ok");
+    const fn = afterUnlock; afterUnlock = null;
+    if (fn) fn();
+  });
   let afterUnlock = null;
-  function forgetToken() { TS.clearToken(); TS.load(); toast(t("edit.forgot"), "ok"); }
+  function forgetToken() { TS.clearToken(); TS.load(); toast(t("auth.loggedOut"), "ok"); }
 
   // ---------- ฟอร์มงาน ----------
   let draft = null, editingId = null;
@@ -530,6 +574,7 @@
     else if (mode === "holidays") { if (TS.editing) collectHol(); renderHolidays(); }
     else if (mode === "links") { collectLinks(); renderLinksEditor(); }
     else if (mode === "unlock") openUnlock();
+    else if (mode === "signin") { const m = box.querySelector("#signin-msg"); if (m && !m.classList.contains("err")) m.textContent = t("auth.waiting"); }
   });
 
   // ---------- path บน server บริษัท: คลิก = คัดลอก path ----------

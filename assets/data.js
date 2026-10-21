@@ -64,6 +64,8 @@ window.SITE = {
   // งาน, วันหยุด และลิงก์ทางลัด — เก็บใน data/tasks.json (แก้ได้จากหน้าเว็บในโหมดแก้ไข)
   // repo ที่หน้าเว็บจะบันทึกไฟล์งานลงไป
   repo: { owner: "ApiwatKamsiri-WebSite", name: "ApiwatKamsiri-WebSite.github.io", branch: "main", tasksPath: "data/tasks.json" },
+  // Login with GitHub: GitHub App (Client ID) + Cloudflare Worker ตัวกลาง (ไม่ใช่ความลับ)
+  auth: { clientId: "Iv23lipxcdcvNMNEvdxa", worker: "https://my-site.apiwatkamsiri.workers.dev" },
 };
 
 // คลังส่วนตัว (vault) — เข้ารหัส AES-GCM ด้วย PIN ของเจ้าของ (ห้ามเขียน PIN ลงไฟล์ใด ๆ)

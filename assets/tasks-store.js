@@ -20,7 +20,10 @@
   const b64dec = (b64) => new TextDecoder().decode(Uint8Array.from(atob(b64.replace(/\s/g, "")), (c) => c.charCodeAt(0)));
 
   const store = (kind) => { try { return kind === "local" ? localStorage : sessionStorage; } catch { return null; } };
-  const readToken = () => store("session")?.getItem(TOKEN_KEY) || store("local")?.getItem(TOKEN_KEY) || "";
+  const legacyToken = () => store("session")?.getItem(TOKEN_KEY) || store("local")?.getItem(TOKEN_KEY) || "";
+  const GH = () => window.GHAuth;
+  // สิทธิ์ที่ใช้: login ด้วย GitHub ก่อน, ไม่มีค่อยใช้ token แบบเดิม (สำรอง)
+  const readToken = () => (GH() && GH().accessToken()) || legacyToken();
 
   const S = {
     tasks: [],
@@ -35,7 +38,8 @@
     // โหมดแก้ไขเปิดอยู่ = มี token และไม่ได้กด "เลิกแก้ไข"
     get editing() { return !!readToken() && store("local")?.getItem(OFF_KEY) !== "1"; },
     // มี token ที่จำไว้ในเครื่องนี้ (ติ๊ก "จำไว้ในเครื่องนี้")
-    get hasSavedToken() { return !!store("local")?.getItem(TOKEN_KEY); },
+    get hasSavedToken() { return !!store("local")?.getItem(TOKEN_KEY) || !!(GH() && GH().valid()); },
+    get signedInAs() { return (GH() && GH().login) || ""; },
     get rememberPref() { return store("local")?.getItem(REMEMBER_KEY) === "1"; },
 
     setToken(token, remember) {
@@ -63,6 +67,7 @@
       return true;
     },
     clearToken() {
+      GH()?.logout();
       store("session")?.removeItem(TOKEN_KEY);
       store("local")?.removeItem(TOKEN_KEY);
       store("local")?.removeItem(OFF_KEY);
@@ -73,6 +78,11 @@
 
     headers(token = readToken()) {
       return { Authorization: `Bearer ${token}`, Accept: "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28" };
+    },
+    // เหมือน headers() แต่ต่ออายุสิทธิ์จาก GitHub ให้ก่อนถ้าใกล้หมด
+    async authHeaders() {
+      const tk = (GH() && GH().valid() ? await GH().ensureFresh() : "") || legacyToken();
+      return S.headers(tk);
     },
 
     // ตรวจว่า token เขียน repo นี้ได้
@@ -123,7 +133,7 @@
       const body = JSON.stringify({ updated, tasks, holidays, links }, null, 2) + "\n";
       const r = await fetch(`${API}/contents/${R.tasksPath}`, {
         method: "PUT",
-        headers: { ...S.headers(), "Content-Type": "application/json" },
+        headers: { ...(await S.authHeaders()), "Content-Type": "application/json" },
         body: JSON.stringify({ message: message || "Update tasks", content: b64enc(body), sha: S.sha, branch: R.branch }),
       });
       if (r.status === 409 || r.status === 422) {
@@ -228,7 +238,7 @@
   };
 
   async function loadFromApi(shaOnly) {
-    const r = await fetch(`${API}/contents/${R.tasksPath}?ref=${R.branch}&t=${Date.now()}`, { headers: S.headers(), cache: "no-store" });
+    const r = await fetch(`${API}/contents/${R.tasksPath}?ref=${R.branch}&t=${Date.now()}`, { headers: await S.authHeaders(), cache: "no-store" });
     if (r.status === 401) { S.clearToken(); throw new Error("401"); }
     if (!r.ok) throw new Error(r.status);
     const j = await r.json();

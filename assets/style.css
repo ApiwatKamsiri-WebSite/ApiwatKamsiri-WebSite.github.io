@@ -602,6 +602,13 @@ body.modal-open { overflow: hidden; }
 .form .le-item input, .form .le-item select, .form .hol-row input { padding: 7px 10px; font-size: 13px; }
 .le-group > .btn, #add-group { justify-self: start; }
 
+/* login */
+.signin-wait { display: flex; gap: 14px; align-items: center; padding: 6px 0 4px; }
+.signin-wait .modal-desc.err { color: var(--red); }
+.spin-sm { flex: none; width: 26px; height: 26px; border-radius: 50%; border: 3px solid var(--line-2); border-top-color: var(--green); animation: sp 0.8s linear infinite; }
+.spin-sm.stop { animation: none; border-top-color: var(--line-2); }
+@keyframes sp { to { transform: rotate(360deg); } }
+
 /* ============ language switch ============ */
 .lang-switch { display: inline-flex; flex: none; gap: 2px; padding: 3px; margin-left: 4px; border-radius: 999px; border: 1px solid var(--line-2); background: rgba(0, 0, 0, 0.3); }
 .lang-btn { font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.05em; padding: 5px 10px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); cursor: pointer; transition: color 0.2s, background 0.2s; }

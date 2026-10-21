@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Signing in · Apiwat Kamsiri</title>
+  <link rel="stylesheet" href="assets/style.css?v=20261021u">
+  <style>
+    body { display: grid; place-items: center; min-height: 100vh; padding: 16px; }
+    .auth-card { max-width: 420px; width: 100%; padding: 28px; text-align: center; }
+    .auth-card h1 { font-family: var(--display); font-size: 22px; color: var(--white); margin: 12px 0 6px; }
+    .auth-card p { color: var(--muted); margin: 0; font-size: 14px; }
+    .spin { width: 34px; height: 34px; margin: 0 auto; border-radius: 50%; border: 3px solid var(--line-2); border-top-color: var(--green); animation: sp 0.8s linear infinite; }
+    .ok .spin { animation: none; border-color: var(--green); } .err .spin { animation: none; border-color: var(--red); }
+    @keyframes sp { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+  <div class="card auth-card" id="card">
+    <div class="spin"></div>
+    <h1 data-i18n="auth.pageTitle"></h1>
+    <p id="msg" data-i18n="auth.pageWait"></p>
+  </div>
+
+<script src="assets/data.js?v=20261021u"></script>
+<script src="assets/i18n.js?v=20261021u"></script>
+<script src="assets/auth.js?v=20261021u"></script>
+<script>
+(async function () {
+  const res = await GHAuth.finish(new URLSearchParams(location.search));
+  const card = document.getElementById("card"), msg = document.getElementById("msg");
+  card.classList.add(res.ok ? "ok" : "err");
+  msg.textContent = res.ok ? I18N.t("auth.pageDone", { u: res.login }) : I18N.t(res.error === "not_allowed" ? "auth.notAllowed" : "auth.failed", { e: res.error });
+  // เปิดแบบ popup → ปิดตัวเอง, เปิดในหน้าเดิม (popup ถูกบล็อก) → กลับหน้าเดิม
+  setTimeout(() => {
+    window.close();
+    setTimeout(() => { if (!window.closed) location.replace(res.returnTo); }, 400);
+  }, res.ok ? 600 : 2500);
+})();
+</script>
+</body>
+</html>
