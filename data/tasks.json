@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T07:11:37.668Z",
+  "updated": "2026-10-21T09:16:17.772Z",
   "tasks": [
     {
       "id": 1,
@@ -198,6 +198,53 @@
           "status": "todo",
           "start": "2026-11-03",
           "due": "2026-11-04"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": {
+        "en": "ALP78 H50 software development",
+        "th": "การพัฒนาซอฟต์แวร์ ALP78 H50"
+      },
+      "project": "ALP78 H50",
+      "status": "todo",
+      "start": "2026-11-02",
+      "due": "2026-11-20",
+      "desc": {
+        "en": "Commercial and commercial defrost test function check",
+        "th": "การตรวจสอบฟังก์ชันการละลายน้ำแข็งสำหรับอุปกรณ์เชิงพาณิชย์"
+      },
+      "subtasks": [
+        {
+          "id": "5.1",
+          "name": {
+            "en": "Commercial test operation cooling",
+            "th": "การทดสอบการใช้งานเชิงพาณิชย์ การระบายความร้อน"
+          },
+          "status": "todo",
+          "start": "2026-11-02",
+          "due": "2026-11-06"
+        },
+        {
+          "id": "5.2",
+          "name": {
+            "en": "Commercial defrost test operation (Heater test)",
+            "th": "การทดสอบการละลายน้ำแข็งในเชิงพาณิชย์ (การทดสอบฮีตเตอร์)"
+          },
+          "status": "todo",
+          "start": "2026-11-09",
+          "due": "2026-11-13"
+        },
+        {
+          "id": "5.3",
+          "name": {
+            "en": "Commercial test special mode enables by display",
+            "th": "โหมดพิเศษสำหรับการทดสอบเชิงพาณิชย์สามารถเปิดใช้งานได้ผ่านหน้าจอแสดงผล"
+          },
+          "status": "todo",
+          "start": "2026-11-16",
+          "due": "2026-11-20"
         }
       ]
     }
