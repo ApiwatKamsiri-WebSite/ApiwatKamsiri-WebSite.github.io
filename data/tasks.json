@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T06:43:30.978Z",
+  "updated": "2026-10-21T06:54:10.078Z",
   "tasks": [
     {
       "id": 1,
@@ -1067,6 +1067,25 @@
     }
   ],
   "links": [
+    {
+      "title": {
+        "en": "Website",
+        "th": "เว็บไซต์"
+      },
+      "icon": "db",
+      "items": [
+        {
+          "name": "ahth-graph-generator",
+          "icon": "db",
+          "url": "https://ahth-graph-generator.github.io/"
+        },
+        {
+          "name": "eunite-central",
+          "icon": "db",
+          "url": "http://ahthkab23v.ar.arcelik:8080/eunite-central/login.do"
+        }
+      ]
+    },
     {
       "title": {
         "en": "Software Center File",
