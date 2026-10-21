@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T06:54:10.078Z",
+  "updated": "2026-10-21T07:00:18.664Z",
   "tasks": [
     {
       "id": 1,
@@ -1072,16 +1072,16 @@
         "en": "Website",
         "th": "เว็บไซต์"
       },
-      "icon": "db",
+      "icon": "globe",
       "items": [
         {
-          "name": "ahth-graph-generator",
+          "name": "AHTH-Graph-Generator",
           "icon": "db",
           "url": "https://ahth-graph-generator.github.io/"
         },
         {
-          "name": "eunite-central",
-          "icon": "db",
+          "name": "Eunite-Central",
+          "icon": "install",
           "url": "http://ahthkab23v.ar.arcelik:8080/eunite-central/login.do"
         }
       ]
