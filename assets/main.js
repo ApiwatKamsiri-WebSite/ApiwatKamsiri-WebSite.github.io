@@ -258,24 +258,8 @@
   });
 
   // ---------- contact ----------
-  const ICON = {
-    star: '<path d="M4 4h16v16H4z" opacity=".0"/><rect x="3" y="3" width="18" height="18" rx="3"/><path d="m12 7 1.5 3 3.3.5-2.4 2.3.6 3.2-3-1.6-3 1.6.6-3.2-2.4-2.3 3.3-.5z"/>',
-    folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M15 11v5m-2-3 2-2 2 2"/>',
-    search: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v3"/><path d="M3 7v10a2 2 0 0 0 2 2h6"/><circle cx="17" cy="16" r="3"/><path d="m21 20-1.8-1.8"/>',
-    tool: '<path d="M7 3v6m-2-6v4a2 2 0 0 0 4 0V3M7 9v12M17 3a3 3 0 0 0-3 3v5h3m0-8v18"/>',
-    db: '<ellipse cx="11" cy="6" rx="7" ry="3"/><path d="M4 6v12c0 1.7 3.1 3 7 3M18 6v5"/><path d="m16 15 3 3-3 3m3-3h-6"/>',
-    sync: '<path d="M20 12a8 8 0 0 1-14 5.3M4 12a8 8 0 0 1 14-5.3M18 3v4h-4M6 21v-4h4"/>',
-    chip: '<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4"/>',
-    shield: '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/>',
-    install: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v6m-3-3 3 3 3-3"/>',
-    lock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
-    unlock: '<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/>',
-    mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
-    chat: '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14h4"/>',
-    phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
-    copy: '<rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
-  };
-  const svg = (k, sz = 20) => `<svg width="${sz}" height="${sz}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k] || ICON.tool}</svg>`;
+  // ไอคอนจาก assets/icons.js (key = "auto" หรือว่าง → เลือกจากลิงก์)
+  const svg = (k, sz = 20, url = "") => window.ICONS.svg(k, sz, url);
   const phoneFmt = (p) => p.replace(/^(\d{3})(\d{3})(\d{4})$/, "$1-$2-$3");
   const phoneTel = (p) => "+66" + p.replace(/^0/, "");
 
@@ -326,8 +310,8 @@
           ${g.member ? `<span class="member">${esc(t("links.member"))}</span>` : ""}
         </div>
         <div class="lk-grid">${g.items.map((x) => x.url
-          ? `<a class="lk" ${TE.linkAttrs(x.url)}>${svg(x.icon)}<span>${esc(L(x.name))}</span><b class="go">${TE.linkGo(x.url)}</b></a>`
-          : `<span class="lk unset" title="${esc(t("links.unset"))}">${svg(x.icon)}<span>${esc(L(x.name))}</span></span>`).join("")}
+          ? `<a class="lk" ${TE.linkAttrs(x.url)}>${svg(x.icon, 20, x.url)}<span>${esc(L(x.name))}</span><b class="go">${TE.linkGo(x.url)}</b></a>`
+          : `<span class="lk unset" title="${esc(t("links.unset"))}">${svg(x.icon === "auto" ? "link" : x.icon)}<span>${esc(L(x.name))}</span></span>`).join("")}
         </div>
       </div>`).join("");
 

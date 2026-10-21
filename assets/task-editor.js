@@ -20,7 +20,7 @@
   let mode = null; // "unlock" | "task"
 
   function show(html) { box.innerHTML = html; back.classList.remove("hidden"); document.body.classList.add("modal-open"); }
-  function close() { back.classList.add("hidden"); document.body.classList.remove("modal-open"); mode = null; box.innerHTML = ""; }
+  function close() { icMenu?.classList.add("hidden"); back.classList.add("hidden"); document.body.classList.remove("modal-open"); mode = null; box.innerHTML = ""; }
   back.addEventListener("mousedown", (e) => { if (e.target === back) close(); });
   addEventListener("keydown", (e) => { if (e.key === "Escape" && mode) close(); });
 
@@ -374,8 +374,36 @@
   }
 
   // ================= ลิงก์ทางลัด =================
-  const ICONS = ["star", "folder", "search", "tool", "db", "sync", "chip", "shield", "install"];
-  const iconOpts = (cur) => ICONS.map((k) => `<option value="${k}" ${cur === k ? "selected" : ""}>${k}</option>`).join("");
+  // ปุ่มเลือกไอคอน: แสดงไอคอนปัจจุบัน กดแล้วเปิดตารางไอคอน
+  const iconPick = (attr, cur) => `<span class="ic-pick"><input type="hidden" ${attr} value="${esc(cur || "auto")}">
+      <button type="button" class="ic-btn" title="${esc(t("icon." + (cur || "auto")))}" aria-label="${t("le.icon")}">${window.ICONS.raw(cur || "auto", 18)}<b>▾</b></button></span>`;
+  const icMenu = document.createElement("div");
+  icMenu.className = "ic-menu card hidden";
+  document.body.appendChild(icMenu);
+  let icTarget = null;
+  function openIconMenu(btn) {
+    icTarget = btn.closest(".ic-pick");
+    const cur = icTarget.querySelector("input").value;
+    icMenu.innerHTML = window.ICONS.LIST.map((k) =>
+      `<button type="button" data-ic="${k}" class="${k === cur ? "on" : ""}" title="${esc(t("icon." + k))}" aria-label="${esc(t("icon." + k))}">${window.ICONS.raw(k, 18)}</button>`).join("");
+    icMenu.classList.remove("hidden");
+    const r = btn.getBoundingClientRect(), w = icMenu.offsetWidth, h = icMenu.offsetHeight;
+    icMenu.style.left = Math.min(Math.max(8, r.left), innerWidth - w - 8) + "px";
+    icMenu.style.top = (r.bottom + h + 8 > innerHeight ? Math.max(8, r.top - h - 6) : r.bottom + 6) + "px";
+  }
+  const closeIconMenu = () => { icMenu.classList.add("hidden"); icTarget = null; };
+  icMenu.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-ic]"); if (!b || !icTarget) return;
+    const k = b.dataset.ic;
+    icTarget.querySelector("input").value = k;
+    const btn = icTarget.querySelector(".ic-btn");
+    btn.innerHTML = `${window.ICONS.raw(k, 18)}<b>▾</b>`;
+    btn.title = t("icon." + k);
+    closeIconMenu();
+  });
+  document.addEventListener("mousedown", (e) => { if (!icMenu.contains(e.target) && !e.target.closest(".ic-btn")) closeIconMenu(); });
+  box.addEventListener("click", (e) => { const b = e.target.closest(".ic-btn"); if (b) { icTarget && icTarget === b.closest(".ic-pick") ? closeIconMenu() : openIconMenu(b); } });
+  box.addEventListener("scroll", closeIconMenu);
   let ldraft = null;
   function openLinks() {
     mode = "links";
@@ -398,14 +426,14 @@
             <label class="fld"><span>${t("le.groupTh")}</span><input data-gf="th" value="${esc(nameOf(g.title, "th"))}"></label>
           </div>
           <div class="le-opts">
-            <label class="fld"><span>${t("le.icon")}</span><select data-gf="icon">${iconOpts(g.icon)}</select></label>
+            <label class="fld"><span>${t("le.icon")}</span>${iconPick('data-gf="icon"', g.icon || "dir")}</label>
             <label class="chk"><input type="checkbox" data-gf="member" ${g.member ? "checked" : ""}> ${t("le.member")}</label>
             <span class="grow"></span>
             <button type="button" class="btn sm danger" data-del-group="${gi}">${t("le.delGroup")}</button>
           </div>
           <div class="le-items">${(g.items || []).map((x, ii) => `
             <div class="le-item" data-i="${ii}">
-              <select data-if="icon" aria-label="${t("le.icon")}">${iconOpts(x.icon)}</select>
+              ${iconPick('data-if="icon"', x.icon || "auto")}
               <input data-if="name" value="${esc(nameOf(x.name, "en"))}" placeholder="${t("le.name")}">
               ${urlField(x.url, 'data-if="url"')}
               <span class="mv">
@@ -427,7 +455,7 @@
       </form>`);
     const keep = (fn) => () => { collectLinks(); fn(); const y = box.scrollTop; renderLinksEditor(); box.scrollTop = y; };
     box.querySelectorAll("[data-add-item]").forEach((b) => b.addEventListener("click", keep(() => {
-      const g = ldraft[+b.dataset.addItem]; (g.items = g.items || []).push({ name: "", icon: g.icon || "tool", url: "" });
+      const g = ldraft[+b.dataset.addItem]; (g.items = g.items || []).push({ name: "", icon: "auto", url: "" });
     })));
     box.querySelectorAll("[data-del-item]").forEach((b) => b.addEventListener("click", keep(() => {
       const [gi, ii] = b.dataset.delItem.split(":"); ldraft[+gi].items.splice(+ii, 1);
@@ -444,7 +472,7 @@
       if (confirm(t("le.confirmDel"))) ldraft.splice(+b.dataset.delGroup, 1);
     })));
     box.querySelector("#add-group").addEventListener("click", keep(() => {
-      ldraft.push({ title: { en: "", th: "" }, icon: "folder", items: [{ name: "", icon: "folder", url: "" }] });
+      ldraft.push({ title: { en: "", th: "" }, icon: "dir", items: [{ name: "", icon: "auto", url: "" }] });
     }));
     box.querySelector("#links-form").addEventListener("submit", async (e) => {
       e.preventDefault();

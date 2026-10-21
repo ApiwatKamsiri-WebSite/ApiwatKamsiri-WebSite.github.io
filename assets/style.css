@@ -581,9 +581,17 @@ body.modal-open { overflow: hidden; }
 .sec-edit { position: absolute; right: 0; bottom: 6px; }
 .le-group { display: grid; gap: 10px; padding: 14px; border-radius: 14px; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--line); }
 .le-opts { display: flex; align-items: flex-end; gap: 14px; flex-wrap: wrap; }
-.le-opts .fld { width: 140px; }
+.le-opts .fld { width: auto; }
 .le-items { display: grid; gap: 8px; }
-.le-item { display: grid; grid-template-columns: 110px 1fr 2fr auto auto; gap: 8px; align-items: center; }
+.le-item { display: grid; grid-template-columns: auto 1fr 2fr auto auto; gap: 8px; align-items: center; }
+/* เลือกไอคอน */
+.ic-btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 10px; border-radius: 10px; border: 1px solid var(--line-2); background: rgba(0, 0, 0, 0.35); color: var(--cyan); cursor: pointer; }
+.ic-btn b { font-size: 9px; color: var(--muted); }
+.ic-btn:hover { border-color: var(--cyan); }
+.ic-menu { position: fixed; z-index: 260; display: grid; grid-template-columns: repeat(8, 38px); gap: 4px; padding: 10px; background: rgba(12, 18, 28, 0.98); border-color: var(--line-2); animation: pop 0.15s both; }
+.ic-menu button { width: 38px; height: 38px; display: grid; place-items: center; border-radius: 9px; border: 1px solid transparent; background: transparent; color: var(--cyan); cursor: pointer; }
+.ic-menu button:hover { background: rgba(56, 214, 255, 0.1); border-color: var(--line-2); }
+.ic-menu button.on { border-color: var(--green); background: rgba(54, 241, 160, 0.1); }
 .le-order { display: flex; align-items: center; gap: 6px; }
 .le-num { font-family: var(--mono); font-size: 11px; color: var(--cyan); margin-right: auto; }
 .icon-btn:disabled { opacity: 0.3; pointer-events: none; }
@@ -651,6 +659,7 @@ body.modal-open { overflow: hidden; }
   .g-chev { width: 22px; height: 22px; }
   .tl-top h4 { font-size: 18px; }
   .lk-grid { grid-template-columns: 1fr; }
+  .ic-menu { grid-template-columns: repeat(6, 38px); }
   .hol-row { grid-template-columns: 1fr auto; }
   .hol-row [data-h="en"], .hol-row [data-h="th"] { grid-column: 1; }
   .le-item { grid-template-columns: 1fr auto auto; }
