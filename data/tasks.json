@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T04:28:49.822Z",
+  "updated": "2026-10-21T04:30:56.869Z",
   "tasks": [
     {
       "id": 1,
@@ -162,6 +162,16 @@
           "status": "doing",
           "start": "2026-10-19",
           "due": "2026-10-22"
+        },
+        {
+          "id": "4.3",
+          "name": {
+            "en": "RQA testing and release test report.",
+            "th": "ทดสอบโดย RQA และ ออกเอกสาร report"
+          },
+          "status": "todo",
+          "start": "2026-10-26",
+          "due": "2026-12-04"
         }
       ]
     }
