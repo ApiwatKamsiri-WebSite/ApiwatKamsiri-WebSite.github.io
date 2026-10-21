@@ -6,6 +6,8 @@
   const R = window.SITE.repo;
   const API = `https://api.github.com/repos/${R.owner}/${R.name}`;
   const TOKEN_KEY = "gh_token";
+  const OFF_KEY = "gh_edit_off";
+  const REMEMBER_KEY = "gh_remember";
   const PENDING_KEY = "tasks_pending";
   const DAY = 86400000;
 
@@ -30,17 +32,40 @@
     today, parse, iso, DAY,
 
     get token() { return readToken(); },
-    get editing() { return !!readToken(); },
+    // โหมดแก้ไขเปิดอยู่ = มี token และไม่ได้กด "เลิกแก้ไข"
+    get editing() { return !!readToken() && store("local")?.getItem(OFF_KEY) !== "1"; },
+    // มี token ที่จำไว้ในเครื่องนี้ (ติ๊ก "จำไว้ในเครื่องนี้")
+    get hasSavedToken() { return !!store("local")?.getItem(TOKEN_KEY); },
+    get rememberPref() { return store("local")?.getItem(REMEMBER_KEY) === "1"; },
 
     setToken(token, remember) {
       store("session")?.setItem(TOKEN_KEY, token);
       if (remember) store("local")?.setItem(TOKEN_KEY, token);
+      else store("local")?.removeItem(TOKEN_KEY);
+      store("local")?.setItem(REMEMBER_KEY, remember ? "1" : "0");
+      store("local")?.removeItem(OFF_KEY);
       document.body.classList.add("editing");
       document.dispatchEvent(new Event("edit:change"));
+    },
+    // เลิกแก้ไข: ถ้าจำ token ไว้ → เก็บ token ไว้ (กดแก้ไขครั้งหน้าเข้าได้เลย), ถ้าไม่ได้จำ → ลบทิ้ง
+    exitEdit() {
+      if (S.hasSavedToken) {
+        store("local")?.setItem(OFF_KEY, "1");
+        document.body.classList.remove("editing");
+        document.dispatchEvent(new Event("edit:change"));
+      } else S.clearToken();
+    },
+    resumeEdit() {
+      if (!S.hasSavedToken) return false;
+      store("local")?.removeItem(OFF_KEY);
+      document.body.classList.add("editing");
+      document.dispatchEvent(new Event("edit:change"));
+      return true;
     },
     clearToken() {
       store("session")?.removeItem(TOKEN_KEY);
       store("local")?.removeItem(TOKEN_KEY);
+      store("local")?.removeItem(OFF_KEY);
       S.sha = "";
       document.body.classList.remove("editing");
       document.dispatchEvent(new Event("edit:change"));

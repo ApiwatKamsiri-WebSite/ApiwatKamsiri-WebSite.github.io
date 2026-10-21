@@ -384,7 +384,8 @@
   document.addEventListener("lang:change", renderAll);
   document.addEventListener("tasks:change", () => { renderTaskViews(); renderLinks(); });
   $("holidays-btn").addEventListener("click", () => TE.openHolidays());
-  $("edit-links").addEventListener("click", () => (TS.editing ? TE.openLinks() : TE.openUnlock()));
+  $("edit-links").addEventListener("click", () => TE.ensureEdit(TE.openLinks));
+  $("forget-token").addEventListener("click", () => TE.forgetToken());
   TS.load();
 
   // ---------- เริ่มหลังกดปุ่มที่หน้า intro ----------

@@ -41,7 +41,7 @@
       <a class="modal-link" href="${TOKEN_HELP}" target="_blank" rel="noopener">${t("unlock.how")}</a>
       <form id="unlock-form" class="form">
         <label class="fld"><span>${t("unlock.token")}</span><input id="unlock-token" type="password" autocomplete="off" spellcheck="false" required placeholder="github_pat_…"></label>
-        <label class="chk"><input id="unlock-remember" type="checkbox"> ${t("unlock.remember")}</label>
+        <label class="chk"><input id="unlock-remember" type="checkbox" ${TS.rememberPref ? "checked" : ""}> ${t("unlock.remember")}</label>
         <div class="msg" id="unlock-msg"></div>
         <div class="modal-foot"><button type="button" class="btn" data-close>${t("common.cancel")}</button><button class="btn primary" type="submit">${t("unlock.go")}</button></div>
       </form>`);
@@ -57,13 +57,24 @@
       TS.setToken(token, box.querySelector("#unlock-remember").checked);
       close();
       await TS.load();
+      const fn = afterUnlock; afterUnlock = null;
+      if (fn) fn();
     });
   }
 
   function toggleEdit() {
-    if (TS.editing) { TS.clearToken(); TS.load(); }
-    else openUnlock();
+    if (TS.editing) { TS.exitEdit(); TS.load(); }
+    else ensureEdit(() => toast(t("edit.on"), "ok"));
   }
+  // เข้าโหมดแก้ไข: มี token ที่จำไว้ → เข้าได้เลย, ไม่มี → ถาม token
+  async function ensureEdit(then) {
+    if (TS.editing) return then && then();
+    if (TS.resumeEdit()) { await TS.load(); if (TS.editing && then) then(); return; }
+    afterUnlock = then || null;
+    openUnlock();
+  }
+  let afterUnlock = null;
+  function forgetToken() { TS.clearToken(); TS.load(); toast(t("edit.forgot"), "ok"); }
 
   // ---------- ฟอร์มงาน ----------
   let draft = null, editingId = null;
@@ -208,7 +219,8 @@
       s.name = { en: v("nameEn").trim(), th: v("nameTh").trim() };
       s.status = v("status"); s.start = v("start"); s.due = v("due");
       s.progress = Math.max(0, Math.min(100, +v("progress") || 0));
-      if (s.status === "done" && !s.done) s.done = TS.iso(TS.today);
+      // งานย่อยไม่มีช่องวันที่เสร็จ → เสร็จ = วันสุดท้ายที่เลือก (กำหนดเสร็จ) เสมอ
+      if (s.status === "done") s.done = s.due;
       if (s.status !== "done") delete s.done;
     });
     // ลิงก์เอกสาร
@@ -216,7 +228,8 @@
       name: r.querySelector('[data-l="name"]').value.trim(), url: r.querySelector('[data-l="url"]').value.trim() }));
     draft.links = read("t");
     draft.subtasks.forEach((s, i) => (s.links = read(String(i))));
-    if (draft.status === "done" && !draft.done) draft.done = TS.iso(TS.today);
+    // หัวข้อใหญ่: ค่าเริ่มต้นของ "วันที่เสร็จ" = วันกำหนดเสร็จที่เลือก (แก้เองได้ในช่องวันที่เสร็จ)
+    if (draft.status === "done" && !draft.done) draft.done = draft.due;
   }
 
   function validate() {
@@ -297,7 +310,7 @@
       const rows = box.querySelectorAll(".hol-row"); rows[rows.length - 1]?.querySelector('[data-h="en"]')?.focus();
     });
     box.querySelectorAll("[data-del-hol]").forEach((b) => b.addEventListener("click", () => { collectHol(); hdraft.splice(+b.dataset.delHol, 1); renderHolidays(); }));
-    box.querySelector("#hol-unlock")?.addEventListener("click", () => openUnlock());
+    box.querySelector("#hol-unlock")?.addEventListener("click", () => ensureEdit(openHolidays));
     box.querySelector("#hol-form").addEventListener("submit", async (e) => {
       e.preventDefault();
       collectHol();
@@ -443,5 +456,5 @@
   }
 
   document.body.classList.toggle("editing", TS.editing);
-  window.TaskEditor = { openUnlock, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
+  window.TaskEditor = { openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
 })();

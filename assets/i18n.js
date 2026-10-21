@@ -116,6 +116,9 @@
       "edit.exit": "🔒 Done editing",
       "edit.add": "+ Add task",
       "edit.row": "Edit",
+      "edit.on": "Edit mode on",
+      "edit.forget": "Forget saved token on this device",
+      "edit.forgot": "Token removed from this device",
       "unlock.title": "Edit mode",
       "unlock.desc": "Paste your GitHub token to add or edit tasks. Changes are committed to your repository and appear on the site in about a minute.",
       "unlock.how": "How to create a token ↗",
@@ -290,6 +293,9 @@
       "edit.exit": "🔒 เลิกแก้ไข",
       "edit.add": "+ เพิ่มงาน",
       "edit.row": "แก้ไข",
+      "edit.on": "เปิดโหมดแก้ไขแล้ว",
+      "edit.forget": "ลบ token ที่จำไว้ในเครื่องนี้",
+      "edit.forgot": "ลบ token ออกจากเครื่องนี้แล้ว",
       "unlock.title": "โหมดแก้ไข",
       "unlock.desc": "วาง GitHub token ของคุณเพื่อเพิ่มหรือแก้ไขงาน การแก้ไขจะถูกบันทึกลง repo และขึ้นบนเว็บภายในประมาณ 1 นาที",
       "unlock.how": "วิธีสร้าง token ↗",
@@ -381,7 +387,10 @@
   function apply() {
     document.documentElement.lang = lang;
     document.querySelectorAll("[data-i18n]").forEach((el) => (el.innerHTML = I18N.t(el.dataset.i18n)));
-    document.querySelectorAll("[data-i18n-label]").forEach((el) => el.setAttribute("aria-label", I18N.t(el.dataset.i18nLabel)));
+    document.querySelectorAll("[data-i18n-label]").forEach((el) => {
+      el.setAttribute("aria-label", I18N.t(el.dataset.i18nLabel));
+      if (el.hasAttribute("title")) el.setAttribute("title", I18N.t(el.dataset.i18nLabel));
+    });
     document.querySelectorAll(".lang-btn").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
   }
 

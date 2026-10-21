@@ -621,6 +621,19 @@ body.modal-open { overflow: hidden; }
   section { padding: 64px 0; }
   .scroll-cue { display: none; }
 }
+/* จอแนวนอนกว้าง: ขยายทั้งหน้าตามความกว้างจอ (จอแนวตั้ง/มือถือไม่เปลี่ยน) */
+@media (min-width: 1500px) and (orientation: landscape) {
+  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.12; }
+}
+@media (min-width: 1750px) and (orientation: landscape) {
+  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.25; }
+}
+@media (min-width: 2100px) and (orientation: landscape) {
+  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.45; }
+}
+@media (min-width: 2700px) and (orientation: landscape) {
+  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.8; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
   html { scroll-behavior: auto; }
