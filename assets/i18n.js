@@ -168,7 +168,9 @@
 
       "kind.web": "Web",
       "kind.net": "Server",
-      "net.hint": "Company server file — click to copy the path, then paste it into File Explorer (company network only)",
+      "net.hint": "Company server path — browsers can't open this from a website, so click to copy it and paste into File Explorer (company network only)",
+      "net.openHint": "Opens in the Office app on this computer (company network only). The browser will ask to open the app the first time.",
+      "net.copyBtn": "Copy path",
       "net.copied": "Path copied ✔ — paste it into File Explorer's address bar (company network only)",
       "doc.count": "{n} documents",
       "doc.count1": "1 document",
@@ -357,7 +359,9 @@
 
       "kind.web": "เว็บ",
       "kind.net": "Server",
-      "net.hint": "ไฟล์บน server บริษัท — คลิกเพื่อคัดลอก path แล้วไปวางใน File Explorer (ต้องอยู่ในเครือข่ายบริษัท)",
+      "net.hint": "path บน server บริษัท — เบราว์เซอร์ไม่ยอมให้เว็บเปิดตรง ๆ คลิกเพื่อคัดลอก แล้ววางใน File Explorer (ต้องอยู่ในเครือข่ายบริษัท)",
+      "net.openHint": "เปิดด้วยโปรแกรม Office ในเครื่องนี้ (ต้องอยู่ในเครือข่ายบริษัท) ครั้งแรกเบราว์เซอร์จะถามว่าจะเปิดโปรแกรมไหม",
+      "net.copyBtn": "คัดลอก path",
       "net.copied": "คัดลอก path แล้ว ✔ — วางในช่อง address ของ File Explorer (ต้องอยู่ในเครือข่ายบริษัท)",
       "doc.count": "เอกสาร {n} รายการ",
       "doc.count1": "เอกสาร 1 รายการ",

@@ -323,7 +323,7 @@
           ${g.member ? `<span class="member">${esc(t("links.member"))}</span>` : ""}
         </div>
         <div class="lk-grid">${g.items.map((x) => x.url
-          ? `<a class="lk" ${TE.linkAttrs(x.url)}>${svg(x.icon)}<span>${esc(L(x.name))}</span><b class="go">${TS.isNetPath(x.url) ? "⧉" : "↗"}</b></a>`
+          ? `<a class="lk" ${TE.linkAttrs(x.url)}>${svg(x.icon)}<span>${esc(L(x.name))}</span><b class="go">${TE.linkGo(x.url)}</b></a>`
           : `<span class="lk unset" title="${esc(t("links.unset"))}">${svg(x.icon)}<span>${esc(L(x.name))}</span></span>`).join("")}
         </div>
       </div>`).join("");

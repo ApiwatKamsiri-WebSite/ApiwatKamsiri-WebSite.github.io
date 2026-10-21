@@ -134,7 +134,8 @@
       <div class="doc-pop-head">${TE.CLIP}<b>${esc(L(item.name))}</b></div>
       ${links.length ? `<ul>${links.map((l) => `
         <li><a ${TE.linkAttrs(l.url)}>
-          <span class="doc-type ${TS.isNetPath(l.url) ? "net" : ""}">${esc(TS.linkType(l.url))}</span><span class="doc-name">${esc(l.name || l.url)}</span><span class="doc-go">${TS.isNetPath(l.url) ? "⧉" : "↗"}</span></a></li>`).join("")}</ul>`
+          <span class="doc-type ${TS.isNetPath(l.url) ? "net" : ""}">${esc(TS.linkType(l.url))}</span><span class="doc-name">${esc(l.name || l.url)}</span><span class="doc-go">${TE.linkGo(l.url)}</span></a>${TS.officeUri(l.url)
+          ? `<button class="doc-copy" data-copy-path="${esc(TS.netPath(l.url))}" title="${esc(t("net.copyBtn"))}" aria-label="${esc(t("net.copyBtn"))}">⧉</button>` : ""}</li>`).join("")}</ul>`
         : `<div class="doc-empty">${t("doc.none")}${TS.editing ? "" : `<br><small>${t("doc.addHint")}</small>`}</div>`}
       ${TS.editing ? `<button class="btn sm doc-edit" data-edit="${esc(btn.dataset.docs)}">${t("ed.addLink")}</button>` : ""}`;
     pop.classList.remove("hidden");

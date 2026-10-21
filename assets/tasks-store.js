@@ -169,6 +169,19 @@
       let p = decodeURIComponent(u.replace(/^file:\/*/i, ""));
       return /^[a-z]:/i.test(p) ? p.replace(/\//g, "\\") : "\\\\" + p.replace(/\//g, "\\");
     },
+    // ไฟล์ Office บน server → เปิดด้วยโปรแกรม Office ผ่านลิงก์ ms-excel: / ms-word: / ms-powerpoint:
+    officeUri(url) {
+      if (!S.isNetPath(url)) return "";
+      const path = S.netPath(url);
+      const ext = (path.match(/\.([a-z0-9]{2,5})$/i) || [])[1]?.toLowerCase();
+      const app = { xlsx: "ms-excel", xls: "ms-excel", xlsm: "ms-excel", xlsb: "ms-excel", csv: "ms-excel",
+        docx: "ms-word", doc: "ms-word", docm: "ms-word", pptx: "ms-powerpoint", ppt: "ms-powerpoint", pptm: "ms-powerpoint" }[ext];
+      if (!app) return "";
+      const fileUrl = /^\\\\/.test(path)
+        ? "file://" + path.replace(/^\\+/, "").split("\\").map(encodeURIComponent).join("/")
+        : "file:///" + path.split("\\").map((p, i) => (i === 0 ? p : encodeURIComponent(p))).join("/");
+      return `${app}:ofe|u|${fileUrl}`;
+    },
     // เก็บลิงก์: path server เก็บตามเดิม, เว็บที่ไม่มี http(s) เติม https:// ให้
     normalizeUrl(u) {
       u = String(u || "").trim();

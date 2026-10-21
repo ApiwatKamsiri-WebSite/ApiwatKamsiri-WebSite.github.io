@@ -502,10 +502,14 @@
   });
   // แท็กลิงก์: เว็บ = เปิดแท็บใหม่, path server = คลิกเพื่อคัดลอก
   function linkAttrs(url) {
-    return TS.isNetPath(url)
-      ? `href="#" data-copy-path="${esc(TS.netPath(url))}" title="${esc(t("net.hint") + "\n" + TS.netPath(url))}"`
-      : `href="${esc(url)}" target="_blank" rel="noopener noreferrer"`;
+    if (!TS.isNetPath(url)) return `href="${esc(url)}" target="_blank" rel="noopener noreferrer"`;
+    const office = TS.officeUri(url), path = TS.netPath(url);
+    return office
+      ? `href="${esc(office)}" title="${esc(t("net.openHint") + "\n" + path)}"`
+      : `href="#" data-copy-path="${esc(path)}" title="${esc(t("net.hint") + "\n" + path)}"`;
   }
+  // ไอคอนท้ายลิงก์: เว็บ ↗, Office บน server ↗ (เปิดในโปรแกรม), อื่น ๆ บน server ⧉ (คัดลอก)
+  const linkGo = (url) => (TS.isNetPath(url) && !TS.officeUri(url) ? "⧉" : "↗");
 
   // ---------- ดับเบิลคลิก / แตะ 2 ครั้ง ----------
   function onDouble(root, selector, fn) {
@@ -521,5 +525,5 @@
   }
 
   document.body.classList.toggle("editing", TS.editing);
-  window.TaskEditor = { linkAttrs, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
+  window.TaskEditor = { linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
 })();
