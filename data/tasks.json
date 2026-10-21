@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T07:01:32.620Z",
+  "updated": "2026-10-21T07:11:37.668Z",
   "tasks": [
     {
       "id": 1,
@@ -151,7 +151,13 @@
           "status": "done",
           "start": "2026-10-05",
           "due": "2026-10-16",
-          "done": "2026-10-16"
+          "done": "2026-10-16",
+          "links": [
+            {
+              "name": "Ice-making specification document",
+              "url": "https://arcelik.sharepoint.com/:p:/t/ELECTRICGROUPfolder/IQDgndKmCNWuQYZTCN0zfVLSAVC5By_VHFXHVBpOVb69Co4?e=yww8L0"
+            }
+          ]
         },
         {
           "id": "4.2",
