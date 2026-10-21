@@ -516,6 +516,7 @@ body.modal-open { overflow: hidden; }
 .g-group.open { background: rgba(255, 255, 255, 0.02); }
 .g-group.open > .g-row > .g-left { background: #0f1622; box-shadow: inset 3px 0 0 var(--gc); }
 .g-group.open .g-sub .g-left { background: #0f1622; }
+.g-group.open .g-info { background: #0f1622; }
 .g-group.open .g-info .g-left { background: transparent; }
 /* เส้นต้นไม้เชื่อมงานย่อยกับหัวข้อ */
 .g-sub .g-left::before { content: ""; position: absolute; left: 26px; top: 0; bottom: 0; width: 1px; background: var(--line-2); }
@@ -621,18 +622,9 @@ body.modal-open { overflow: hidden; }
   section { padding: 64px 0; }
   .scroll-cue { display: none; }
 }
-/* จอแนวนอนกว้าง: ขยายทั้งหน้าตามความกว้างจอ (จอแนวตั้ง/มือถือไม่เปลี่ยน) */
-@media (min-width: 1500px) and (orientation: landscape) {
-  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.12; }
-}
-@media (min-width: 1750px) and (orientation: landscape) {
-  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.25; }
-}
-@media (min-width: 2100px) and (orientation: landscape) {
-  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.45; }
-}
-@media (min-width: 2700px) and (orientation: landscape) {
-  #site, body > nav, body > main, body > footer, .intro-inner, .modal-back .modal { zoom: 1.8; }
+/* จอกว้าง: ตัวหนังสือขนาดเดิม แต่ส่วนตาราง/ไทม์ไลน์ขยายเต็มพื้นที่จอ */
+@media (min-width: 1400px) {
+  .wrap.wide { max-width: min(calc(100vw - 96px), 2400px); }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
