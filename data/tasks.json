@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T04:53:58.570Z",
+  "updated": "2026-10-21T06:10:21.198Z",
   "tasks": [
     {
       "id": 1,
@@ -138,7 +138,7 @@
       "links": [
         {
           "name": "DSCP R-26-0404 Change software V01R07 to V01R10",
-          "url": "https://\\\\ahthkab03v\\Common\\08_Design_Refrigerator_Share\\Revised Slip\\DSCP Test review (Excel)\\2026\\DSCP R-26-0404 Change software V01R07 to V01R10 to improve software for BONA H30-50 and ALPS78 H50.xlsx"
+          "url": "\\\\ahthkab03v\\Common\\08_Design_Refrigerator_Share\\Revised Slip\\DSCP Test review (Excel)\\2026\\DSCP R-26-0404 Change software V01R07 to V01R10 to improve software for BONA H30-50 and ALPS78 H50.xlsx"
         }
       ],
       "subtasks": [
