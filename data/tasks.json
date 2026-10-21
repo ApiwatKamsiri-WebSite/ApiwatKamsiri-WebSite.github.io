@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T07:00:18.664Z",
+  "updated": "2026-10-21T07:01:32.620Z",
   "tasks": [
     {
       "id": 1,
@@ -1083,6 +1083,11 @@
           "name": "Eunite-Central",
           "icon": "install",
           "url": "http://ahthkab23v.ar.arcelik:8080/eunite-central/login.do"
+        },
+        {
+          "name": "OKR",
+          "icon": "auto",
+          "url": "https://wokr.twiser.com/login"
         }
       ]
     },
