@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T03:54:36.214Z",
+  "updated": "2026-10-21T03:55:00.084Z",
   "tasks": [
     {
       "id": 1,
@@ -103,9 +103,10 @@
             "en": "Pulldown software for HOSHI model",
             "th": "ซอฟแวร์ Pulldown สำหรับรุ่น HOSHI"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-10-19",
-          "due": "2026-10-19"
+          "due": "2026-10-19",
+          "done": "2026-10-19"
         }
       ]
     }
