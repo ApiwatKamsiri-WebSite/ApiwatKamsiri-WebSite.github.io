@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T06:10:21.198Z",
+  "updated": "2026-10-21T06:43:30.978Z",
   "tasks": [
     {
       "id": 1,
@@ -1136,7 +1136,6 @@
         "th": "เว็บพัฒนาซอฟต์แวร์"
       },
       "icon": "tool",
-      "member": true,
       "items": [
         {
           "name": "Arcelik software portal",
@@ -1173,7 +1172,8 @@
           "icon": "db",
           "url": ""
         }
-      ]
+      ],
+      "member": true
     }
   ]
 }
