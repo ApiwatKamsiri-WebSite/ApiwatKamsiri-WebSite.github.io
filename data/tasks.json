@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T03:30:34.847Z",
+  "updated": "2026-10-21T03:30:57.036Z",
   "tasks": [
     {
       "id": 1,
@@ -68,10 +68,10 @@
             "en": "Export model",
             "th": "โมเดล Export"
           },
-          "status": "done",
+          "status": "doing",
           "start": "2026-10-14",
           "due": "2026-10-19",
-          "done": "2026-10-21"
+          "progress": 100
         },
         {
           "id": "2.2",
