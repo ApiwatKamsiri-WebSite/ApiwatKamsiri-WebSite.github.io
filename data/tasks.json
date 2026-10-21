@@ -1,6 +1,57 @@
 {
-  "updated": "2026-10-21T02:49:44.387Z",
-  "tasks": [],
+  "updated": "2026-10-21T03:02:47.922Z",
+  "tasks": [
+    {
+      "id": 1,
+      "name": {
+        "en": "Software problem development before Day1",
+        "th": "พัฒนาปัญหาซอฟแวร์ก่อน Day1"
+      },
+      "project": "All model",
+      "status": "doing",
+      "start": "2026-09-21",
+      "due": "2026-11-27",
+      "subtasks": [
+        {
+          "id": "1.1",
+          "name": {
+            "en": "PWRs record abnormal (FUJI/HOSHI model)",
+            "th": "การบันทึก PWRs ผิดพลาด (FUJI/HOSHI model)"
+          },
+          "status": "done",
+          "start": "2026-09-21",
+          "due": "2026-10-16",
+          "done": "2026-10-21",
+          "links": [
+            {
+              "name": "I2C Write Bug Analysis",
+              "url": "https://arcelik.sharepoint.com/:p:/t/ELECTRICGROUPfolder/IQDoLIb4RKJ4T7CWrT99NhBIAShqfFrbmvoDs7zOh7jy8wQ?e=xhrmf2"
+            }
+          ]
+        },
+        {
+          "id": "1.2",
+          "name": {
+            "en": "Abnormal reset (BONA model)",
+            "th": "การรีเซตที่ผิดปกติ (BONA model)"
+          },
+          "status": "todo",
+          "start": "2026-11-09",
+          "due": "2026-11-20"
+        },
+        {
+          "id": "1.3",
+          "name": {
+            "en": "Display control reset to default by unknown cause (BONA model)",
+            "th": "การตั้งค่าการแสดงผลถูกรีเซ็ตเป็นค่าเริ่มต้นโดยไม่ทราบสาเหตุ (รุ่น BONA)"
+          },
+          "status": "todo",
+          "start": "2026-10-19",
+          "due": "2026-11-06"
+        }
+      ]
+    }
+  ],
   "holidays": [
     {
       "date": "2026-01-01",
