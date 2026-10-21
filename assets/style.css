@@ -456,7 +456,9 @@ body.modal-open { overflow: hidden; }
 .page-top { padding: 110px 0 20px; }
 .g-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
 .gantt { --gl: 350px; padding: 0; overflow: hidden; }
-.g-scroll { overflow-x: auto; scrollbar-color: var(--line-2) transparent; scrollbar-width: thin; }
+.g-scroll { cursor: grab; overflow-x: auto; scrollbar-color: var(--line-2) transparent; scrollbar-width: thin; }
+.g-scroll.dragging { cursor: grabbing; user-select: none; }
+.g-scroll.dragging * { cursor: grabbing !important; }
 .g-inner { position: relative; width: max-content; min-width: 100%; }
 .g-row { display: flex; position: relative; border-top: 1px solid var(--line); }
 .g-left { position: sticky; left: 0; z-index: 3; flex: none; width: var(--gl); padding: 10px 14px; background: #0c121c; border-right: 1px solid var(--line-2); display: flex; align-items: center; gap: 10px; min-width: 0; }

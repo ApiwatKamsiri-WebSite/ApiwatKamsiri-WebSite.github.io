@@ -180,10 +180,13 @@
         </div>`;
 
       if (open) {
-        subs.forEach((s, i) => {
+        // เรียงงานย่อยตาม target (กำหนดเสร็จ) → วันเริ่ม; i = ลำดับเดิมในข้อมูล (ใช้หาเอกสาร)
+        const ordered = subs.map((s, i) => ({ s, i }))
+          .sort((a, b) => (a.s.due || "").localeCompare(b.s.due || "") || (a.s.start || "").localeCompare(b.s.start || "") || a.i - b.i);
+        ordered.forEach(({ s, i }, k) => {
           const sst = TS.state(s), sp = TS.progress(s);
           html += `
-        <div class="g-row g-sub g-body-row st-${sst} ${i === subs.length - 1 ? "last" : ""}">
+        <div class="g-row g-sub g-body-row st-${sst} ${k === ordered.length - 1 ? "last" : ""}">
           <div class="g-left">
             <i class="g-dot"></i>
             <div class="g-name" title="${esc(L(s.name))}"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
@@ -232,6 +235,32 @@
       }
     }
   }
+
+  // ---------- คลิกซ้ายค้างแล้วลาก = เลื่อนตาราง ----------
+  (function dragScroll() {
+    const sc = $("g-scroll");
+    let drag = null, moved = false;
+    sc.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      if (e.target.closest("button, a, input, select, textarea, .g-doc")) return;
+      drag = { x: e.clientX, y: e.clientY, left: sc.scrollLeft, top: scrollY };
+      moved = false;
+    });
+    addEventListener("pointermove", (e) => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (!moved && Math.abs(dx) + Math.abs(dy) < 4) return;
+      if (!moved) { moved = true; sc.classList.add("dragging"); }
+      sc.scrollLeft = drag.left - dx;
+      scrollTo({ top: drag.top - dy, behavior: "instant" });
+      e.preventDefault();
+    });
+    const end = () => { if (!drag) return; drag = null; sc.classList.remove("dragging"); };
+    addEventListener("pointerup", end);
+    addEventListener("pointercancel", end);
+    // ลากเสร็จแล้วไม่ให้นับเป็นการคลิก (เช่น ไม่เปิด/ปิด dropdown)
+    sc.addEventListener("click", (e) => { if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; } }, true);
+  })();
 
   // ---------- events ----------
   $("gantt").addEventListener("click", (e) => {
