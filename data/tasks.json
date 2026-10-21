@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T04:05:19.825Z",
+  "updated": "2026-10-21T04:53:58.570Z",
   "tasks": [
     {
       "id": 1,
@@ -118,6 +118,80 @@
           "start": "2026-10-20",
           "due": "2026-10-20",
           "done": "2026-10-20"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": {
+        "en": "Improve ice-making function by APW and new HUM control by NTPN",
+        "th": "ปรับปรุงการทำงานเครื่องทำน้ำแข็งโดยAPW และการทำงาน HUM แบบใหม่โดย NTPN"
+      },
+      "project": "BONA and ALPS78 H50",
+      "status": "doing",
+      "start": "2026-10-05",
+      "due": "2026-11-06",
+      "desc": {
+        "en": "During RQA testing of the ALPS78 H50, inconsistent results were found on the first ice-making cycle: some units produced ice, while others did not. Therefore, RQA requested a software update to add a one-time delay at ice-making start, allowing the heater to operate before water is supplied.",
+        "th": "จากการทดสอบของ RQA กับรุ่น ALPS78 H50 พบว่าการทำน้ำแข็งรอบแรกให้ผลไม่สม่ำเสมอ บางตู้มีน้ำแข็ง บางตู้ไม่มีน้ำแข็ง จึงร้องขอให้ปรับปรุงซอฟต์แวร์โดยเพิ่มการหน่วงเวลาหนึ่งครั้งเมื่อเริ่มทำน้ำแข็ง เพื่อให้ฮีตเตอร์ทำงานก่อนจ่ายน้ำ"
+      },
+      "links": [
+        {
+          "name": "DSCP R-26-0404 Change software V01R07 to V01R10",
+          "url": "https://\\\\ahthkab03v\\Common\\08_Design_Refrigerator_Share\\Revised Slip\\DSCP Test review (Excel)\\2026\\DSCP R-26-0404 Change software V01R07 to V01R10 to improve software for BONA H30-50 and ALPS78 H50.xlsx"
+        }
+      ],
+      "subtasks": [
+        {
+          "id": "4.1",
+          "name": {
+            "en": "Create specification, Make the software, Test",
+            "th": "สร้างข้อกำหนด, พัฒนาซอฟต์แวร์, ทดสอบ"
+          },
+          "status": "done",
+          "start": "2026-10-05",
+          "due": "2026-10-16",
+          "done": "2026-10-16"
+        },
+        {
+          "id": "4.2",
+          "name": {
+            "en": "Prepare the DSCP for test review and request RQA testing.",
+            "th": "จัดทำ DSCP เพื่อทบทวนผลการทดสอบ และร้องขอให้ RQA ทดสอบ"
+          },
+          "status": "doing",
+          "start": "2026-10-19",
+          "due": "2026-10-22"
+        },
+        {
+          "id": "4.3",
+          "name": {
+            "en": "RQA testing and release test report.",
+            "th": "ทดสอบโดย RQA และ ออกเอกสาร report"
+          },
+          "status": "todo",
+          "start": "2026-10-26",
+          "due": "2026-10-30"
+        },
+        {
+          "id": "4.4",
+          "name": {
+            "en": "Make and software meeting with RQA",
+            "th": "จัดการประชุมเรื่องซอฟต์แวร์ร่วมกับ RQA"
+          },
+          "status": "todo",
+          "start": "2026-11-02",
+          "due": "2026-11-03"
+        },
+        {
+          "id": "4.5",
+          "name": {
+            "en": "Make BOM and Release document",
+            "th": "จัดทำ BOM และเอกสารการอนุมัติ"
+          },
+          "status": "todo",
+          "start": "2026-11-03",
+          "due": "2026-11-04"
         }
       ]
     }
