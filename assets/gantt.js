@@ -78,8 +78,27 @@
     const s = parse(x.start || x.due), e = parse(TS.endDate(x));
     const p = TS.progress(x);
     const tip = `${L(x.name)} · ${fmt(x.start)} → ${fmt(TS.endDate(x))} · ${p}%`;
-    return `<div class="g-bar" style="left:${days(r.start, s) * dw}px;width:${(days(s, e) + 1) * dw}px" title="${esc(tip)}">
+    let html = `<div class="g-bar" style="left:${days(r.start, s) * dw}px;width:${(days(s, e) + 1) * dw}px" title="${esc(tip)}">
       <i style="width:${p}%"></i><span>${(days(s, e) + 1) * dw > (isSub ? 34 : 44) ? p + "%" : ""}</span></div>`;
+    // หัวข้อใหญ่ที่เสร็จแล้ว: เส้น "Finished on" เทียบกับแผน
+    const fin = !isSub && TS.finishDate(x);
+    if (fin) {
+      const v = TS.variance(x), f = parse(fin);
+      const planEnd = (days(r.start, e) + 1) * dw, finX = (days(r.start, f) + 1) * dw;
+      const cls = v > 0 ? "late" : v < 0 ? "early" : "ontime";
+      if (v > 0) html += `<div class="g-over late" style="left:${planEnd}px;width:${finX - planEnd}px"></div>`;
+      if (v < 0) html += `<div class="g-over early" style="left:${finX}px;width:${planEnd - finX}px"></div>`;
+      html += `<div class="g-fin ${cls}" style="left:${finX}px" title="${esc(finText(x))}"><b>${esc(finShort(v))}</b></div>`;
+    }
+    return html;
+  }
+
+  // ข้อความเทียบแผน
+  function finShort(v) { return v > 0 ? t("fin.lateS", { n: v }) : v < 0 ? t("fin.earlyS", { n: -v }) : t("fin.ontimeS"); }
+  function finText(x) {
+    const v = TS.variance(x);
+    const rel = v > 0 ? t("fin.late", { n: v }) : v < 0 ? t("fin.early", { n: -v }) : t("fin.ontime");
+    return `${t("fin.on", { d: fmt(TS.finishDate(x)) })} · ${rel}`;
   }
 
   // จำนวนวันทำงาน (เล็ก ๆ ใต้ %)
@@ -137,7 +156,7 @@
     const list = TS.tasks
       .filter((x) => !(hideDone && TS.progress(x) === 100))
       .sort((a, b) => rank(a) - rank(b) ||
-        (rank(a) === 2 ? parse(TS.endDate(b)) - parse(TS.endDate(a)) : parse(a.due) - parse(b.due)));
+        (rank(a) === 2 ? parse(TS.finishDate(b) || b.due) - parse(TS.finishDate(a) || a.due) : parse(a.due) - parse(b.due)));
     let html = header(r, dw) + "<!--off-->";
 
     list.forEach((x) => {
@@ -178,7 +197,7 @@
         html += `
         <div class="g-row g-info">
           <div class="g-left">
-            <div class="g-dates"><span class="g-badge">${stLabel(st)}</span>${fmt(x.start)} → ${fmt(x.due)}${x.status === "done" ? " · " + t("task.doneOn", { d: fmt(x.done) }) : ""}${x.project ? " · #" + esc(x.project) : ""}</div>
+            <div class="g-dates"><span class="g-badge">${stLabel(st)}</span>${fmt(x.start)} → ${fmt(x.due)}${x.project ? " · #" + esc(x.project) : ""}${TS.finishDate(x) ? ` <span class="g-finbadge ${TS.variance(x) > 0 ? "late" : TS.variance(x) < 0 ? "early" : "ontime"}">${esc(finText(x))}</span>` : ""}</div>
             ${x.desc ? `<div class="g-desc">${esc(L(x.desc))}</div>` : ""}
           </div>
         </div>`;

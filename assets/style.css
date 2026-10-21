@@ -507,6 +507,19 @@ body.modal-open { overflow: hidden; }
 .g-bar i { position: absolute; top: 0; bottom: 0; left: 0; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 35%, transparent), color-mix(in srgb, var(--c) 65%, transparent)); }
 .g-bar span { position: relative; padding: 0 10px; font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--white); white-space: nowrap; }
 .g-sub .g-bar { height: 16px; border-radius: 6px; }
+/* เส้น Finished on เทียบแผน */
+.g-over { position: absolute; top: 50%; height: 26px; transform: translateY(-50%); border-radius: 0 8px 8px 0; pointer-events: none; }
+.g-over.late { background: repeating-linear-gradient(135deg, rgba(255, 95, 109, 0.55) 0 5px, rgba(255, 95, 109, 0.18) 5px 10px); border: 1px solid rgba(255, 95, 109, 0.7); border-left: 0; }
+.g-over.early { background: rgba(5, 7, 11, 0.55); border-radius: 0 8px 8px 0; }
+.g-fin { position: absolute; top: 6px; bottom: 6px; width: 0; border-left: 2px dashed var(--white); z-index: 1; }
+.g-fin b { position: absolute; left: 6px; top: -2px; font-family: var(--mono); font-size: 10px; font-weight: 700; white-space: nowrap; padding: 1px 6px; border-radius: 5px; color: var(--bg); }
+.g-fin.late { border-color: var(--red); } .g-fin.late b { background: var(--red); }
+.g-fin.early { border-color: var(--green); } .g-fin.early b { background: var(--green); }
+.g-fin.ontime { border-color: var(--cyan); } .g-fin.ontime b { background: var(--cyan); }
+.g-finbadge { font-family: var(--mono); font-size: 10.5px; font-weight: 700; padding: 1px 8px; border-radius: 999px; }
+.g-finbadge.late { color: var(--red); background: rgba(255, 95, 109, 0.12); }
+.g-finbadge.early { color: var(--green); background: rgba(54, 241, 160, 0.12); }
+.g-finbadge.ontime { color: var(--cyan); background: rgba(56, 214, 255, 0.12); }
 .g-sub .g-bar span { font-size: 10px; padding: 0 6px; }
 .g-row.focus .g-left { box-shadow: inset 3px 0 0 var(--green); background: #0f1b20; }
 .g-row.focus .g-bar { box-shadow: 0 0 0 2px var(--white), 0 0 24px color-mix(in srgb, var(--c) 70%, transparent); }

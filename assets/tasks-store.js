@@ -174,7 +174,23 @@
     },
     links(x) { return Array.isArray(x.links) ? x.links.filter((l) => l && l.url) : []; },
     // วันที่จบที่ใช้วาด: เสร็จแล้วใช้วันเสร็จจริง
-    endDate(x) { return x.status === "done" && x.done ? x.done : x.due; },
+    // แผน: วาดแถบ วันเริ่ม → กำหนดเสร็จ เสมอ
+    endDate(x) { return x.due; },
+    // วันที่เสร็จจริง: มีงานย่อย → วันเสร็จของงานย่อยที่ done ช้าที่สุด, ไม่มี → ช่อง "วันที่เสร็จ"
+    finishDate(x) {
+      if (x.status !== "done") return "";
+      const subs = (x.subtasks || []).filter((s) => s.status === "done" && (s.done || s.due));
+      if (subs.length) return subs.map((s) => s.done || s.due).sort().pop();
+      return x.done || x.due;
+    },
+    // เสร็จช้า (+) / เร็ว (−) กว่าแผน กี่วันทำงาน
+    variance(x) {
+      const f = S.finishDate(x); if (!f || !x.due || f === x.due) return f ? 0 : null;
+      const late = f > x.due, a = parse(late ? x.due : f), b = parse(late ? f : x.due);
+      let n = 0;
+      for (const d = new Date(a.getTime() + DAY); d <= b; d.setDate(d.getDate() + 1)) if (!S.isOff(d)) n++;
+      return late ? n : -n;
+    },
   };
 
   async function loadFromApi(shaOnly) {

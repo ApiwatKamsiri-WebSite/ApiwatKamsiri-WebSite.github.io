@@ -140,7 +140,7 @@
           <label class="fld"><span>${t("ed.due")}</span><input data-f="due" type="date" value="${esc(d.due || "")}"></label>
         </div>
         <div class="grid2">
-          <label class="fld ${d.status === "done" ? "" : "hidden"}" id="fld-done"><span>${t("ed.done")}</span><input data-f="done" type="date" value="${esc(d.done || "")}"></label>
+          <label class="fld ${d.status === "done" ? "" : "hidden"}" id="fld-done"><span>${t("ed.done")}${subDone(d) ? ` <em>(${t("ed.fromSubs")})</em>` : ""}</span><input data-f="done" type="date" value="${esc(subDone(d) || d.done || "")}" ${subDone(d) ? "disabled" : ""}></label>
           <label class="fld"><span>${t("ed.progress")} — <b id="pct-out">${pct}%</b> ${hasSubs ? `<em>(${t("ed.auto")})</em>` : ""}</span>
             <input data-f="progress" type="range" min="0" max="100" step="5" value="${pct}" ${hasSubs || d.status === "done" ? "disabled" : ""}></label>
         </div>
@@ -200,6 +200,9 @@
     });
   }
 
+  // วันเสร็จของงานย่อยที่ done ช้าที่สุด (ถ้ามี)
+  const subDone = (d) => (d.subtasks || []).filter((s) => s.status === "done").map((s) => s.due).filter(Boolean).sort().pop() || "";
+
   function renderKeepScroll() { const y = box.scrollTop; renderTask(); box.scrollTop = y; }
 
   // อ่านค่าจากฟอร์มเข้า draft
@@ -243,7 +246,7 @@
   function finalize(d) {
     const two = (v) => ({ en: v.en || v.th, th: v.th || v.en });
     const out = { id: d.id, name: two(d.name), project: d.project, status: d.status, start: d.start, due: d.due };
-    if (d.status === "done") out.done = d.done;
+    if (d.status === "done") out.done = subDone(d) || d.done;
     if (!d.subtasks.length && d.status !== "done" && d.progress) out.progress = d.progress;
     if (d.desc.en || d.desc.th) out.desc = two(d.desc);
     const cleanLinks = (ls) => (ls || []).filter((l) => l.url).map((l) => ({

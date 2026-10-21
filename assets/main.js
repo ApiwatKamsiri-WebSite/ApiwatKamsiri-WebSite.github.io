@@ -82,13 +82,18 @@
     return `<span class="left ${n <= 7 ? "soon" : "ok"}">${t("eta.left", { n })}</span>`;
   }
   const wdLabel = (x) => { const n = TS.workdays(x); return t(n === 1 ? "wd.one" : "wd.count", { n }); };
-  const when = (x) => x.status === "done" ? t("task.doneOn", { d: fmt(x.done || x.due) }) : t("task.due", { d: fmt(x.due) });
+  const when = (x) => x.status === "done" ? t("task.doneOn", { d: fmt(TS.finishDate(x)) }) : t("task.due", { d: fmt(x.due) });
+  // เสร็จแล้ว: บอกว่าช้า/เร็วกว่าแผน
+  const finTag = (x) => {
+    const v = TS.variance(x); if (v === null) return "";
+    return `<span class="left ${v > 0 ? "late" : "fin"}">${v > 0 ? t("fin.late", { n: v }) : v < 0 ? t("fin.early", { n: -v }) : t("fin.ontime")}</span>`;
+  };
 
   let tasks = [];
   function syncTasks() {
     tasks = [...TS.tasks].sort((a, b) =>
       (a.status === "done") - (b.status === "done") ||
-      (a.status === "done" ? parse(TS.endDate(b)) - parse(TS.endDate(a)) : parse(a.due) - parse(b.due)));
+      (a.status === "done" ? parse(TS.finishDate(b) || b.due) - parse(TS.finishDate(a) || a.due) : parse(a.due) - parse(b.due)));
   }
   let statsShown = false;
 
@@ -121,7 +126,7 @@
           <span class="tl-right"><span class="tl-pct">${p}<small>%</small></span><span class="tl-wd">${wdLabel(x)}</span></span>
         </div>
         <div class="pbar"><i style="width:${p}%"></i></div>
-        <div class="tl-meta"><span>${when(x)}</span>${eta(x)}</div>
+        <div class="tl-meta"><span>${when(x)}</span>${x.status === "done" ? finTag(x) : eta(x)}</div>
       </div>`;
     }).join("") || `<div class="empty">${TS.error ? t("load.fail") : t("task.empty")}</div>`;
   }
