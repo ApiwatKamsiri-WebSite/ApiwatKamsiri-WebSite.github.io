@@ -42,12 +42,15 @@ export default {
     const tok = await r.json().catch(() => ({}));
     if (!tok.access_token) return json({ error: tok.error || "exchange_failed" }, 401, cors);
 
-    // ให้ผ่านเฉพาะบัญชีเจ้าของเว็บ
-    const u = await fetch("https://api.github.com/user", {
+    // ให้ผ่านเฉพาะบัญชีเจ้าของเว็บ (ALLOWED_USER ใส่ได้หลายชื่อ คั่นด้วย ,)
+    const ur = await fetch("https://api.github.com/user", {
       headers: { Authorization: `Bearer ${tok.access_token}`, Accept: "application/vnd.github+json", "User-Agent": "apiwat-site-auth" },
-    }).then((x) => x.json()).catch(() => ({}));
-    if (!u.login || u.login.toLowerCase() !== String(env.ALLOWED_USER || "").toLowerCase()) {
-      return json({ error: "not_allowed" }, 403, cors);
+    });
+    const u = await ur.json().catch(() => ({}));
+    const allowed = String(env.ALLOWED_USER || "").split(",").map((x) => x.trim().toLowerCase()).filter(Boolean);
+    if (!u.login || !allowed.includes(u.login.toLowerCase())) {
+      // บอกรายละเอียดไว้ไล่ปัญหา (ไม่มีข้อมูลลับ)
+      return json({ error: `not_allowed — seen: ${u.login || "?"}, github /user: ${ur.status}${u.message ? " " + u.message : ""}, allowed: ${allowed.join("|") || "(empty)"}` }, 403, cors);
     }
 
     return json({
