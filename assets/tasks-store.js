@@ -25,6 +25,12 @@
   // สิทธิ์ที่ใช้: login ด้วย GitHub ก่อน, ไม่มีค่อยใช้ token แบบเดิม (สำรอง)
   const readToken = () => (GH() && GH().accessToken()) || legacyToken();
 
+  // ปุ่มที่แสดง: .edit-only ตอนกำลังแก้ไข, .signed-only ตอน login อยู่ (แม้กดเสร็จการแก้ไขแล้ว)
+  const syncBody = () => {
+    document.body.classList.toggle("editing", S.editing);
+    document.body.classList.toggle("signed-in", !!readToken());
+  };
+
   const S = {
     tasks: [],
     holidays: [],     // [{ date: "YYYY-MM-DD", name: { en, th } }]
@@ -48,21 +54,21 @@
       else store("local")?.removeItem(TOKEN_KEY);
       store("local")?.setItem(REMEMBER_KEY, remember ? "1" : "0");
       store("local")?.removeItem(OFF_KEY);
-      document.body.classList.add("editing");
+      syncBody();
       document.dispatchEvent(new Event("edit:change"));
     },
     // เลิกแก้ไข: ถ้าจำ token ไว้ → เก็บ token ไว้ (กดแก้ไขครั้งหน้าเข้าได้เลย), ถ้าไม่ได้จำ → ลบทิ้ง
     exitEdit() {
       if (S.hasSavedToken) {
         store("local")?.setItem(OFF_KEY, "1");
-        document.body.classList.remove("editing");
+        syncBody();
         document.dispatchEvent(new Event("edit:change"));
       } else S.clearToken();
     },
     resumeEdit() {
       if (!S.hasSavedToken) return false;
       store("local")?.removeItem(OFF_KEY);
-      document.body.classList.add("editing");
+      syncBody();
       document.dispatchEvent(new Event("edit:change"));
       return true;
     },
@@ -72,7 +78,7 @@
       store("local")?.removeItem(TOKEN_KEY);
       store("local")?.removeItem(OFF_KEY);
       S.sha = "";
-      document.body.classList.remove("editing");
+      syncBody();
       document.dispatchEvent(new Event("edit:change"));
     },
 
@@ -118,7 +124,7 @@
       S.holidays = Array.isArray(data.holidays) ? data.holidays : [];
       S.linkGroups = Array.isArray(data.links) ? data.links : [];
       S.updated = data.updated || "";
-      document.body.classList.toggle("editing", S.editing);
+      syncBody();
       document.dispatchEvent(new Event("tasks:change"));
       return S.tasks;
     },
@@ -246,5 +252,6 @@
     return shaOnly ? null : JSON.parse(b64dec(j.content));
   }
 
+  S.syncBody = syncBody;
   window.TaskStore = S;
 })();

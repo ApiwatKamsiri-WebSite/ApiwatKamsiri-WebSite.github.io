@@ -1,6 +1,7 @@
 // ============================================================
 //  Login with GitHub (GitHub App + Cloudflare Worker ตัวกลาง)
-//  - login เฉพาะตอนกดแก้ไข, จำไว้ 60 วัน แล้วออกเอง
+//  - login เฉพาะตอนกดแก้ไข, จำไว้ 30 วัน (ถ้าไม่กดออกจากระบบ) แล้วออกเอง
+//  - กด "ออกจากระบบ" แล้ว login ครั้งถัดไปต้องเห็นหน้า GitHub ให้กดยืนยัน (ไม่ผ่านอัตโนมัติ)
 //  - สิทธิ์จาก GitHub หมดทุก ~8 ชม. → ต่ออายุอัตโนมัติผ่าน Worker
 //  - ผลการ login ส่งข้ามหน้าต่างผ่าน localStorage (ใช้ได้แม้ popup ถูกตัดการเชื่อมต่อกับหน้าเดิม)
 // ============================================================
@@ -10,7 +11,8 @@
   const STATE_KEY = "gh_oauth_state";
   const RETURN_KEY = "gh_oauth_return";
   const EVENT_KEY = "gh_auth_event";
-  const MAX_AGE = 60 * 86400000; // 60 วัน
+  const MAX_AGE = 30 * 86400000; // 30 วัน
+  const FORCE_KEY = "gh_force_prompt";
 
   const ls = () => { try { return localStorage; } catch { return null; } };
   const read = () => { try { return JSON.parse(ls()?.getItem(SESSION_KEY) || "null"); } catch { return null; } };
@@ -75,9 +77,10 @@
       ls()?.setItem(STATE_KEY, state);
       ls()?.setItem(RETURN_KEY, location.href);
       ls()?.removeItem(EVENT_KEY);
-      const url = "https://github.com/login/oauth/authorize?" + new URLSearchParams({
-        client_id: A.clientId, redirect_uri: redirectUri(), state,
-      });
+      const q = { client_id: A.clientId, redirect_uri: redirectUri(), state };
+      // หลังออกจากระบบ: ให้ GitHub ขึ้นหน้าเลือก/ยืนยันบัญชีเสมอ แม้เบราว์เซอร์ยัง login GitHub ค้างอยู่
+      if (ls()?.getItem(FORCE_KEY)) q.prompt = "select_account";
+      const url = "https://github.com/login/oauth/authorize?" + new URLSearchParams(q);
       if (redirect) { location.href = url; return null; }
       const w = 520, h = 720;
       return window.open(url, "gh-login", `popup=yes,width=${w},height=${h},left=${Math.max(0, (screen.width - w) / 2)},top=${Math.max(0, (screen.height - h) / 2)}`);
@@ -94,6 +97,7 @@
         const s = fromWorker(j, null);
         write(s);
         ls()?.removeItem("gh_edit_off");
+        ls()?.removeItem(FORCE_KEY);
         result = { ok: true, login: s.login, t: Date.now() };
       } catch (e) {
         result = { ok: false, error: e.code || e.message, t: Date.now() };
@@ -104,6 +108,8 @@
     },
 
     logout() { ls()?.removeItem(SESSION_KEY); },
+    // ออกจากระบบโดยผู้ใช้ → ครั้งหน้าต้องยืนยันที่หน้า GitHub
+    signOut() { ls()?.removeItem(SESSION_KEY); ls()?.setItem(FORCE_KEY, "1"); },
 
     // หน้าเดิมรอผล login จาก popup
     onResult(fn) {

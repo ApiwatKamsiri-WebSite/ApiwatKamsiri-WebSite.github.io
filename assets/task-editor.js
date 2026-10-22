@@ -118,7 +118,8 @@
     if (fn) fn();
   });
   let afterUnlock = null;
-  function forgetToken() { TS.clearToken(); TS.load(); toast(t("auth.loggedOut"), "ok"); }
+  // ออกจากระบบ: ลบการ login ทั้งหมดในเครื่องนี้ (ไม่สนเวลาที่เหลือ) และครั้งหน้าต้องยืนยันที่ GitHub
+  function forgetToken() { window.GHAuth?.signOut(); TS.clearToken(); TS.load(); toast(t("auth.loggedOut"), "ok"); }
 
   // ---------- ฟอร์มงาน ----------
   let draft = null, editingId = null;
@@ -614,6 +615,18 @@
     });
   }
 
-  document.body.classList.toggle("editing", TS.editing);
+  // ชื่อผู้ใช้ที่ login อยู่ (แสดงข้างปุ่มออกจากระบบ)
+  function renderWho() {
+    const el = document.getElementById("who"); if (!el) return;
+    const u = TS.signedInAs;
+    el.innerHTML = u
+      ? `<img src="https://github.com/${encodeURIComponent(u)}.png?size=48" alt="" width="20" height="20" loading="lazy"><span>@${esc(u)}</span>`
+      : `<span>${esc(t("auth.viaToken"))}</span>`;
+    el.title = u ? t("auth.signedInAs", { u }) : t("auth.viaToken");
+  }
+  ["edit:change", "tasks:change", "lang:change"].forEach((ev) => document.addEventListener(ev, renderWho));
+  renderWho();
+
+  TS.syncBody();
   window.TaskEditor = { linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
 })();
