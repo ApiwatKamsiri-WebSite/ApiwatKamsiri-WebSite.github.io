@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22T03:36:47.355Z",
+  "updated": "2026-10-22T06:29:14.258Z",
   "tasks": [
     {
       "id": 1,
@@ -248,6 +248,19 @@
           "due": "2026-11-20"
         }
       ]
+    },
+    {
+      "id": 6,
+      "name": {
+        "en": "Update Main PCB for change supplier project test",
+        "th": "อัปเดตแผงวงจรหลัก (Main PCB) สำหรับการทดสอบโครงการเปลี่ยนซัพพลายเออร์"
+      },
+      "project": "Hitachi all model",
+      "status": "done",
+      "start": "2026-10-22",
+      "due": "2026-10-22",
+      "done": "2026-10-22",
+      "subtasks": []
     }
   ],
   "holidays": [
