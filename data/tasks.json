@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-21T11:27:53.503Z",
+  "updated": "2026-10-22T02:08:17.124Z",
   "tasks": [
     {
       "id": 1,
@@ -1142,6 +1142,16 @@
           "name": "OKR",
           "icon": "auto",
           "url": "https://wokr.twiser.com/login"
+        },
+        {
+          "name": "Web2.0",
+          "icon": "globe",
+          "url": "https://ahthkab26v.ar.arcelik/web2.0/"
+        },
+        {
+          "name": "AHTH Commonsite",
+          "icon": "home",
+          "url": "https://arcelik.sharepoint.com/sites/AHTHCommonsite"
         }
       ]
     },
