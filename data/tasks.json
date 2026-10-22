@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22T02:08:17.124Z",
+  "updated": "2026-10-22T02:12:11.135Z",
   "tasks": [
     {
       "id": 1,
@@ -1139,6 +1139,11 @@
           "url": "http://ahthkab23v.ar.arcelik:8080/eunite-central/login.do"
         },
         {
+          "name": "AHTH Commonsite",
+          "icon": "home",
+          "url": "https://arcelik.sharepoint.com/sites/AHTHCommonsite"
+        },
+        {
           "name": "OKR",
           "icon": "auto",
           "url": "https://wokr.twiser.com/login"
@@ -1147,11 +1152,6 @@
           "name": "Web2.0",
           "icon": "globe",
           "url": "https://ahthkab26v.ar.arcelik/web2.0/"
-        },
-        {
-          "name": "AHTH Commonsite",
-          "icon": "home",
-          "url": "https://arcelik.sharepoint.com/sites/AHTHCommonsite"
         }
       ]
     },
@@ -1165,22 +1165,22 @@
         {
           "name": "Arcelik software release",
           "icon": "star",
-          "url": ""
+          "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgCejl6Tu1dHQ6-TT15t2rGOAYhTHfFHuiSg1Hf__O1tl7s?e=nlsUGe"
         },
         {
           "name": "EEPROM software",
           "icon": "folder",
-          "url": ""
+          "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgD7PttUDPPdSrrMY9P7h0OsAV3p4AJYMrAnF_UCr8Oc2bM?e=gzmfrX"
         },
         {
           "name": "Software specification",
           "icon": "search",
-          "url": ""
+          "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgD75-TzO_BWRJIuDHWfB-STAfVcDueJb0C7voQSgvOXdvA?e=WmWazx"
         },
         {
           "name": "CT document",
           "icon": "star",
-          "url": ""
+          "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgAnYh2tAfXYSY_ta6NXAbqQARv5doDJ9zNnZzycEmfuhxo?e=xvJ5xX"
         }
       ]
     },
