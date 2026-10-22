@@ -82,8 +82,11 @@
       if (ls()?.getItem(FORCE_KEY)) q.prompt = "select_account";
       const url = "https://github.com/login/oauth/authorize?" + new URLSearchParams(q);
       if (redirect) { location.href = url; return null; }
-      const w = 520, h = 720;
-      return window.open(url, "gh-login", `popup=yes,width=${w},height=${h},left=${Math.max(0, (screen.width - w) / 2)},top=${Math.max(0, (screen.height - h) / 2)}`);
+      // วาง popup กลางหน้าต่างเว็บที่เปิดอยู่ (ไม่ใช่กลางจอมอนิเตอร์)
+      const w = Math.min(520, window.outerWidth || 520), h = Math.min(720, window.outerHeight || 720);
+      const left = Math.round((window.screenX ?? window.screenLeft ?? 0) + ((window.outerWidth || w) - w) / 2);
+      const top = Math.round((window.screenY ?? window.screenTop ?? 0) + ((window.outerHeight || h) - h) / 2);
+      return window.open(url, "gh-login", `popup=yes,width=${w},height=${h},left=${left},top=${top}`);
     },
 
     // ใช้ในหน้า auth.html: แลก code → เก็บ session → แจ้งหน้าเดิม

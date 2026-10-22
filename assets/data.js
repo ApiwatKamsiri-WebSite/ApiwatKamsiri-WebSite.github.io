@@ -16,9 +16,9 @@ window.SITE = {
   location: { en: "Thailand", th: "ประเทศไทย" },
   email: "apiwatkamsiri@gmail.com",
   workEmail: "apiwat.kamsiri@arcelik-hitachi.com",
-  // รูปโปรไฟล์: วางไฟล์ไว้ที่ assets/img/ แล้วใส่ path เช่น "assets/img/profile.jpg"
-  // ถ้าเว้นว่าง จะแสดงตัวอักษรย่อแทน
-  photo: "",
+  // รูปโปรไฟล์: ใช้รูปโปรไฟล์ GitHub (เปลี่ยนรูปที่ GitHub แล้วเว็บเปลี่ยนตาม, ไม่ต้อง login ก็เห็น)
+  // อยากใช้รูปอื่น: วางไฟล์ที่ assets/img/ แล้วใส่ path เช่น "assets/img/profile.jpg" — เว้นว่าง = แสดงตัวอักษรย่อ
+  photo: "https://github.com/ApiwatKamsiri.png?size=320",
   github: "https://github.com/ApiwatKamsiri-WebSite",
   phone: "0901081663",
   stack: ["Python", "C / C++", "JavaScript", "ESP32", "Git", "SQL"],

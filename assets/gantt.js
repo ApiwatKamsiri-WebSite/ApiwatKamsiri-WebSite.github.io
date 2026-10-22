@@ -387,7 +387,6 @@
   $("edit-toggle").addEventListener("click", () => TE.toggleEdit());
   $("add-task").addEventListener("click", () => TE.openTask(null));
   $("holidays-btn").addEventListener("click", () => TE.openHolidays());
-  $("forget-token").addEventListener("click", () => TE.forgetToken());
   document.addEventListener("edit:change", renderEditBtn);
 
   // กลับหน้าหลักโดยไม่ต้องดู intro อีกรอบ

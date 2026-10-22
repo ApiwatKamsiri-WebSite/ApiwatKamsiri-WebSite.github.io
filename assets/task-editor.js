@@ -615,17 +615,29 @@
     });
   }
 
-  // ชื่อผู้ใช้ที่ login อยู่ (แสดงข้างปุ่มออกจากระบบ)
+  // ชื่อผู้ใช้ + ปุ่มออกจากระบบ — แสดงทุกจุดที่แก้ไขได้ (.auth-slot)
+  const LOGOUT_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>';
   function renderWho() {
-    const el = document.getElementById("who"); if (!el) return;
     const u = TS.signedInAs;
-    el.innerHTML = u
-      ? `<img src="https://github.com/${encodeURIComponent(u)}.png?size=48" alt="" width="20" height="20" loading="lazy"><span>@${esc(u)}</span>`
-      : `<span>${esc(t("auth.viaToken"))}</span>`;
-    el.title = u ? t("auth.signedInAs", { u }) : t("auth.viaToken");
+    const who = u
+      ? `<span class="who" title="${esc(t("auth.signedInAs", { u }))}"><img src="https://github.com/${encodeURIComponent(u)}.png?size=48" alt="" width="20" height="20" loading="lazy"><span>${esc(u)}</span></span>`
+      : `<span class="who" title="${esc(t("auth.viaToken"))}"><span>${esc(t("auth.viaToken"))}</span></span>`;
+    document.querySelectorAll(".auth-slot").forEach((el) => {
+      el.innerHTML = `${who}<button class="btn sm" type="button" data-logout>${LOGOUT_SVG}<span>${esc(t("auth.logout"))}</span></button>`;
+    });
   }
+  document.addEventListener("click", (e) => { if (e.target.closest("[data-logout]")) forgetToken(); });
   ["edit:change", "tasks:change", "lang:change"].forEach((ev) => document.addEventListener(ev, renderWho));
   renderWho();
+
+  // login / ออกจากระบบ ในแท็บอื่น → แท็บนี้เปลี่ยนตามทันที
+  addEventListener("storage", (e) => {
+    if (!["gh_session", "gh_token", "gh_edit_off"].includes(e.key)) return;
+    if (!TS.editing && mode && mode !== "signin" && mode !== "unlock") close();
+    TS.syncBody();
+    document.dispatchEvent(new Event("edit:change"));
+    renderWho();
+  });
 
   TS.syncBody();
   window.TaskEditor = { linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
