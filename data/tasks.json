@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22T02:12:11.135Z",
+  "updated": "2026-10-22T02:13:44.541Z",
   "tasks": [
     {
       "id": 1,
@@ -1160,11 +1160,11 @@
         "en": "Software Center File",
         "th": "ไฟล์ Software Center"
       },
-      "icon": "folder",
+      "icon": "cloud",
       "items": [
         {
           "name": "Arcelik software release",
-          "icon": "star",
+          "icon": "folder",
           "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgCejl6Tu1dHQ6-TT15t2rGOAYhTHfFHuiSg1Hf__O1tl7s?e=nlsUGe"
         },
         {
@@ -1174,15 +1174,16 @@
         },
         {
           "name": "Software specification",
-          "icon": "search",
+          "icon": "file",
           "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgD75-TzO_BWRJIuDHWfB-STAfVcDueJb0C7voQSgvOXdvA?e=WmWazx"
         },
         {
           "name": "CT document",
-          "icon": "star",
+          "icon": "file",
           "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgAnYh2tAfXYSY_ta6NXAbqQARv5doDJ9zNnZzycEmfuhxo?e=xvJ5xX"
         }
-      ]
+      ],
+      "member": true
     },
     {
       "title": {
