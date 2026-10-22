@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22T02:13:44.541Z",
+  "updated": "2026-10-22T03:36:47.355Z",
   "tasks": [
     {
       "id": 1,
@@ -1132,6 +1132,11 @@
           "name": "AHTH-Graph-Generator",
           "icon": "db",
           "url": "https://ahth-graph-generator.github.io/"
+        },
+        {
+          "name": "Software Commonsite",
+          "icon": "users",
+          "url": "https://arcelik.sharepoint.com/teams/SoftwareTask/SitePages/Home.aspx"
         },
         {
           "name": "Eunite-Central",
