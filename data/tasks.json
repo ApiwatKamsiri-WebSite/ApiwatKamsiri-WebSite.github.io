@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T03:01:49.055Z",
+  "updated": "2026-10-26T06:32:31.312Z",
   "tasks": [
     {
       "id": 1,
@@ -1217,29 +1217,29 @@
       "icon": "chip",
       "items": [
         {
-          "name": "Appliance Data Collection",
-          "icon": "sync",
-          "url": ""
+          "name": "Appliance Data Collection (ADC)",
+          "icon": "search",
+          "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgCiK3fqOcoWR7ohu1XOFcfBAWxJ8hrmPHJ8NpMmn8jH_Kg?e=5vsJGK"
         },
         {
           "name": "PWRs official version",
-          "icon": "sync",
-          "url": ""
+          "icon": "search",
+          "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgC6M2IE5j9XSo8dvO9yWIwWAfalgkz-NgkFQ5DhvzqGTiA?e=XOV6w9"
         },
         {
           "name": "Arcelik-Hitachi Writer",
-          "icon": "shield",
-          "url": ""
+          "icon": "chip",
+          "url": "https://arcelik.sharepoint.com/:u:/r/teams/ELECTRICGROUPfolder/Shared%20Documents/General/Electric%20center/03.%20Software%20center/Program/Arcelik-Hitachi%20Write%20Software%20Program/Arcelik-Hitachi%20Writer%20Program%20Version%203.10.zip?d=w0804c90c6b0641b0bcd1f108e88fdc56&csf=1&web=1&e=cQ3VDn"
         },
         {
           "name": "EEPROM Write/Read",
-          "icon": "shield",
-          "url": ""
+          "icon": "chip",
+          "url": "https://arcelik.sharepoint.com/:u:/r/teams/ELECTRICGROUPfolder/Shared%20Documents/General/Electric%20center/03.%20Software%20center/Program/EEP%20Write%20Read%202024/EEPROM%20Writer%20%26%20Read%20AHTH%20Ver.%202.10.zip?d=wfd0620f8d7b4476690a8135c51af8a1c&csf=1&web=1&e=OxWE52"
         },
         {
           "name": "Install Quartz card tools",
           "icon": "install",
-          "url": ""
+          "url": "https://community.platformio.org/t/esp32-pio-unified-debugger/4541/19"
         }
       ]
     },
