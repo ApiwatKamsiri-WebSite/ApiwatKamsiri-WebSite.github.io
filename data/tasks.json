@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-22T06:29:14.258Z",
+  "updated": "2026-10-26T02:19:41.189Z",
   "tasks": [
     {
       "id": 1,
@@ -61,6 +61,10 @@
       "status": "doing",
       "start": "2026-10-14",
       "due": "2026-10-23",
+      "desc": {
+        "en": "Overdue because waiting BOM maker add the drawing and waiting 1 day to apply.",
+        "th": "ล่าช้าเนื่องจากต้องรอให้ผู้จัดทำ BOM เพิ่มแบบวาดเข้าไป และต้องรออีก 1 วันเพื่อดำเนินการยื่นเรื่อง"
+      },
       "subtasks": [
         {
           "id": "2.1",
@@ -82,7 +86,7 @@
           "status": "doing",
           "start": "2026-10-20",
           "due": "2026-10-26",
-          "progress": 80
+          "progress": 100
         }
       ]
     },
