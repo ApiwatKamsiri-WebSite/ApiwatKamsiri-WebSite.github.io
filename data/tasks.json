@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T02:20:18.863Z",
+  "updated": "2026-10-26T02:20:53.105Z",
   "tasks": [
     {
       "id": 1,
@@ -58,9 +58,10 @@
         "th": "ให้การสนับสนุนลูกค้าในส่วนของอะไหล่"
       },
       "project": "BIG model",
-      "status": "doing",
+      "status": "done",
       "start": "2026-10-14",
       "due": "2026-10-23",
+      "done": "2026-10-26",
       "desc": {
         "en": "Overdue because waiting BOM maker add the drawing and waiting 1 day to apply.",
         "th": "ล่าช้าเนื่องจากต้องรอให้ผู้จัดทำ BOM เพิ่มแบบวาดเข้าไป และต้องรออีก 1 วันเพื่อดำเนินการยื่นเรื่อง"
