@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T06:32:31.312Z",
+  "updated": "2026-10-26T06:38:58.909Z",
   "tasks": [
     {
       "id": 1,
@@ -1251,34 +1251,34 @@
       "icon": "tool",
       "items": [
         {
-          "name": "Arcelik software portal",
+          "name": "Arcelik software (Digiport)",
           "icon": "tool",
-          "url": ""
+          "url": "https://digiport.arcelik.com/secure/Dashboard.jspa"
         },
         {
-          "name": "Arcelik software (RD)",
+          "name": "Arcelik software (RD repo)",
           "icon": "tool",
-          "url": ""
+          "url": "https://rd-repo.arcelik.com/"
+        },
+        {
+          "name": "Arcelik software (RD portal)",
+          "icon": "db",
+          "url": "https://rd-portal.arcelik.com/dashboard"
+        },
+        {
+          "name": "Arcelik software (RD share)",
+          "icon": "sync",
+          "url": "https://rd-share.arcelik.com/login"
+        },
+        {
+          "name": "Arcelik software (Confluence)",
+          "icon": "db",
+          "url": "https://digiport.arcelik.com/wiki/index.action#all-updates"
         },
         {
           "name": "Quartz card AMZ register",
           "icon": "db",
-          "url": ""
-        },
-        {
-          "name": "HomeWhiz config app",
-          "icon": "sync",
-          "url": ""
-        },
-        {
-          "name": "Matching SKU and Quartz",
-          "icon": "db",
-          "url": ""
-        },
-        {
-          "name": "OTA for update software",
-          "icon": "db",
-          "url": ""
+          "url": "http://arazr20/Iot/Account/Login?ReturnUrl=/Iot/IotReport"
         },
         {
           "name": "Datascope",
