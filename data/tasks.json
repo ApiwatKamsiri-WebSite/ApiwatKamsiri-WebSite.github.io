@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T03:00:58.264Z",
+  "updated": "2026-10-26T03:01:24.989Z",
   "tasks": [
     {
       "id": 1,
@@ -171,10 +171,10 @@
             "en": "Prepare the DSCP for test review and request RQA testing.",
             "th": "จัดทำ DSCP เพื่อทบทวนผลการทดสอบ และร้องขอให้ RQA ทดสอบ"
           },
-          "status": "done",
+          "status": "doing",
           "start": "2026-10-19",
-          "due": "2026-10-22",
-          "done": "2026-10-22"
+          "due": "2026-10-27",
+          "progress": 100
         },
         {
           "id": "4.3",
@@ -182,7 +182,7 @@
             "en": "RQA testing and release test report.",
             "th": "ทดสอบโดย RQA และ ออกเอกสาร report"
           },
-          "status": "doing",
+          "status": "todo",
           "start": "2026-10-26",
           "due": "2026-10-30"
         },
