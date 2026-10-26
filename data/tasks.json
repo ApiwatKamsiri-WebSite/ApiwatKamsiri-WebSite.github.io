@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T06:38:58.909Z",
+  "updated": "2026-10-26T06:42:17.230Z",
   "tasks": [
     {
       "id": 1,
@@ -1252,38 +1252,53 @@
       "items": [
         {
           "name": "Arcelik software (Digiport)",
-          "icon": "tool",
+          "icon": "globe",
           "url": "https://digiport.arcelik.com/secure/Dashboard.jspa"
         },
         {
           "name": "Arcelik software (RD repo)",
-          "icon": "tool",
+          "icon": "globe",
           "url": "https://rd-repo.arcelik.com/"
         },
         {
           "name": "Arcelik software (RD portal)",
-          "icon": "db",
+          "icon": "globe",
           "url": "https://rd-portal.arcelik.com/dashboard"
         },
         {
           "name": "Arcelik software (RD share)",
-          "icon": "sync",
+          "icon": "globe",
           "url": "https://rd-share.arcelik.com/login"
         },
         {
           "name": "Arcelik software (Confluence)",
-          "icon": "db",
+          "icon": "globe",
           "url": "https://digiport.arcelik.com/wiki/index.action#all-updates"
         },
         {
           "name": "Quartz card AMZ register",
-          "icon": "db",
+          "icon": "globe",
           "url": "http://arazr20/Iot/Account/Login?ReturnUrl=/Iot/IotReport"
         },
         {
+          "name": "HomeWhiz config app",
+          "icon": "globe",
+          "url": "https://procamx.arcelikiot.com/dashboard"
+        },
+        {
+          "name": "Matching SKU and Quartz card",
+          "icon": "globe",
+          "url": "https://amt.arcelikiot.com/dashboard"
+        },
+        {
+          "name": "OTA for update software",
+          "icon": "globe",
+          "url": "https://otatool.arcelikiot.com/release"
+        },
+        {
           "name": "Datascope",
-          "icon": "db",
-          "url": ""
+          "icon": "globe",
+          "url": "https://datascope.arcelikiot.com/"
         }
       ],
       "member": true
