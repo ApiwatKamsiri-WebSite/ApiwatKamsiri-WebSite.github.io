@@ -148,6 +148,8 @@
   // ปุ่มแก้ไข
   const renderEditBtn = () => { $("edit-toggle").textContent = t(TS.editing ? "edit.exit" : "edit.enter"); };
   $("edit-toggle").addEventListener("click", () => TE.toggleEdit());
+  // Links: [แก้ไขลิงก์] เข้าโหมดแก้ไข + เปิดหน้าแก้ไข → ระหว่างแก้ไขมี [เสร็จการแก้ไข] ให้ออก (โหมดเดียวกันทั้งเว็บ)
+  $("edit-done-links").addEventListener("click", () => TE.toggleEdit());
   $("add-task").addEventListener("click", () => TE.openTask(null));
   document.addEventListener("edit:change", renderEditBtn);
 
@@ -321,7 +323,7 @@
       <div class="card group vault ${open ? "open" : ""}" id="vault-card">
         <div class="group-head">
           <h3><span class="ic v">${svg(open ? "unlock" : "lock", 18)}</span>${esc(t("vault.name"))}</h3>
-          ${open ? `<span class="vault-btns"><button class="btn sm edit-only" id="vault-edit-btn">${esc(t("vault.edit"))}</button><button class="btn sm" id="vault-lock-btn">${esc(t("vault.lock"))}</button></span>` : `<span class="member v">${esc(t("vault.private"))}</span>`}
+          ${open ? `<span class="vault-btns"><button class="btn sm" id="vault-edit-btn">${esc(t("vault.edit"))}</button><button class="btn sm" id="vault-lock-btn">${esc(t("vault.lock"))}</button></span>` : `<span class="member v">${esc(t("vault.private"))}</span>`}
         </div>
         ${open
           ? (vaultFiles.length
