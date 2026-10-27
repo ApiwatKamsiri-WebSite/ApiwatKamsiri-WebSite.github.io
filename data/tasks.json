@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-26T06:42:39.812Z",
+  "updated": "2026-10-27T10:34:53.501Z",
   "tasks": [
     {
       "id": 1,
@@ -267,6 +267,33 @@
       "due": "2026-10-22",
       "done": "2026-10-22",
       "subtasks": []
+    },
+    {
+      "id": 7,
+      "name": {
+        "en": "Touch sensing change match project (Urgent - part short)",
+        "th": "โครงการปรับเปลี่ยนระบบตรวจจับการสัมผัส (เร่งด่วน - ชิ้นส่วนขาดแคลน)"
+      },
+      "project": "FBF/SBS/BF",
+      "status": "todo",
+      "start": "2026-10-27",
+      "due": "2026-11-03",
+      "desc": {
+        "en": "We need to check and adjust the software quickly (Target 3 Nov'26 and start 4 Nov'26)",
+        "th": "เราจำเป็นต้องตรวจสอบและปรับปรุงซอฟต์แวร์โดยเร่งด่วน (กำหนดเสร็จภายในวันที่ 3 พ.ย. 2026 และเริ่มใช้งานในวันที่ 4 พ.ย. 2026)"
+      },
+      "subtasks": [
+        {
+          "id": "7.1",
+          "name": {
+            "en": "Setting program and test compare 2 mat",
+            "th": "ตั้งค่าโปรแกรมและทดสอบเปรียบเทียบ 2 แมต"
+          },
+          "status": "todo",
+          "start": "2026-10-27",
+          "due": "2026-10-29"
+        }
+      ]
     }
   ],
   "holidays": [
