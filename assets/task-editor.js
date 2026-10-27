@@ -549,6 +549,66 @@
     });
   }
 
+  // ================= คลังส่วนตัว (vault) =================
+  // รายการลิงก์ถูกเข้ารหัสด้วย PIN ที่เพิ่งใช้ปลดล็อกก่อนบันทึก — PIN ไม่ถูกเก็บลงที่ไหน
+  let vdraft = null, vpin = "", vdone = null;
+  function openVault(items, pin, onSaved) {
+    mode = "vault";
+    vdraft = clone(items || []); vpin = pin; vdone = onSaved;
+    if (!vdraft.length) vdraft.push({ name: "", icon: "auto", url: "" });
+    renderVaultEditor();
+  }
+  function renderVaultEditor() {
+    show(`
+      <div class="modal-head"><h3>${t("ve.title")}</h3><button class="icon-btn" data-close aria-label="${t("common.close")}">✕</button></div>
+      <form id="vault-form" class="form" novalidate>
+        <p class="ve-hint">🔒 ${t("ve.hint")}</p>
+        <div class="le-group"><div class="le-items">${vdraft.map((x, i) => `
+          <div class="le-item" data-i="${i}">
+            ${iconPick('data-if="icon"', x.icon || "auto")}
+            <input data-if="name" value="${esc(nameOf(x.name, "en"))}" placeholder="${t("le.name")}">
+            ${urlField(x.url, 'data-if="url"')}
+            <span class="mv">
+              <button type="button" data-vmove="${i}:-1" ${i === 0 ? "disabled" : ""} title="${t("le.up")}" aria-label="${t("le.up")}">▲</button>
+              <button type="button" data-vmove="${i}:1" ${i === vdraft.length - 1 ? "disabled" : ""} title="${t("le.down")}" aria-label="${t("le.down")}">▼</button>
+            </span>
+            <button type="button" class="icon-btn sm" data-vdel="${i}" aria-label="${t("ed.remove")}">✕</button>
+          </div>`).join("")}
+        </div>
+        <button type="button" class="btn sm" id="vault-add">${t("ed.addLink")}</button></div>
+        <div class="msg" id="vault-msg"></div>
+        <div class="modal-foot">
+          <span class="grow"></span>
+          <button type="button" class="btn" data-close>${t("common.cancel")}</button>
+          <button class="btn primary" type="submit">${t("common.save")}</button>
+        </div>
+      </form>`);
+    const keep = (fn) => () => { collectVault(); fn(); const y = box.scrollTop; renderVaultEditor(); box.scrollTop = y; };
+    box.querySelector("#vault-add").addEventListener("click", keep(() => vdraft.push({ name: "", icon: "auto", url: "" })));
+    box.querySelectorAll("[data-vdel]").forEach((b) => b.addEventListener("click", keep(() => vdraft.splice(+b.dataset.vdel, 1))));
+    box.querySelectorAll("[data-vmove]").forEach((b) => b.addEventListener("click", keep(() => {
+      const [i, d] = b.dataset.vmove.split(":").map(Number), j = i + d;
+      if (j >= 0 && j < vdraft.length) [vdraft[i], vdraft[j]] = [vdraft[j], vdraft[i]];
+    })));
+    box.querySelector("#vault-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      collectVault();
+      const items = vdraft.filter((x) => x.name || x.url).map((x) => ({ name: x.name || x.url, icon: x.icon, url: TS.normalizeUrl(x.url) }));
+      const done = vdone;
+      const blob = await window.VaultCrypto.encryptJSON(items, vpin);
+      await commit({ vault: blob }, "Update vault");
+      if (TS.vault === blob) done?.(items);
+    });
+  }
+  function collectVault() {
+    box.querySelectorAll(".le-item").forEach((r) => {
+      const x = vdraft[+r.dataset.i];
+      x.icon = r.querySelector('[data-if="icon"]').value;
+      x.name = r.querySelector('[data-if="name"]').value.trim();
+      x.url = readUrl(r.querySelector(".url-field"));
+    });
+  }
+
   box.addEventListener("click", (e) => {
     if (e.target.closest("[data-close]")) return close();
     if (mode !== "task") return;
@@ -574,6 +634,7 @@
     if (mode === "task") { collect(); renderKeepScroll(); }
     else if (mode === "holidays") { if (TS.editing) collectHol(); renderHolidays(); }
     else if (mode === "links") { collectLinks(); renderLinksEditor(); }
+    else if (mode === "vault") { collectVault(); renderVaultEditor(); }
     else if (mode === "unlock") openUnlock();
     else if (mode === "signin") { const m = box.querySelector("#signin-msg"); if (m && !m.classList.contains("err")) m.textContent = t("auth.waiting"); }
   });
@@ -640,5 +701,5 @@
   });
 
   TS.syncBody();
-  window.TaskEditor = { linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, toast, onDouble, close, CLIP };
+  window.TaskEditor = { linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, openVault, toast, onDouble, close, CLIP };
 })();

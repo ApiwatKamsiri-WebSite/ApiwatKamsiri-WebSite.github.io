@@ -20,13 +20,19 @@
   let view = "month";
   let hideDone = false;
   try { hideDone = localStorage.getItem("g_hideDone") === "1"; } catch {}
-  const gl = () => parseFloat(getComputedStyle(document.querySelector(".gantt")).getPropertyValue("--gl")) || 320;
+  const gl = () => { const v = parseFloat(getComputedStyle(document.querySelector(".gantt")).getPropertyValue("--gl")); return isNaN(v) ? 320 : v; };
   // กว้างกี่ px ต่อ 1 วัน ให้ช่วงเวลาที่เลือกพอดีหน้าจอ
   // จำนวนวันที่เห็นบนจอ: ตามปุ่ม Week/Month/… หรือค่าที่ zoom ด้วยล้อเมาส์ (customDays)
   let customDays = null;
   const spanDays = () => customDays ?? (days(...period(view)) + 1);
   const dayW = () => Math.max(0.5, ($("g-scroll").clientWidth - gl()) / spanDays());
   const expanded = new Set();
+  // มือถือแนวตั้ง: A = timeline แบบไม่มีคอลัมน์ชื่อ (ชื่ออยู่เหนือแถบ), B = มุมมองรายการ (การ์ด)
+  const mqCompact = matchMedia("(max-width: 600px)");
+  const mqMode = matchMedia("(max-width: 900px)");           // ปุ่มสลับ Timeline / รายการ แสดงเฉพาะจอเล็ก
+  let modePref = "tl";
+  try { modePref = localStorage.getItem("g_mode") === "list" ? "list" : "tl"; } catch {}
+  const listMode = () => modePref === "list" && mqMode.matches;
   // มาจากการดับเบิลคลิกหน้าหลัก: ?id=งาน (ขยายเฉพาะงานนั้น) หรือ ?date=วันที่ (ย่อทั้งหมด แล้วเลื่อนไปวันนั้น)
   const params = new URLSearchParams(location.search);
   const focusId = params.get("id");
@@ -68,9 +74,12 @@
     for (let i = 0; i < r.n; i++) {
       const d = new Date(r.start); d.setDate(d.getDate() + i);
       const now = d.getTime() === today.getTime() ? " now" : "";
-      if (dw >= 18) {
+      // มือถือ (compact) ช่องแคบ: แสดงเลขวันเว้นวัน (+ วันนี้) ไม่ให้ตัวเลขติดกันจนอ่านไม่ออก
+      const compact = document.querySelector(".gantt").classList.contains("compact");
+      if (dw >= 18 || (compact && dw >= 7)) {
         const we = (d.getDay() === 0 || d.getDay() === 6 ? " we" : "") + (TS.holidayOn(TS.iso(d)) ? " hol" : "");
-        dayCells += `<span class="${we}${now}" style="left:${i * dw}px;width:${dw}px">${d.getDate()}</span>`;
+        const show = dw >= 16 || d.getDate() % 2 === 1 || now;
+        dayCells += `<span class="${we}${now}" style="left:${i * dw}px;width:${dw}px">${show ? d.getDate() : ""}</span>`;
       } else if (dw >= 5 && d.getDay() === 1) {
         dayCells += `<span style="left:${i * dw}px;width:${7 * dw}px;justify-content:flex-start;padding-left:4px">${d.getDate()}</span>`;
       }
@@ -192,19 +201,74 @@
   addEventListener("keydown", (e) => { if (e.key === "Escape") closePop(); });
   addEventListener("scroll", closePop, true);
 
+  // เรียงตามความเร่งด่วน: เลยกำหนด → ใกล้กำหนดส่ง → เสร็จแล้ว (ล่าสุดก่อน)
+  function sorted() {
+    const rank = (x) => ({ late: 0, done: 2 }[TS.state(x)] ?? 1);
+    return TS.tasks
+      .filter((x) => !(hideDone && TS.progress(x) === 100))
+      .sort((a, b) => rank(a) - rank(b) ||
+        (rank(a) === 2 ? parse(TS.finishDate(b) || b.due) - parse(TS.finishDate(a) || a.due) : parse(a.due) - parse(b.due)));
+  }
+
+  // ---------- B: มุมมองรายการ (การ์ด) สำหรับมือถือ ----------
+  function renderList(root, list) {
+    const finCls = (x) => (TS.variance(x) > 0 ? "late" : TS.variance(x) < 0 ? "early" : "ontime");
+    root.innerHTML = `<div class="gl-list">${list.map((x) => {
+      const id = String(x.id), subs = x.subtasks || [], open = expanded.has(id);
+      const st = TS.state(x), p = TS.progress(x);
+      const ordered = subs.map((s, i) => ({ s, i }))
+        .sort((a, b) => (a.s.due || "").localeCompare(b.s.due || "") || (a.s.start || "").localeCompare(b.s.start || "") || a.i - b.i);
+      return `
+      <div class="gl-card st-${st} ${open ? "open" : ""}" data-id="${esc(id)}">
+        <div class="gl-top">
+          <button class="g-chev ${subs.length ? "" : "none"}" data-toggle="${esc(id)}" aria-expanded="${open}" aria-label="${esc(L(x.name))}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 6 6 6-6 6"/></svg>
+          </button>
+          <div class="gl-name" data-toggle="${esc(id)}"><b>${esc(L(x.name))}</b><small>${stLabel(st)} · ${fmt(x.start)} → ${fmt(x.due)}${subs.length ? " · " + t("task.subs", { n: subs.length }) : ""}</small></div>
+          <button class="icon-btn sm edit-only g-edit" data-edit="${esc(id)}" aria-label="${t("edit.row")}" title="${t("edit.row")}">✎</button>
+        </div>
+        <div class="gl-prog">
+          <span class="g-pct">${p}%</span>
+          <div class="gl-bar"><i style="width:${p}%"></i></div>
+          ${docBtn(x, id, "")}
+        </div>
+        <div class="gl-meta">${wd(x)}${x.project ? `<small>#${esc(x.project)}</small>` : ""}${TS.finishDate(x) ? `<span class="g-finbadge ${finCls(x)}">${esc(finText(x))}</span>` : ""}</div>
+        ${open ? `
+        <ul class="gl-subs">${ordered.map(({ s, i }) => {
+          const sst = TS.state(s), sp = TS.progress(s);
+          return `
+          <li class="st-${sst}">
+            <i class="g-dot"></i>
+            <div class="gl-sname"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
+            ${docBtn(s, id, i)}
+            <span class="g-pct">${sp}%</span>
+          </li>`; }).join("")}
+        </ul>
+        ${x.desc ? `<div class="g-desc">${esc(L(x.desc))}</div>` : ""}` : ""}
+      </div>`;
+    }).join("")}</div>`;
+    if (!focused) {
+      focused = true;
+      const row = focusId && root.querySelector(`.gl-card[data-id="${CSS.escape(focusId)}"]`);
+      if (row) row.scrollIntoView({ block: "center" });
+    }
+  }
+
   function render() {
     const root = $("gantt");
     const doneCount = TS.tasks.filter((x) => TS.progress(x) === 100).length;
     $("g-hide").textContent = t(hideDone ? "g.showDone" : "g.hideDone", { n: doneCount });
     $("g-hide").classList.toggle("on", hideDone);
+    const card = document.querySelector(".gantt"), lm = listMode();
+    card.classList.toggle("compact", mqCompact.matches && !lm);
+    card.classList.toggle("list", lm);
+    card.style.setProperty("--scw", $("g-scroll").clientWidth + "px");
+    document.body.classList.toggle("g-listmode", lm);
+    document.querySelectorAll("#g-mode .seg-btn").forEach((b) => b.classList.toggle("on", b.dataset.m === (lm ? "list" : "tl")));
     if (!TS.tasks.length) { root.innerHTML = `<div class="empty" style="margin:16px">${TS.error ? t("load.fail") : t("task.empty")}</div>`; return; }
+    const list = sorted();
+    if (lm) return renderList(root, list);
     const dw = dayW(), r = range();
-    // เรียงตามความเร่งด่วน: เลยกำหนด → ใกล้กำหนดส่ง → เสร็จแล้ว (ล่าสุดก่อน)
-    const rank = (x) => ({ late: 0, done: 2 }[TS.state(x)] ?? 1);
-    const list = TS.tasks
-      .filter((x) => !(hideDone && TS.progress(x) === 100))
-      .sort((a, b) => rank(a) - rank(b) ||
-        (rank(a) === 2 ? parse(TS.finishDate(b) || b.due) - parse(TS.finishDate(a) || a.due) : parse(a.due) - parse(b.due)));
     let html = header(r, dw) + "<!--off-->";
 
     list.forEach((x) => {
@@ -219,7 +283,7 @@
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="m9 6 6 6-6 6"/></svg>
             </button>
             <i class="g-dot"></i>
-            <div class="g-name" title="${esc(L(x.name))}"><b>${esc(L(x.name))}</b><small>${stLabel(st)}${subs.length ? " · " + t("task.subs", { n: subs.length }) : ""}</small></div>
+            <div class="g-name" title="${esc(L(x.name))}"><b>${esc(L(x.name))}</b><small>${stLabel(st)}<span class="g-when"> · ${fmt(x.start)} → ${fmt(x.due)}</span>${subs.length ? " · " + t("task.subs", { n: subs.length }) : ""}</small></div>
             ${docBtn(x, id, "")}
             <span class="g-pctbox"><span class="g-pct">${p}%</span>${wd(x)}</span>
             <button class="icon-btn sm edit-only g-edit" data-edit="${esc(id)}" aria-label="${t("edit.row")}" title="${t("edit.row")}">✎</button>
@@ -343,7 +407,7 @@
     const sc = $("g-scroll");
     let acc = 0, anchor = null, pending = false;
     sc.addEventListener("wheel", (e) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // เลื่อนแนวนอน (touchpad) ปล่อยตามปกติ
+      if (listMode() || Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; // มุมมองรายการ / เลื่อนแนวนอน (touchpad) ปล่อยตามปกติ
       e.preventDefault();
       const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaMode === 2 ? e.deltaY * 300 : e.deltaY;
       acc += dy;
@@ -367,12 +431,53 @@
       }, 16);
     }, { passive: false });
   })();
+
+  // ---------- มือถือ/iPad: ใช้ 2 นิ้วถ่าง/หุบ = zoom, นิ้วเดียวเลื่อนตามปกติ ----------
+  (function pinchZoom() {
+    const sc = $("g-scroll");
+    let pz = null, pending = false;
+    const dist = (a, b) => Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    sc.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 2 || listMode()) return;
+      const [a, b] = e.touches, r = range(), dw = dayW();
+      const px = Math.max(0, (a.clientX + b.clientX) / 2 - sc.getBoundingClientRect().left - gl());
+      // จำวันที่ตรงกลางระหว่าง 2 นิ้วไว้ ให้อยู่ที่เดิมระหว่าง zoom
+      pz = { d0: Math.max(20, dist(a, b)), days0: spanDays(), ms: r.start.getTime() + ((sc.scrollLeft + px) / dw) * DAY, px };
+    }, { passive: true });
+    sc.addEventListener("touchmove", (e) => {
+      if (!pz || e.touches.length !== 2) return;
+      e.preventDefault();                                   // ไม่ให้เบราว์เซอร์ซูมทั้งหน้า
+      const [a, b] = e.touches;
+      const next = Math.min(730, Math.max(3, Math.round(pz.days0 * pz.d0 / Math.max(20, dist(a, b)))));
+      if (next === customDays) return;
+      customDays = next;
+      document.querySelectorAll("#zoom .seg-btn").forEach((x) => x.classList.remove("on"));
+      if (pending) return;
+      pending = true;
+      setTimeout(() => {
+        pending = false; if (!pz) return;
+        focused = true; render();
+        sc.scrollLeft = ((pz.ms - range().start.getTime()) / DAY) * dayW() - pz.px;
+      }, 30);
+    }, { passive: false });
+    const end = (e) => { if (e.touches.length < 2) pz = null; };
+    sc.addEventListener("touchend", end);
+    sc.addEventListener("touchcancel", end);
+    // Safari (iPhone/iPad) มี gesture event ของตัวเอง — กันไม่ให้ซูมทั้งหน้า
+    sc.addEventListener("gesturestart", (e) => e.preventDefault());
+  })();
   $("zoom").addEventListener("click", (e) => {
     const b = e.target.closest(".seg-btn"); if (!b) return;
     document.querySelectorAll("#zoom .seg-btn").forEach((x) => x.classList.toggle("on", x === b));
     view = b.dataset.z; customDays = null; focused = true; render(); toPeriod(false);
   });
   $("g-today").addEventListener("click", () => toPeriod(true));
+  $("g-mode").addEventListener("click", (e) => {
+    const b = e.target.closest(".seg-btn"); if (!b || b.dataset.m === modePref) return;
+    modePref = b.dataset.m;
+    try { localStorage.setItem("g_mode", modePref); } catch {}
+    render(); if (!listMode()) toPeriod(false);
+  });
   $("g-hide").addEventListener("click", () => {
     hideDone = !hideDone;
     try { localStorage.setItem("g_hideDone", hideDone ? "1" : "0"); } catch {}

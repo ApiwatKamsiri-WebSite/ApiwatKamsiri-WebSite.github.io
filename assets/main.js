@@ -301,7 +301,8 @@
   addEventListener("keydown", (e) => { if (e.key === "Escape" && contactOpen) closeContact(); });
 
   // ---------- links + vault ----------
-  let vaultFiles = null, vaultMsg = "";
+  let vaultFiles = null, vaultMsg = "", vaultPin = "";   // PIN อยู่ในหน่วยความจำระหว่างปลดล็อกเท่านั้น (ใช้เข้ารหัสตอนบันทึก)
+  const vaultBlob = () => TS.vault || window.VAULT;
   function renderLinks() {
     const groups = (TS.linkGroups || []).map((g) => `
       <div class="card group">
@@ -320,11 +321,11 @@
       <div class="card group vault ${open ? "open" : ""}" id="vault-card">
         <div class="group-head">
           <h3><span class="ic v">${svg(open ? "unlock" : "lock", 18)}</span>${esc(t("vault.name"))}</h3>
-          ${open ? `<button class="btn sm" id="vault-lock-btn">${esc(t("vault.lock"))}</button>` : `<span class="member v">${esc(t("vault.private"))}</span>`}
+          ${open ? `<span class="vault-btns"><button class="btn sm edit-only" id="vault-edit-btn">${esc(t("vault.edit"))}</button><button class="btn sm" id="vault-lock-btn">${esc(t("vault.lock"))}</button></span>` : `<span class="member v">${esc(t("vault.private"))}</span>`}
         </div>
         ${open
           ? (vaultFiles.length
-            ? `<div class="lk-grid">${vaultFiles.map((f) => `<a class="lk" ${TE.linkAttrs(f.url)}><span class="vt">${esc((f.type || TS.linkType(f.url)).slice(0, 6))}</span><span>${esc(L(f.name))}</span><b class="go">↗</b></a>`).join("")}</div>`
+            ? `<div class="lk-grid">${vaultFiles.filter((f) => f.url).map((f) => `<a class="lk" ${TE.linkAttrs(f.url)}>${svg(f.icon || "auto", 20, f.url)}<span>${esc(L(f.name))}</span><b class="go">${TE.linkGo(f.url)}</b></a>`).join("")}</div>`
             : `<div class="vault-empty">${esc(t("vault.empty"))}</div>`)
           : `<form class="pin-form" id="pin-form" autocomplete="off">
               <div class="pin-lock">${svg("lock", 28)}</div>
@@ -337,11 +338,11 @@
   }
 
   async function tryPin(pin) {
-    if (!window.VAULT) { vaultMsg = "vault.none"; renderLinks(); return; }
+    if (!vaultBlob()) { vaultMsg = "vault.none"; renderLinks(); return; }
     const msg = $("pin-msg"); msg.className = "msg info"; msg.textContent = t("vault.verifying");
     try {
-      vaultFiles = await window.VaultCrypto.decryptJSON(window.VAULT, pin);
-      vaultMsg = "";
+      vaultFiles = await window.VaultCrypto.decryptJSON(vaultBlob(), pin);
+      vaultMsg = ""; vaultPin = pin;
       renderLinks();
     } catch {
       vaultMsg = "vault.wrong";
@@ -355,7 +356,10 @@
     if (e.target.value.length === 4) tryPin(e.target.value);
   });
   $("link-groups").addEventListener("submit", (e) => { e.preventDefault(); const v = $("pin").value; if (v) tryPin(v); });
-  $("link-groups").addEventListener("click", (e) => { if (e.target.closest("#vault-lock-btn")) { vaultFiles = null; vaultMsg = ""; renderLinks(); } });
+  $("link-groups").addEventListener("click", (e) => {
+    if (e.target.closest("#vault-lock-btn")) { vaultFiles = null; vaultMsg = ""; vaultPin = ""; renderLinks(); }
+    if (e.target.closest("#vault-edit-btn")) TE.ensureEdit(() => TE.openVault(vaultFiles, vaultPin, (items) => { vaultFiles = items; renderLinks(); }));
+  });
 
   // ---------- render ทั้งหมด + เมื่อเปลี่ยนภาษา ----------
   function renderTaskViews() {

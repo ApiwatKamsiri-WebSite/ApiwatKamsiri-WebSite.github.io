@@ -474,7 +474,7 @@ body.modal-open { overflow: hidden; }
 .page-top { padding: 110px 0 20px; }
 .g-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
 .gantt { --gl: 350px; padding: 0; overflow: hidden; }
-.g-scroll { cursor: grab; overflow-x: auto; scrollbar-color: var(--line-2) transparent; scrollbar-width: thin; }
+.g-scroll { cursor: grab; overflow-x: auto; touch-action: pan-x pan-y; -webkit-overflow-scrolling: touch; scrollbar-color: var(--line-2) transparent; scrollbar-width: thin; }
 .g-scroll.dragging { cursor: grabbing; user-select: none; }
 .g-scroll.dragging * { cursor: grabbing !important; }
 .g-inner { position: relative; width: max-content; min-width: 100%; }
@@ -698,3 +698,59 @@ body.modal-open { overflow: hidden; }
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; }
 }
+
+/* vault editor */
+.vault-btns { display: inline-flex; gap: 6px; }
+.ve-hint { margin: 0 0 12px; font-size: 13px; color: var(--muted); }
+
+/* timeline บนจอเล็ก: ปุ่มสลับ Timeline / รายการ */
+.g-mode { display: none; }
+@media (max-width: 900px) { .g-mode { display: inline-flex; } }
+body.g-listmode #zoom, body.g-listmode #g-today { display: none; }
+/* A: มือถือแนวตั้ง — ไม่มีคอลัมน์ชื่อ, ชื่องานอยู่บรรทัดเหนือแถบ (ใช้ความกว้างจอเต็มสำหรับเส้นเวลา) */
+.gantt.compact { --gl: 0px; }
+.gantt.compact .g-row { display: block; }
+.gantt.compact .g-left { width: var(--scw); border-right: 0; background: rgba(12, 18, 28, 0.82); padding: 8px 12px 2px; min-height: 0; }
+.gantt.compact .g-head .g-left { display: none; }
+.gantt.compact .g-body-row .g-right { height: 34px; }
+.gantt.compact .g-sub .g-left { padding-left: 34px; min-height: 0; }
+.gantt.compact .g-sub .g-right { height: 24px; }
+.gantt.compact .g-info .g-left { padding: 6px 12px 12px 34px; }
+.gantt.compact .g-name b { font-size: 14px; }
+.g-when { display: none; }
+.gantt.compact .g-when { display: inline; }
+.gantt.compact .g-days span { font-size: 9.5px; overflow: visible; }
+.gantt.compact .g-days span.we { color: color-mix(in srgb, var(--muted) 60%, transparent); }
+.gantt.compact .g-group.open > .g-row > .g-left { background: rgba(15, 22, 34, 0.9); }
+/* B: มุมมองรายการ (การ์ด) */
+.gantt.list .g-scroll { cursor: auto; overflow: visible; }
+.gantt.list .g-inner { width: auto; }
+.gl-list { display: grid; gap: 1px; background: var(--line); }
+/* สีตามสถานะ (.st-*) เหมือน timeline */
+.gl-card { padding: 14px 14px 12px; border-left: 3px solid var(--c); }
+.gl-card { background: linear-gradient(90deg, color-mix(in srgb, var(--c) 10%, #0c121c), #0c121c 70%); }
+.gl-card.open { background: linear-gradient(90deg, color-mix(in srgb, var(--c) 12%, #0f1622), #0f1622 70%); }
+.gl-name b::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--c); vertical-align: 2px; box-shadow: 0 0 8px var(--c); }
+.gl-card .g-pct { color: var(--c); }
+.gl-top { display: flex; align-items: flex-start; gap: 10px; }
+.gl-top .g-chev { margin-top: 2px; }
+.gl-name { flex: 1; min-width: 0; cursor: pointer; }
+.gl-name b { display: block; color: var(--white); font-size: 15.5px; line-height: 1.4; overflow-wrap: anywhere; }
+.gl-name small { display: block; margin-top: 2px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.gl-prog { display: flex; align-items: center; gap: 10px; margin: 10px 0 0 36px; }
+.gl-prog .g-pct { min-width: 38px; }
+.gl-bar { flex: 1; height: 8px; border-radius: 99px; background: color-mix(in srgb, var(--c) 14%, transparent); overflow: hidden; }
+.gl-bar i { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 55%, transparent), var(--c)); }
+.gl-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 6px 0 0 36px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.gl-meta .g-wd { font-size: 11px; }
+.gl-subs { list-style: none; margin: 12px 0 0 36px; padding: 0; display: grid; gap: 2px; border-top: 1px solid var(--line); padding-top: 8px; }
+.gl-subs li { display: flex; align-items: center; gap: 8px; padding: 6px 0; }
+.gl-subs .g-dot { display: block; }
+.gl-sname { flex: 1; min-width: 0; }
+.gl-sname b { display: block; font-size: 13.5px; font-weight: 500; color: var(--text); line-height: 1.35; overflow-wrap: anywhere; }
+.gl-sname small { display: block; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+.gl-card .g-desc { margin: 8px 0 0 36px; font-size: 13px; line-height: 1.5; color: var(--muted); }
+/* ชื่องานยาว: ขึ้นบรรทัดใหม่ได้ (สูงสุด 3 บรรทัด) แทนการตัดเป็น … — จอแนวตั้ง/จอกลางอ่านชื่อได้ครบขึ้น */
+.g-name b { white-space: normal; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow-wrap: anywhere; }
+.g-name small { white-space: normal; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+@media (min-width: 1000px) and (max-width: 1399px) { .gantt { --gl: 420px; } }

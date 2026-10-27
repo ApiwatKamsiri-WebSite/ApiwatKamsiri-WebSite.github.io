@@ -35,6 +35,7 @@
     tasks: [],
     holidays: [],     // [{ date: "YYYY-MM-DD", name: { en, th } }]
     linkGroups: [],   // ลิงก์ทางลัด (กลุ่ม + รายการ)
+    vault: null,      // คลังส่วนตัว — เข้ารหัสด้วย PIN แล้ว ({ v, salt, iv, data }) — ไม่มี = ใช้ window.VAULT
     updated: "",
     sha: "",
     error: "",
@@ -123,6 +124,7 @@
       S.tasks = Array.isArray(data.tasks) ? data.tasks : [];
       S.holidays = Array.isArray(data.holidays) ? data.holidays : [];
       S.linkGroups = Array.isArray(data.links) ? data.links : [];
+      S.vault = data.vault && data.vault.data ? data.vault : null;
       S.updated = data.updated || "";
       syncBody();
       document.dispatchEvent(new Event("tasks:change"));
@@ -130,13 +132,15 @@
     },
 
     // ---------- บันทึก (commit เข้า GitHub) ----------
-    // part = { tasks? , holidays? , links? } ส่วนที่เปลี่ยน (แทนที่ของเดิมเมื่อบันทึกสำเร็จเท่านั้น)
+    // part = { tasks? , holidays? , links? , vault? } ส่วนที่เปลี่ยน (แทนที่ของเดิมเมื่อบันทึกสำเร็จเท่านั้น)
     async save(part, message) {
-      const tasks = part.tasks ?? S.tasks, holidays = part.holidays ?? S.holidays, links = part.links ?? S.linkGroups;
+      const tasks = part.tasks ?? S.tasks, holidays = part.holidays ?? S.holidays, links = part.links ?? S.linkGroups, vault = part.vault ?? S.vault;
       if (!S.editing) throw new Error("not in edit mode");
       if (!S.sha) await loadFromApi(true);
       const updated = new Date().toISOString();
-      const body = JSON.stringify({ updated, tasks, holidays, links }, null, 2) + "\n";
+      const data = { updated, tasks, holidays, links };
+      if (vault) data.vault = vault;
+      const body = JSON.stringify(data, null, 2) + "\n";
       const r = await fetch(`${API}/contents/${R.tasksPath}`, {
         method: "PUT",
         headers: { ...(await S.authHeaders()), "Content-Type": "application/json" },
@@ -150,8 +154,8 @@
       const j = await r.json();
       S.sha = j.content.sha;
       S.updated = updated;
-      S.tasks = tasks; S.holidays = holidays; S.linkGroups = links;
-      try { store("local")?.setItem(PENDING_KEY, JSON.stringify({ updated, tasks, holidays, links })); } catch {}
+      S.tasks = tasks; S.holidays = holidays; S.linkGroups = links; S.vault = vault;
+      try { store("local")?.setItem(PENDING_KEY, JSON.stringify(data)); } catch {}
       document.dispatchEvent(new Event("tasks:change"));
     },
 
