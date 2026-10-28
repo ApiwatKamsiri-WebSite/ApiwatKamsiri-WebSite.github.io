@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28T03:45:47.326Z",
+  "updated": "2026-10-28T03:46:00.308Z",
   "tasks": [
     {
       "id": 1,
@@ -45,7 +45,7 @@
             "en": "Abnormal reset (BONA model)",
             "th": "การรีเซตที่ผิดปกติ (BONA model)"
           },
-          "status": "todo",
+          "status": "doing",
           "start": "2026-11-09",
           "due": "2026-11-20",
           "progress": 20
