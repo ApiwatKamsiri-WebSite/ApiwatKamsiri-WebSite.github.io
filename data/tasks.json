@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28T03:43:05.072Z",
+  "updated": "2026-10-28T03:45:47.326Z",
   "tasks": [
     {
       "id": 1,
@@ -11,6 +11,10 @@
       "status": "doing",
       "start": "2026-09-21",
       "due": "2026-11-27",
+      "desc": {
+        "en": "Abnormal reset : Add software to read feedback reset, stack usage, Mode, time record to black box.",
+        "th": "การรีเซ็ตที่ผิดปกติ (Abnormal reset): เพิ่มซอฟต์แวร์เพื่อบันทึกข้อมูลการรีเซ็ต, การใช้งานสแต็ก (stack usage), โหมดการทำงาน และบันทึกเวลา ลงในกล่องดำ (black box)"
+      },
       "links": [
         {
           "name": "RA2 Reset Monitor",
@@ -43,7 +47,8 @@
           },
           "status": "todo",
           "start": "2026-11-09",
-          "due": "2026-11-20"
+          "due": "2026-11-20",
+          "progress": 20
         },
         {
           "id": "1.3",
