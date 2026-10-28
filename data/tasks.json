@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-27T10:34:53.501Z",
+  "updated": "2026-10-28T03:43:05.072Z",
   "tasks": [
     {
       "id": 1,
@@ -11,6 +11,12 @@
       "status": "doing",
       "start": "2026-09-21",
       "due": "2026-11-27",
+      "links": [
+        {
+          "name": "RA2 Reset Monitor",
+          "url": "https://claude.ai/artifact/SZyJYnhnjo8sLHLNdzgA2F"
+        }
+      ],
       "subtasks": [
         {
           "id": "1.1",
@@ -21,7 +27,7 @@
           "status": "done",
           "start": "2026-09-21",
           "due": "2026-10-16",
-          "done": "2026-10-21",
+          "done": "2026-10-16",
           "links": [
             {
               "name": "I2C Write Bug Analysis",
