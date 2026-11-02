@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28T07:12:46.340Z",
+  "updated": "2026-11-02T02:30:30.805Z",
   "tasks": [
     {
       "id": 1,
@@ -12,8 +12,8 @@
       "start": "2026-09-21",
       "due": "2026-11-27",
       "desc": {
-        "en": "Abnormal reset : Add software to read feedback reset, stack usage, Mode, time record to black box.",
-        "th": "การรีเซ็ตที่ผิดปกติ (Abnormal reset): เพิ่มซอฟต์แวร์เพื่อบันทึกข้อมูลการรีเซ็ต, การใช้งานสแต็ก (stack usage), โหมดการทำงาน และบันทึกเวลา ลงในกล่องดำ (black box)"
+        "en": "Abnormal Reset: Added software to record the reset cause, stack usage, operating mode, and timestamp in the black box.\n\nAbnormal Reset and Display Setting Reset\n\nAfter reducing the stack size to reproduce the issue more easily, the refrigerator reset and the display settings were also reset.",
+        "th": "การรีเซ็ตผิดปกติ: เพิ่มซอฟต์แวร์สำหรับบันทึกสาเหตุการรีเซ็ต การใช้งาน Stack โหมดการทำงาน และเวลา ลงใน Black Box\n\nการรีเซ็ตผิดปกติและการรีเซ็ตค่าตั้งของ Display\n\nหลังจากลดขนาด Stack เพื่อให้จำลองปัญหาได้ง่ายขึ้น พบว่าตู้เย็นเกิดการรีเซ็ต และค่าตั้งของ Display ถูกรีเซ็ตด้วย"
       },
       "links": [
         {
@@ -48,7 +48,7 @@
           "status": "doing",
           "start": "2026-11-09",
           "due": "2026-11-20",
-          "progress": 20
+          "progress": 50
         },
         {
           "id": "1.3",
@@ -56,9 +56,10 @@
             "en": "Display control reset to default by unknown cause (BONA model)",
             "th": "การตั้งค่าการแสดงผลถูกรีเซ็ตเป็นค่าเริ่มต้นโดยไม่ทราบสาเหตุ (รุ่น BONA)"
           },
-          "status": "todo",
+          "status": "doing",
           "start": "2026-10-19",
-          "due": "2026-11-06"
+          "due": "2026-11-06",
+          "progress": 40
         }
       ]
     },
