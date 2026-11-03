@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-02T09:03:27.845Z",
+  "updated": "2026-11-03T07:46:03.593Z",
   "tasks": [
     {
       "id": 1,
@@ -290,21 +290,43 @@
       "project": "FBF/SBS/BF",
       "status": "todo",
       "start": "2026-10-27",
-      "due": "2026-11-03",
+      "due": "2026-11-16",
       "desc": {
-        "en": "We need to check and adjust the software quickly (Target 3 Nov'26 and start 4 Nov'26)",
+        "en": "We need to check and adjust the software quickly (Target 13 Nov'26 and start 16 Nov'26)",
         "th": "เราจำเป็นต้องตรวจสอบและปรับปรุงซอฟต์แวร์โดยเร่งด่วน (กำหนดเสร็จภายในวันที่ 3 พ.ย. 2026 และเริ่มใช้งานในวันที่ 4 พ.ย. 2026)"
       },
       "subtasks": [
         {
           "id": "7.1",
           "name": {
-            "en": "Setting program and test compare 2 mat",
-            "th": "ตั้งค่าโปรแกรมและทดสอบเปรียบเทียบ 2 แมต"
+            "en": "Setting program",
+            "th": "ตั้งค่าโปรแกรม"
+          },
+          "status": "done",
+          "start": "2026-10-27",
+          "due": "2026-10-28",
+          "done": "2026-10-28"
+        },
+        {
+          "id": "7.2",
+          "name": {
+            "en": "Test touch with current PCB",
+            "th": "ทดสอบการสัมผัสกับ PCB ปัจจุบัน"
+          },
+          "status": "doing",
+          "start": "2026-11-02",
+          "due": "2026-11-05",
+          "progress": 30
+        },
+        {
+          "id": "7.3",
+          "name": {
+            "en": "Test touch with New PCB",
+            "th": "ทดสอบการสัมผัสกับ PCB ใหม่"
           },
           "status": "todo",
-          "start": "2026-10-27",
-          "due": "2026-10-29"
+          "start": "2026-11-11",
+          "due": "2026-11-13"
         }
       ]
     }
