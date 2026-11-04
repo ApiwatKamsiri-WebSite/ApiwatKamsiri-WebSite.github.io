@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04T04:50:29.316Z",
+  "updated": "2026-11-04T07:18:18.615Z",
   "tasks": [
     {
       "id": 1,
@@ -328,6 +328,59 @@
           "status": "todo",
           "start": "2026-11-11",
           "due": "2026-11-13"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": {
+        "en": "Design changing point for improve EEPROM function record abnormal",
+        "th": "เอกสารปรับเปลี่ยนการออกแบบเพื่อปรับปรุงการบันทึกข้อมูลความผิดปกติใน EEPROM"
+      },
+      "project": "FUJI/HOSHI",
+      "status": "todo",
+      "start": "2026-11-05",
+      "due": "2026-11-20",
+      "subtasks": [
+        {
+          "id": "8.1",
+          "name": {
+            "en": "Prepare design changing point and DS test (Test review)",
+            "th": "เตรียมจุดที่มีการเปลี่ยนแปลงการออกแบบและการทดสอบโดยดีไซล์"
+          },
+          "status": "todo",
+          "start": "2026-11-05",
+          "due": "2026-11-09"
+        },
+        {
+          "id": "8.2",
+          "name": {
+            "en": "Test confirm software with RQA teams",
+            "th": "ตรวจสอบยืนยันซอฟแวร์กับ RQA"
+          },
+          "status": "todo",
+          "start": "2026-11-09",
+          "due": "2026-11-13"
+        },
+        {
+          "id": "8.3",
+          "name": {
+            "en": "Prepare and config software meeting with RQA EC ELEC",
+            "th": "จัดเตรียมและกำหนดค่าซอฟต์แวร์ โดยหารือร่วมกับ RQA EC ELEC"
+          },
+          "status": "todo",
+          "start": "2026-11-16",
+          "due": "2026-11-18"
+        },
+        {
+          "id": "8.4",
+          "name": {
+            "en": "Make BOM and apply",
+            "th": "จัดทำ BOM และนำไปใช้งาน"
+          },
+          "status": "todo",
+          "start": "2026-11-18",
+          "due": "2026-11-20"
         }
       ]
     }
