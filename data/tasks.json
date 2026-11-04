@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-04T04:37:55.046Z",
+  "updated": "2026-11-04T04:38:58.450Z",
   "tasks": [
     {
       "id": 1,
@@ -205,9 +205,10 @@
             "en": "Make and software meeting with RQA",
             "th": "จัดการประชุมเรื่องซอฟต์แวร์ร่วมกับ RQA"
           },
-          "status": "todo",
+          "status": "doing",
           "start": "2026-11-04",
-          "due": "2026-11-06"
+          "due": "2026-11-06",
+          "progress": 10
         },
         {
           "id": "4.5",
