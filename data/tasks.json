@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-05T02:12:53.856Z",
+  "updated": "2026-11-05T06:04:17.592Z",
   "tasks": [
     {
       "id": 1,
@@ -66,6 +66,16 @@
           "name": {
             "en": "Add condition test (Use Old stack 0x300 test with REF RED, Simulator maximum use stack to confirm new stack 0x600)",
             "th": "เพิ่มการทดสอบเงื่อนไข (ใช้สแต็กเดิมขนาด 0x300 ทดสอบร่วมกับ REF RED และใช้การจำลองสถานการณ์ที่ระดับการใช้สแต็กสูงสุด เพื่อยืนยันการทำงานของสแต็กใหม่ขนาด 0x600)"
+          },
+          "status": "todo",
+          "start": "2026-11-09",
+          "due": "2026-11-27"
+        },
+        {
+          "id": "1.5",
+          "name": {
+            "en": "Add reset record watchdog timer, stack overflow, SRAM error, bus error, and RSTR1",
+            "th": "เพิ่มการบันทึกสาเหตุการรีเซ็ต (Reset Record) สำหรับกรณี Watchdog Timer, Stack Overflow, SRAM Error, Bus Error และ RSTR1"
           },
           "status": "todo",
           "start": "2026-11-09",
