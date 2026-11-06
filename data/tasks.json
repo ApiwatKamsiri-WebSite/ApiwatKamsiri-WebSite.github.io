@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-06T06:17:43.938Z",
+  "updated": "2026-11-06T06:21:06.074Z",
   "tasks": [
     {
       "id": 1,
@@ -403,6 +403,18 @@
           "due": "2026-11-20"
         }
       ]
+    },
+    {
+      "id": 9,
+      "name": {
+        "en": "Design changing point for improve HUM and IM control as BONA H30/50 and ALPS78 H50",
+        "th": "ปรับเปลี่ยนจุดออกแบบเพื่อปรับปรุงการควบคุม HUM และ IN เช่นเดียวกับรุ่น BONA H30/50 และ ALPS 78 H50"
+      },
+      "project": "BONA H10/20, ALPS78 H10/30, HOSHI H30",
+      "status": "todo",
+      "start": "2026-11-04",
+      "due": "2026-11-20",
+      "subtasks": []
     }
   ],
   "holidays": [
