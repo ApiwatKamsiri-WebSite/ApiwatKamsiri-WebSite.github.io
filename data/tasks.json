@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-06T06:24:22.913Z",
+  "updated": "2026-11-06T06:25:23.293Z",
   "tasks": [
     {
       "id": 1,
@@ -222,8 +222,8 @@
         {
           "id": "4.4",
           "name": {
-            "en": "Make and software meeting with RQA",
-            "th": "จัดการประชุมเรื่องซอฟต์แวร์ร่วมกับ RQA"
+            "en": "Make and software meeting with RQA (BONA H30 Only)",
+            "th": "จัดการประชุมเรื่องซอฟต์แวร์ร่วมกับ RQA (BONA H30 เท่านั้น)"
           },
           "status": "doing",
           "start": "2026-11-04",
