@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-06T06:21:06.074Z",
+  "updated": "2026-11-06T06:24:22.913Z",
   "tasks": [
     {
       "id": 1,
@@ -414,7 +414,48 @@
       "status": "todo",
       "start": "2026-11-04",
       "due": "2026-11-20",
-      "subtasks": []
+      "subtasks": [
+        {
+          "id": "9.1",
+          "name": {
+            "en": "Prepare design changing point and DS test (Test review)",
+            "th": "เตรียมประเด็นการเปลี่ยนแปลงการออกแบบและการทดสอบ DS (การทบทวนการทดสอบ)"
+          },
+          "status": "todo",
+          "start": "2026-11-04",
+          "due": "2026-11-09"
+        },
+        {
+          "id": "9.2",
+          "name": {
+            "en": "Test confirm software with RQA Teams",
+            "th": "ตรวจสอบยืนยันซอฟต์แวร์ร่วมกับทีม RQA"
+          },
+          "status": "todo",
+          "start": "2026-11-09",
+          "due": "2026-11-13"
+        },
+        {
+          "id": "9.3",
+          "name": {
+            "en": "Prepare and config software meeting with RQA EC ELEC",
+            "th": "จัดเตรียมและกำหนดค่าซอฟต์แวร์ โดยหารือร่วมกับ RQA EC ELEC"
+          },
+          "status": "todo",
+          "start": "2026-11-16",
+          "due": "2026-11-18"
+        },
+        {
+          "id": "9.4",
+          "name": {
+            "en": "Make BOM and apply",
+            "th": "จัดทำ BOM และนำไปใช้งาน"
+          },
+          "status": "todo",
+          "start": "2026-11-18",
+          "due": "2026-11-20"
+        }
+      ]
     }
   ],
   "holidays": [
