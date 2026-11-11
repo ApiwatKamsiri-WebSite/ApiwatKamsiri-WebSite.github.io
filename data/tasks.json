@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T03:30:26.143Z",
+  "updated": "2026-11-11T06:19:46.630Z",
   "tasks": [
     {
       "id": 1,
@@ -237,17 +237,17 @@
           "done": "2026-11-06",
           "updates": [
             {
-              "date": "2026-11-11",
-              "text": {
-                "en": "Completed",
-                "th": "เสร็จสิ้น"
-              }
-            },
-            {
               "date": "2026-11-04",
               "text": {
                 "en": "HUM and IM function: HUM function is finished, Icemaking function is finished, Testing display communication function.",
                 "th": "ฟังก์ชัน HUM และ IM: ฟังก์ชัน HUM เสร็จแล้ว และฟังก์ชันการทำน้ำแข็ง (Ice Making) เสร็จแล้ว และ กำลังดำเนินการทดสอบฟังก์ชันการสื่อสารของหน้าจอแสดงผล"
+              }
+            },
+            {
+              "date": "2026-11-11",
+              "text": {
+                "en": "Completed",
+                "th": "เสร็จสิ้น"
               }
             }
           ]
@@ -281,6 +281,16 @@
           "status": "todo",
           "start": "2026-11-09",
           "due": "2026-11-12"
+        },
+        {
+          "id": "4.6",
+          "name": {
+            "en": "Massprod Point",
+            "th": "จุด Massprod"
+          },
+          "status": "todo",
+          "start": "2026-11-25",
+          "due": "2026-11-25"
         }
       ]
     },
