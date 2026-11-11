@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T02:51:09.999Z",
+  "updated": "2026-11-11T03:02:18.308Z",
   "tasks": [
     {
       "id": 1,
@@ -178,8 +178,8 @@
       "start": "2026-10-05",
       "due": "2026-11-13",
       "desc": {
-        "en": "During RQA testing of the ALPS78 H50, inconsistent results were found on the first ice-making cycle: some units produced ice, while others did not. Therefore, RQA requested a software update to add a one-time delay at ice-making start, allowing the heater to operate before water is supplied.\nHUM and IM function: HUM function is finished, Icemaking function is finished, Testing display communication function.",
-        "th": "จากการทดสอบของ RQA กับรุ่น ALPS78 H50 พบว่าการทำน้ำแข็งรอบแรกให้ผลไม่สม่ำเสมอ บางตู้มีน้ำแข็ง บางตู้ไม่มีน้ำแข็ง จึงร้องขอให้ปรับปรุงซอฟต์แวร์โดยเพิ่มการหน่วงเวลาหนึ่งครั้งเมื่อเริ่มทำน้ำแข็ง เพื่อให้ฮีตเตอร์ทำงานก่อนจ่ายน้ำ\nฟังก์ชัน HUM และ IM: ฟังก์ชัน HUM เสร็จแล้ว และฟังก์ชันการทำน้ำแข็ง (Ice Making) เสร็จแล้ว และ กำลังดำเนินการทดสอบฟังก์ชันการสื่อสารของหน้าจอแสดงผล"
+        "en": "During RQA testing of the ALPS78 H50, inconsistent results were found on the first ice-making cycle: some units produced ice, while others did not. Therefore, RQA requested a software update to add a one-time delay at ice-making start, allowing the heater to operate before water is supplied.",
+        "th": "จากการทดสอบของ RQA กับรุ่น ALPS78 H50 พบว่าการทำน้ำแข็งรอบแรกให้ผลไม่สม่ำเสมอ บางตู้มีน้ำแข็ง บางตู้ไม่มีน้ำแข็ง จึงร้องขอให้ปรับปรุงซอฟต์แวร์โดยเพิ่มการหน่วงเวลาหนึ่งครั้งเมื่อเริ่มทำน้ำแข็ง เพื่อให้ฮีตเตอร์ทำงานก่อนจ่ายน้ำ"
       },
       "links": [
         {
@@ -225,7 +225,23 @@
           "status": "done",
           "start": "2026-10-26",
           "due": "2026-11-06",
-          "done": "2026-11-06"
+          "done": "2026-11-06",
+          "updates": [
+            {
+              "date": "2026-11-11",
+              "text": {
+                "en": "Completed",
+                "th": "เสร็จสิ้น"
+              }
+            },
+            {
+              "date": "2026-11-04",
+              "text": {
+                "en": "HUM and IM function: HUM function is finished, Icemaking function is finished, Testing display communication function.",
+                "th": "ฟังก์ชัน HUM และ IM: ฟังก์ชัน HUM เสร็จแล้ว และฟังก์ชันการทำน้ำแข็ง (Ice Making) เสร็จแล้ว และ กำลังดำเนินการทดสอบฟังก์ชันการสื่อสารของหน้าจอแสดงผล"
+              }
+            }
+          ]
         },
         {
           "id": "4.4",
