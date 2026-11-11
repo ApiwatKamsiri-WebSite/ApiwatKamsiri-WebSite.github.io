@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T03:22:13.355Z",
+  "updated": "2026-11-11T03:30:26.143Z",
   "tasks": [
     {
       "id": 1,
@@ -70,7 +70,16 @@
           "status": "doing",
           "start": "2026-11-09",
           "due": "2026-11-27",
-          "progress": 10
+          "progress": 10,
+          "updates": [
+            {
+              "date": "2026-11-11",
+              "text": {
+                "en": "Start test with kitchen REF (BONA H50)",
+                "th": "เริ่มการทดสอบโดยใช้ตู้เย็นในห้องครัว (รุ่น BONA H50)"
+              }
+            }
+          ]
         },
         {
           "id": "1.5",
