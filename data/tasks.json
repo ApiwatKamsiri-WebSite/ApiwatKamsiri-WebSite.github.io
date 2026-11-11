@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T02:44:51.850Z",
+  "updated": "2026-11-11T02:49:04.417Z",
   "tasks": [
     {
       "id": 1,
@@ -470,6 +470,49 @@
           "status": "todo",
           "start": "2026-11-18",
           "due": "2026-11-20"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": {
+        "en": "Make software to running test (EEPROM IC EOL) - 16kbit",
+        "th": "พัฒนาซอฟต์แวร์สำหรับดำเนินการทดสอบ (EEPROM IC EOL) - 16kbit"
+      },
+      "project": "All model - 16kbit",
+      "status": "todo",
+      "start": "2026-11-11",
+      "due": "2026-11-18",
+      "subtasks": [
+        {
+          "id": "10.1",
+          "name": {
+            "en": "Making the software",
+            "th": "จัดทำซอฟแวร์"
+          },
+          "status": "todo",
+          "start": "2026-11-11",
+          "due": "2026-11-13"
+        },
+        {
+          "id": "10.2",
+          "name": {
+            "en": "Test Debug",
+            "th": "ทดสอบโดย Debug"
+          },
+          "status": "todo",
+          "start": "2026-11-13",
+          "due": "2026-11-17"
+        },
+        {
+          "id": "10.3",
+          "name": {
+            "en": "Update software with PCB new EEPROM IC to test",
+            "th": "อัปเดตซอฟต์แวร์ด้วยไอซี EEPROM PCB ใหม่เพื่อทดสอบ"
+          },
+          "status": "todo",
+          "start": "2026-11-18",
+          "due": "2026-11-18"
         }
       ]
     }
