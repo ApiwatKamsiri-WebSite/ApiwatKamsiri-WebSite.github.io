@@ -7,6 +7,8 @@
   const t = (k, v) => I.t(k, v);
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const TOKEN_HELP = "https://github.com/settings/personal-access-tokens/new";
+  // ไอคอนบันทึกอัปเดต (ข้อความ)
+  const NOTE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>';
   const CLIP = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.4 11.1-9.2 9.2a6 6 0 0 1-8.5-8.5l9.2-9.2a4 4 0 0 1 5.7 5.7l-9.2 9.2a2 2 0 0 1-2.8-2.8l8.5-8.5"/></svg>';
 
   // ---------- โครง modal + toast ----------
@@ -191,6 +193,17 @@
       </div>`).join("");
   }
 
+  // แถวบันทึกอัปเดต: วันที่ + ข้อความ 2 ภาษา (scope = "t" ของหัวข้อใหญ่ หรือเลข index ของงานย่อย)
+  function updRows(list, scope) {
+    return (list || []).map((u, j) => `
+      <div class="upd-row" data-scope="${scope}" data-ui="${j}">
+        <input data-u="date" type="date" value="${esc(u.date || "")}" aria-label="${t("ed.updDate")}">
+        <input data-u="en" value="${esc(nameOf(u.text, "en"))}" placeholder="${t("ed.updText")} (EN)">
+        <input data-u="th" value="${esc(nameOf(u.text, "th"))}" placeholder="${t("ed.updText")} (TH)">
+        <button type="button" class="icon-btn sm" data-del-upd="${scope}:${j}" aria-label="${t("ed.remove")}" title="${t("ed.remove")}">✕</button>
+      </div>`).join("");
+  }
+
   function subRow(s, i) {
     return `
       <div class="sub-row" data-i="${i}">
@@ -204,9 +217,11 @@
           <input data-f="due" type="date" value="${esc(s.due || "")}" aria-label="${t("ed.due")}">
           <span class="sub-pct"><input data-f="progress" type="number" min="0" max="100" value="${s.status === "done" ? 100 : +s.progress || 0}" ${s.status === "done" ? "disabled" : ""}>%</span>
           <button type="button" class="icon-btn sm" data-add-link="${i}" aria-label="${t("ed.addLink")}" title="${t("ed.addLink")}">${CLIP}</button>
+          <button type="button" class="icon-btn sm" data-add-upd="${i}" aria-label="${t("ed.addUpd")}" title="${t("ed.addUpd")}">${NOTE}</button>
           <button type="button" class="icon-btn sm" data-del-sub="${i}" aria-label="${t("ed.remove")}" title="${t("ed.remove")}">✕</button>
         </div>
         <div class="links">${linkRows(s.links, i)}</div>
+        <div class="upds">${updRows(s.updates, i)}</div>
       </div>`;
   }
 
@@ -239,6 +254,9 @@
 
         <div class="sub-head"><b>${t("ed.docs")}</b><button type="button" class="btn sm" data-add-link="t">${t("ed.addLink")}</button></div>
         <div class="links">${(d.links || []).length ? linkRows(d.links, "t") : `<div class="hint">${t("doc.none")}</div>`}</div>
+
+        <div class="sub-head"><b>${t("ed.updates")}</b><button type="button" class="btn sm" data-add-upd="t">${t("ed.addUpd")}</button></div>
+        <div class="upds">${(d.updates || []).length ? updRows(d.updates, "t") : `<div class="hint">${t("ed.noUpd")}</div>`}</div>
 
         <div class="sub-head"><b>${t("ed.subtasks")}</b><button type="button" class="btn sm" id="add-sub">${t("ed.addSub")}</button></div>
         <div class="subs">${hasSubs ? d.subtasks.map(subRow).join("") : `<div class="hint">${t("ed.noSub")}</div>`}</div>
@@ -319,6 +337,12 @@
       name: r.querySelector('[data-l="name"]').value.trim(), url: readUrl(r.querySelector(".url-field")) }));
     draft.links = read("t");
     draft.subtasks.forEach((s, i) => (s.links = read(String(i))));
+    // บันทึกอัปเดต
+    const readUpd = (scope) => [...box.querySelectorAll(`.upd-row[data-scope="${scope}"]`)].map((r) => ({
+      date: r.querySelector('[data-u="date"]').value,
+      text: { en: r.querySelector('[data-u="en"]').value.trim(), th: r.querySelector('[data-u="th"]').value.trim() } }));
+    draft.updates = readUpd("t");
+    draft.subtasks.forEach((s, i) => (s.updates = readUpd(String(i))));
     // หัวข้อใหญ่: ค่าเริ่มต้นของ "วันที่เสร็จ" = วันกำหนดเสร็จที่เลือก (แก้เองได้ในช่องวันที่เสร็จ)
     if (draft.status === "done" && !draft.done) draft.done = draft.due;
   }
@@ -340,10 +364,16 @@
     const cleanLinks = (ls) => (ls || []).filter((l) => l.url).map((l) => ({
       name: l.name || TS.defaultName(l.url), url: TS.normalizeUrl(l.url) }));
     if (cleanLinks(d.links).length) out.links = cleanLinks(d.links);
+    // อัปเดต: ตัดรายการว่าง, ไม่มีวันที่ = วันนี้, ใหม่สุดอยู่บน
+    const cleanUpd = (us) => (us || []).filter((u) => u.text && (u.text.en || u.text.th))
+      .map((u) => ({ date: u.date || TS.iso(TS.today), text: two(u.text) }))
+      .sort((a, b) => b.date.localeCompare(a.date));
+    if (cleanUpd(d.updates).length) out.updates = cleanUpd(d.updates);
     out.subtasks = d.subtasks.filter((s) => s.name.en || s.name.th).map((s, i) => {
       const o = { id: `${d.id}.${i + 1}`, name: two(s.name), status: s.status, start: s.start, due: s.due };
       if (s.status === "done") o.done = s.done; else if (s.progress) o.progress = s.progress;
       if (cleanLinks(s.links).length) o.links = cleanLinks(s.links);
+      if (cleanUpd(s.updates).length) o.updates = cleanUpd(s.updates);
       return o;
     });
     return out;
@@ -622,6 +652,23 @@
       rows[rows.length - 1]?.querySelector("input")?.focus();
       return;
     }
+    const addU = e.target.closest("[data-add-upd]");
+    if (addU) {
+      collect();
+      const sc = addU.dataset.addUpd, owner = sc === "t" ? draft : draft.subtasks[+sc];
+      (owner.updates = owner.updates || []).unshift({ date: TS.iso(TS.today), text: { en: "", th: "" } });
+      renderKeepScroll();
+      box.querySelector(`.upd-row[data-scope="${sc}"] [data-u="en"]`)?.focus();
+      return;
+    }
+    const delU = e.target.closest("[data-del-upd]");
+    if (delU) {
+      collect();
+      const [sc, j] = delU.dataset.delUpd.split(":");
+      (sc === "t" ? draft.updates : draft.subtasks[+sc].updates).splice(+j, 1);
+      renderKeepScroll();
+      return;
+    }
     const del = e.target.closest("[data-del-link]");
     if (del) {
       collect();
@@ -701,5 +748,5 @@
   });
 
   TS.syncBody();
-  window.TaskEditor = { linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, openVault, toast, onDouble, close, CLIP };
+  window.TaskEditor = { NOTE, linkAttrs, linkGo, openUnlock, ensureEdit, forgetToken, toggleEdit, openTask, openHolidays, openLinks, openVault, toast, onDouble, close, CLIP };
 })();

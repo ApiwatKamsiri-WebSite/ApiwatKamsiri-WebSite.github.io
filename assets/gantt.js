@@ -167,6 +167,20 @@
     return `<button class="g-doc ${n ? "" : "empty"}" data-docs="${esc(taskId)}" data-sub="${subIndex}" title="${esc(tip)}" aria-label="${esc(tip)}">${TE.CLIP}${n ? `<b>${n}</b>` : ""}</button>`;
   }
 
+  // บันทึกอัปเดต: ใหม่สุดอยู่บน
+  const updsOf = (item) => (Array.isArray(item.updates) ? item.updates.filter((u) => u && u.text) : [])
+    .slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  function updList(item) {
+    const us = updsOf(item); if (!us.length) return "";
+    return `<ul class="upd">${us.map((u) => `<li><time>${fmt(u.date)}</time><span>${esc(L(u.text))}</span></li>`).join("")}</ul>`;
+  }
+  // ปุ่ม 💬 อัปเดตของงานย่อย: แสดงเฉพาะเมื่อมีอัปเดต (ไม่บังคับใส่)
+  function updBtn(item, taskId, subIndex) {
+    const n = updsOf(item).length; if (!n) return "";
+    const tip = t("upd.count", { n });
+    return `<button class="g-doc g-upd" data-upds="${esc(taskId)}" data-sub="${subIndex}" title="${esc(tip)}" aria-label="${esc(tip)}">${TE.NOTE}<b>${n}</b></button>`;
+  }
+
   // กล่องรายการเอกสาร (popover)
   const pop = document.createElement("div");
   pop.className = "doc-pop card hidden";
@@ -195,6 +209,19 @@
     let top = r.bottom + 8;
     if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 8);
     pop.style.left = left + "px"; pop.style.top = top + "px";
+  }
+  function openUpdPop(btn) {
+    const x = TS.find(btn.dataset.upds); if (!x) return;
+    const item = (x.subtasks || [])[+btn.dataset.sub]; if (!item) return;
+    const key = "u:" + btn.dataset.upds + ":" + btn.dataset.sub;
+    if (popFor === key) return closePop();
+    popFor = key;
+    pop.innerHTML = `<div class="doc-pop-head">${TE.NOTE}<b>${esc(L(item.name))}</b></div>${updList(item)}`;
+    pop.classList.remove("hidden");
+    const r = btn.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+    let top = r.bottom + 8;
+    if (top + h > innerHeight - 8) top = Math.max(8, r.top - h - 8);
+    pop.style.left = Math.min(Math.max(8, r.left), innerWidth - w - 8) + "px"; pop.style.top = top + "px";
   }
   pop.addEventListener("click", (e) => { const ed = e.target.closest("[data-edit]"); if (ed) { closePop(); TE.openTask(ed.dataset.edit); } });
   document.addEventListener("mousedown", (e) => { if (!pop.contains(e.target) && !e.target.closest(".g-doc")) closePop(); });
@@ -239,12 +266,13 @@
           return `
           <li class="st-${sst}">
             <i class="g-dot"></i>
-            <div class="gl-sname"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
+            <div class="gl-sname"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small>${updList(s)}</div>
             ${docBtn(s, id, i)}
             <span class="g-pct">${sp}%</span>
           </li>`; }).join("")}
         </ul>
-        ${x.desc ? `<div class="g-desc">${esc(L(x.desc))}</div>` : ""}` : ""}
+        ${x.desc ? `<div class="g-desc">${esc(L(x.desc))}</div>` : ""}
+        ${updsOf(x).length ? `<div class="gl-upd"><div class="upd-head">${TE.NOTE}${t("upd.title")}</div>${updList(x)}</div>` : ""}` : ""}
       </div>`;
     }).join("")}</div>`;
     if (!focused) {
@@ -302,7 +330,7 @@
           <div class="g-left">
             <i class="g-dot"></i>
             <div class="g-name" title="${esc(L(s.name))}"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
-            ${docBtn(s, id, i)}
+            ${updBtn(s, id, i)}${docBtn(s, id, i)}
             <span class="g-pctbox"><span class="g-pct">${sp}%</span>${wd(s)}</span>
           </div>
           <div class="g-right" style="width:${r.n * dw}px">${bar(s, r, dw, true)}</div>
@@ -314,6 +342,7 @@
           <div class="g-left">
             <div class="g-dates"><span class="g-badge">${stLabel(st)}</span>${fmt(x.start)} → ${fmt(x.due)}${x.project ? " · #" + esc(x.project) : ""}${TS.finishDate(x) ? ` <span class="g-finbadge ${TS.variance(x) > 0 ? "late" : TS.variance(x) < 0 ? "early" : "ontime"}">${esc(finText(x))}</span>` : ""}</div>
             ${x.desc ? `<div class="g-desc">${esc(L(x.desc))}</div>` : ""}
+            ${updsOf(x).length ? `<div class="upd-head">${TE.NOTE}${t("upd.title")}</div>${updList(x)}` : ""}
           </div>
         </div>`;
       }
@@ -385,6 +414,8 @@
   $("gantt").addEventListener("click", (e) => {
     const tg = e.target.closest("[data-toggle]");
     if (tg) { const id = tg.dataset.toggle; expanded.has(id) ? expanded.delete(id) : expanded.add(id); render(); return; }
+    const up = e.target.closest("[data-upds]");
+    if (up) { openUpdPop(up); return; }
     const doc = e.target.closest("[data-docs]");
     if (doc) { openPop(doc); return; }
     const ed = e.target.closest("[data-edit]");
