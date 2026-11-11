@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T06:20:09.516Z",
+  "updated": "2026-11-11T06:21:51.619Z",
   "tasks": [
     {
       "id": 1,
@@ -290,7 +290,16 @@
           },
           "status": "todo",
           "start": "2026-11-25",
-          "due": "2026-11-25"
+          "due": "2026-11-25",
+          "updates": [
+            {
+              "date": "2026-11-11",
+              "text": {
+                "en": "P'Kiti teams change Massprod schedule",
+                "th": "ทีมงานของพี่กิติปรับเปลี่ยนตารางการผลิตจำนวนมาก (Mass Production)"
+              }
+            }
+          ]
         }
       ]
     },
