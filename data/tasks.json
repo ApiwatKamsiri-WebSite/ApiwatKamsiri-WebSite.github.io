@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T03:12:15.627Z",
+  "updated": "2026-11-11T03:22:13.355Z",
   "tasks": [
     {
       "id": 1,
@@ -370,7 +370,29 @@
           "status": "doing",
           "start": "2026-11-02",
           "due": "2026-11-05",
-          "progress": 90
+          "progress": 90,
+          "links": [
+            {
+              "name": "Door touch document",
+              "url": "https://claude.ai/artifact/W2i45dn28tDX33h3YeqKab"
+            }
+          ],
+          "updates": [
+            {
+              "date": "2026-11-10",
+              "text": {
+                "en": "Tested and summarize the result.",
+                "th": "ดำเนินการทดสอบและสรุปผล"
+              }
+            },
+            {
+              "date": "2026-11-11",
+              "text": {
+                "en": "Retest again",
+                "th": "ทดสอบซ้ำอีกครั้ง"
+              }
+            }
+          ]
         },
         {
           "id": "7.3",
