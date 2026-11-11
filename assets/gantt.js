@@ -167,9 +167,9 @@
     return `<button class="g-doc ${n ? "" : "empty"}" data-docs="${esc(taskId)}" data-sub="${subIndex}" title="${esc(tip)}" aria-label="${esc(tip)}">${TE.CLIP}${n ? `<b>${n}</b>` : ""}</button>`;
   }
 
-  // บันทึกอัปเดต: ใหม่สุดอยู่บน
+  // บันทึกอัปเดต: เรียงตามวันที่ เก่าอยู่บน ล่าสุดอยู่ล่าง
   const updsOf = (item) => (Array.isArray(item.updates) ? item.updates.filter((u) => u && u.text) : [])
-    .slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    .slice().sort((a, b) => String(a.date).localeCompare(String(b.date)));
   function updList(item) {
     const us = updsOf(item); if (!us.length) return "";
     return `<ul class="upd">${us.map((u) => `<li><time>${fmt(u.date)}</time><span>${esc(L(u.text))}</span></li>`).join("")}</ul>`;
@@ -329,8 +329,8 @@
         <div class="g-row g-sub g-body-row st-${sst} ${k === ordered.length - 1 ? "last" : ""}">
           <div class="g-left">
             <i class="g-dot"></i>
-            <div class="g-name" title="${esc(L(s.name))}"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small></div>
-            ${updBtn(s, id, i)}${docBtn(s, id, i)}
+            <div class="g-name" title="${esc(L(s.name))}"><b>${esc(L(s.name))}</b><small>${fmt(s.start)} → ${fmt(s.due)} · ${stLabel(sst)}</small>${updList(s)}</div>
+            ${docBtn(s, id, i)}
             <span class="g-pctbox"><span class="g-pct">${sp}%</span>${wd(s)}</span>
           </div>
           <div class="g-right" style="width:${r.n * dw}px">${bar(s, r, dw, true)}</div>

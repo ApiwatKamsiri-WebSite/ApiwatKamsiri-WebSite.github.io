@@ -762,15 +762,17 @@ body.g-listmode #zoom, body.g-listmode #g-today { display: none; }
 @media (max-width: 700px) { .upd-row { grid-template-columns: 1fr auto; } .upd-row [data-u="en"], .upd-row [data-u="th"] { grid-column: 1; } }
 .upd-head { display: flex; align-items: center; gap: 6px; margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
 .upd { list-style: none; margin: 6px 0 0 6px; padding: 0 0 0 14px; border-left: 2px solid var(--line-2); display: grid; gap: 6px; }
-.upd li { position: relative; font-size: 13px; line-height: 1.5; color: var(--text); }
-.upd li::before { content: ""; position: absolute; left: -19px; top: 4px; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--cyan)); box-shadow: 0 0 0 3px #0c121c; }
-.upd li:first-child::before { box-shadow: 0 0 0 3px #0c121c, 0 0 10px var(--c, var(--cyan)); }
+.upd li { position: relative; font-size: 11px; line-height: 1.45; color: var(--text); }
+.upd li::before { content: ""; position: absolute; left: -19px; top: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--c, var(--cyan)); box-shadow: 0 0 0 3px #0c121c; }
+.upd li:last-child::before { box-shadow: 0 0 0 3px #0c121c, 0 0 10px var(--c, var(--cyan)); }
 /* วันที่อยู่บรรทัดบน ข้อความอยู่ล่าง (ทุกที่: timeline, popup, มือถือ) */
 .upd time { display: block; line-height: 1.3; font-family: var(--mono); font-size: 11px; color: var(--cyan); white-space: nowrap; }
 .doc-pop .upd { margin: 8px 4px 4px 10px; }
 .doc-pop .upd li { display: block; }   /* กันกฎ .doc-pop li (flex) ของรายการเอกสาร */
 .gl-sname .upd { margin-top: 4px; }
-.gl-sname .upd li { font-size: 12.5px; }
 .gl-upd { margin: 4px 0 0 36px; }
 .g-upd { border-color: rgba(155, 123, 255, 0.4); background: rgba(155, 123, 255, 0.1); color: var(--violet); }
 .g-upd:hover { border-color: var(--violet); background: rgba(155, 123, 255, 0.18); }
+/* timeline: อัปเดตของงานย่อยแสดงใต้ชื่อเลย (วันที่บน ข้อความล่าง) ไม่ต้องกดปุ่ม */
+.g-name .upd { margin-top: 6px; }
+.g-name .upd li { white-space: normal; overflow-wrap: anywhere; }

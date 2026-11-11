@@ -364,10 +364,10 @@
     const cleanLinks = (ls) => (ls || []).filter((l) => l.url).map((l) => ({
       name: l.name || TS.defaultName(l.url), url: TS.normalizeUrl(l.url) }));
     if (cleanLinks(d.links).length) out.links = cleanLinks(d.links);
-    // อัปเดต: ตัดรายการว่าง, ไม่มีวันที่ = วันนี้, ใหม่สุดอยู่บน
+    // อัปเดต: ตัดรายการว่าง, ไม่มีวันที่ = วันนี้, เก่าอยู่บน ล่าสุดอยู่ล่าง
     const cleanUpd = (us) => (us || []).filter((u) => u.text && (u.text.en || u.text.th))
       .map((u) => ({ date: u.date || TS.iso(TS.today), text: two(u.text) }))
-      .sort((a, b) => b.date.localeCompare(a.date));
+      .sort((a, b) => a.date.localeCompare(b.date));
     if (cleanUpd(d.updates).length) out.updates = cleanUpd(d.updates);
     out.subtasks = d.subtasks.filter((s) => s.name.en || s.name.th).map((s, i) => {
       const o = { id: `${d.id}.${i + 1}`, name: two(s.name), status: s.status, start: s.start, due: s.due };
@@ -656,9 +656,9 @@
     if (addU) {
       collect();
       const sc = addU.dataset.addUpd, owner = sc === "t" ? draft : draft.subtasks[+sc];
-      (owner.updates = owner.updates || []).unshift({ date: TS.iso(TS.today), text: { en: "", th: "" } });
+      (owner.updates = owner.updates || []).push({ date: TS.iso(TS.today), text: { en: "", th: "" } });
       renderKeepScroll();
-      box.querySelector(`.upd-row[data-scope="${sc}"] [data-u="en"]`)?.focus();
+      [...box.querySelectorAll(`.upd-row[data-scope="${sc}"] [data-u="en"]`)].pop()?.focus();
       return;
     }
     const delU = e.target.closest("[data-del-upd]");
