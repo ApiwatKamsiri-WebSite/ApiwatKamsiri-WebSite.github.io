@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-11T09:12:13.869Z",
+  "updated": "2026-11-12T03:51:23.040Z",
   "tasks": [
     {
       "id": 1,
@@ -555,7 +555,7 @@
         "th": "พัฒนาซอฟต์แวร์สำหรับดำเนินการทดสอบ (EEPROM IC EOL) - 16kbit"
       },
       "project": "All model - 16kbit",
-      "status": "todo",
+      "status": "doing",
       "start": "2026-11-10",
       "due": "2026-11-18",
       "subtasks": [
@@ -565,9 +565,10 @@
             "en": "Making the software",
             "th": "จัดทำซอฟแวร์"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-11-10",
-          "due": "2026-11-13"
+          "due": "2026-11-13",
+          "done": "2026-11-13"
         },
         {
           "id": "10.2",
@@ -575,9 +576,10 @@
             "en": "Test Debug",
             "th": "ทดสอบโดย Debug"
           },
-          "status": "todo",
+          "status": "doing",
           "start": "2026-11-16",
-          "due": "2026-11-17"
+          "due": "2026-11-17",
+          "progress": 50
         },
         {
           "id": "10.3",
