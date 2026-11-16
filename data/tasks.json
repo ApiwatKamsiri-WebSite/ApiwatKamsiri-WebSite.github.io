@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T09:32:47.378Z",
+  "updated": "2026-11-16T09:33:43.795Z",
   "tasks": [
     {
       "id": 1,
@@ -317,10 +317,9 @@
         "th": "การพัฒนาซอฟต์แวร์ ALP78 H50"
       },
       "project": "ALP78 H50",
-      "status": "done",
+      "status": "doing",
       "start": "2026-11-02",
       "due": "2026-11-20",
-      "done": "2026-11-20",
       "desc": {
         "en": "Commercial and commercial defrost test function check",
         "th": "การตรวจสอบฟังก์ชันการละลายน้ำแข็งสำหรับอุปกรณ์เชิงพาณิชย์"
@@ -367,6 +366,16 @@
           "start": "2026-11-16",
           "due": "2026-11-20",
           "done": "2026-11-20"
+        },
+        {
+          "id": "5.4",
+          "name": {
+            "en": "Refrigerator test",
+            "th": "การทดสอบตู้เย็น"
+          },
+          "status": "todo",
+          "start": "2026-11-18",
+          "due": "2026-11-20"
         }
       ]
     },
