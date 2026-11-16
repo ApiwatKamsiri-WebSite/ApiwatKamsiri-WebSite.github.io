@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T01:30:32.939Z",
+  "updated": "2026-11-16T01:33:19.158Z",
   "tasks": [
     {
       "id": 1,
@@ -70,13 +70,20 @@
           "status": "doing",
           "start": "2026-11-09",
           "due": "2026-11-27",
-          "progress": 10,
+          "progress": 90,
           "updates": [
             {
               "date": "2026-11-11",
               "text": {
                 "en": "Start test with kitchen REF (BONA H50)",
                 "th": "เริ่มการทดสอบโดยใช้ตู้เย็นในห้องครัว (รุ่น BONA H50)"
+              }
+            },
+            {
+              "date": "2026-11-13",
+              "text": {
+                "en": "After running test with kitchen REF, we found the refrigerator reset.",
+                "th": "หลังจากดำเนินการทดสอบกับตู้เย็นในห้องครัว พบว่าตู้เย็นมีการรีเซ็ตตัวเอง"
               }
             }
           ]
