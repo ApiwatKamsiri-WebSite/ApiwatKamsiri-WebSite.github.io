@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12T04:24:55.361Z",
+  "updated": "2026-11-16T01:30:32.939Z",
   "tasks": [
     {
       "id": 1,
@@ -395,10 +395,10 @@
             "en": "Test touch with current PCB",
             "th": "ทดสอบการสัมผัสกับ PCB ปัจจุบัน"
           },
-          "status": "doing",
+          "status": "done",
           "start": "2026-11-02",
           "due": "2026-11-05",
-          "progress": 90,
+          "done": "2026-11-05",
           "links": [
             {
               "name": "Door touch document",
@@ -418,6 +418,13 @@
               "text": {
                 "en": "Retest again",
                 "th": "ทดสอบซ้ำอีกครั้ง"
+              }
+            },
+            {
+              "date": "2026-11-13",
+              "text": {
+                "en": "Completed",
+                "th": "เสร็จสมบูรณ์"
               }
             }
           ]
