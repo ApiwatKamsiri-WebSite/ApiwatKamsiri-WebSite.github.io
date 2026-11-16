@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-16T01:33:19.158Z",
+  "updated": "2026-11-16T09:32:28.598Z",
   "tasks": [
     {
       "id": 1,
@@ -317,13 +317,22 @@
         "th": "การพัฒนาซอฟต์แวร์ ALP78 H50"
       },
       "project": "ALP78 H50",
-      "status": "todo",
+      "status": "doing",
       "start": "2026-11-02",
       "due": "2026-11-20",
       "desc": {
         "en": "Commercial and commercial defrost test function check",
         "th": "การตรวจสอบฟังก์ชันการละลายน้ำแข็งสำหรับอุปกรณ์เชิงพาณิชย์"
       },
+      "updates": [
+        {
+          "date": "2026-11-13",
+          "text": {
+            "en": "Added the assist unit/IM test function for ALPS78 H50",
+            "th": "เพิ่มฟังก์ชันทดสอบหน่วยช่วยการทำงาน/IM สำหรับ ALPS78 H50"
+          }
+        }
+      ],
       "subtasks": [
         {
           "id": "5.1",
@@ -331,9 +340,10 @@
             "en": "Commercial test operation cooling",
             "th": "การทดสอบการใช้งานเชิงพาณิชย์ การระบายความร้อน"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-11-02",
-          "due": "2026-11-06"
+          "due": "2026-11-06",
+          "done": "2026-11-06"
         },
         {
           "id": "5.2",
@@ -341,9 +351,10 @@
             "en": "Commercial defrost test operation (Heater test)",
             "th": "การทดสอบการละลายน้ำแข็งในเชิงพาณิชย์ (การทดสอบฮีตเตอร์)"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-11-09",
-          "due": "2026-11-13"
+          "due": "2026-11-13",
+          "done": "2026-11-13"
         },
         {
           "id": "5.3",
@@ -351,9 +362,10 @@
             "en": "Commercial test special mode enables by display",
             "th": "โหมดพิเศษสำหรับการทดสอบเชิงพาณิชย์สามารถเปิดใช้งานได้ผ่านหน้าจอแสดงผล"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-11-16",
-          "due": "2026-11-20"
+          "due": "2026-11-20",
+          "done": "2026-11-20"
         }
       ]
     },
