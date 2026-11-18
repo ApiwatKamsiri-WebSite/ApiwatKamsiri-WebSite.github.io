@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18T04:13:16.632Z",
+  "updated": "2026-11-18T04:14:06.175Z",
   "tasks": [
     {
       "id": 1,
@@ -67,10 +67,10 @@
             "en": "Add condition test (Use Old stack 0x300 test with REF RED, Simulator maximum use stack to confirm new stack 0x600)",
             "th": "เพิ่มการทดสอบเงื่อนไข (ใช้สแต็กเดิมขนาด 0x300 ทดสอบร่วมกับ REF RED และใช้การจำลองสถานการณ์ที่ระดับการใช้สแต็กสูงสุด เพื่อยืนยันการทำงานของสแต็กใหม่ขนาด 0x600)"
           },
-          "status": "doing",
+          "status": "done",
           "start": "2026-11-09",
           "due": "2026-11-27",
-          "progress": 90,
+          "done": "2026-11-27",
           "links": [
             {
               "name": "Arcelik - Abnormal reset",
@@ -90,6 +90,13 @@
               "text": {
                 "en": "After running test with kitchen REF, we found the refrigerator reset.",
                 "th": "หลังจากดำเนินการทดสอบกับตู้เย็นในห้องครัว พบว่าตู้เย็นมีการรีเซ็ตตัวเอง"
+              }
+            },
+            {
+              "date": "2026-11-17",
+              "text": {
+                "en": "Completed",
+                "th": "เสร็จสิ้น"
               }
             }
           ]
