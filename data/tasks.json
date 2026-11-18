@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18T01:27:41.755Z",
+  "updated": "2026-11-18T04:13:16.632Z",
   "tasks": [
     {
       "id": 1,
@@ -71,6 +71,12 @@
           "start": "2026-11-09",
           "due": "2026-11-27",
           "progress": 90,
+          "links": [
+            {
+              "name": "Arcelik - Abnormal reset",
+              "url": "https://arcelik.sharepoint.com/:f:/t/ELECTRICGROUPfolder/IgAy5RBPBSAhQYG1pYS9MlnxAaLtZgQBdplTowsvHclWe58?e=wtuhIn"
+            }
+          ],
           "updates": [
             {
               "date": "2026-11-11",
