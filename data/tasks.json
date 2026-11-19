@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T03:59:19.248Z",
+  "updated": "2026-11-19T04:00:37.934Z",
   "tasks": [
     {
       "id": 1,
@@ -121,8 +121,8 @@
             {
               "date": "2026-11-19",
               "text": {
-                "en": "Testing the new software 2 REF",
-                "th": "Testing the new software 2 REF"
+                "en": "Testing the new software 2 REF, REF1 : Force stack error and check EEPROM, REF2 : Running software to check operation problem",
+                "th": "การทดสอบซอฟต์แวร์ใหม่ 2 รายการ (REF, REF1): จำลองข้อผิดพลาดแบบ Stack Error และตรวจสอบหน่วยความจำ EEPROM; (REF2): รันซอฟต์แวร์เพื่อตรวจสอบปัญหาในการทำงาน"
               }
             }
           ]
