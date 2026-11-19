@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-18T04:27:42.383Z",
+  "updated": "2026-11-19T03:58:14.662Z",
   "tasks": [
     {
       "id": 1,
@@ -484,9 +484,19 @@
             "en": "Test touch with New PCB",
             "th": "ทดสอบการสัมผัสกับ PCB ใหม่"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-11-18",
-          "due": "2026-11-20"
+          "due": "2026-11-20",
+          "done": "2026-11-20",
+          "updates": [
+            {
+              "date": "2026-11-19",
+              "text": {
+                "en": "D/S completed, RQA testing.",
+                "th": "D/S ทดสอบจบแล้ว, RQA กำลังทดสอบ"
+              }
+            }
+          ]
         },
         {
           "id": "7.4",
