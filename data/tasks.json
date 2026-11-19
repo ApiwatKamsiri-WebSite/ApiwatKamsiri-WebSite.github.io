@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T03:58:14.662Z",
+  "updated": "2026-11-19T03:59:19.248Z",
   "tasks": [
     {
       "id": 1,
@@ -110,11 +110,20 @@
           "status": "doing",
           "start": "2026-11-09",
           "due": "2026-11-27",
-          "progress": 20,
+          "progress": 70,
           "links": [
             {
               "name": "RA2 Reset Log",
               "url": "https://claude.ai/artifact/5MRb2y8Qhu1dQTasxaQB1K"
+            }
+          ],
+          "updates": [
+            {
+              "date": "2026-11-19",
+              "text": {
+                "en": "Testing the new software 2 REF",
+                "th": "Testing the new software 2 REF"
+              }
             }
           ]
         }
