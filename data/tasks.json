@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T06:58:50.686Z",
+  "updated": "2026-11-25T06:59:01.956Z",
   "tasks": [
     {
       "id": 1,
@@ -640,9 +640,10 @@
         "th": "พัฒนาซอฟต์แวร์สำหรับดำเนินการทดสอบ (EEPROM IC EOL) - 16kbit"
       },
       "project": "All model - 16kbit",
-      "status": "doing",
+      "status": "done",
       "start": "2026-11-10",
       "due": "2026-11-18",
+      "done": "2026-11-18",
       "updates": [
         {
           "date": "2026-11-25",
