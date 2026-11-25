@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T06:59:01.956Z",
+  "updated": "2026-11-25T07:00:12.323Z",
   "tasks": [
     {
       "id": 1,
@@ -287,10 +287,10 @@
             "en": "Make and software meeting with RQA (BONA H30 Only)",
             "th": "จัดการประชุมเรื่องซอฟต์แวร์ร่วมกับ RQA (BONA H30 เท่านั้น)"
           },
-          "status": "doing",
+          "status": "done",
           "start": "2026-11-18",
           "due": "2026-11-24",
-          "progress": 20,
+          "done": "2026-11-24",
           "updates": [
             {
               "date": "2026-11-11",
@@ -304,6 +304,13 @@
               "text": {
                 "en": "Change schedule from W2 to W3 because waiting final config.",
                 "th": "ปรับเปลี่ยนกำหนดการจาก W2 เป็น W3 เนื่องจากต้องรอการตั้งค่าขั้นสุดท้าย"
+              }
+            },
+            {
+              "date": "2026-11-25",
+              "text": {
+                "en": "Already make the software, waiting meeting with RQA",
+                "th": "พัฒนาซอฟต์แวร์เรียบร้อยแล้ว อยู่ระหว่างรอประชุมร่วมกับ RQA"
               }
             }
           ]
