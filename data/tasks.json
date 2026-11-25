@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-19T04:00:37.934Z",
+  "updated": "2026-11-25T06:58:50.686Z",
   "tasks": [
     {
       "id": 1,
@@ -643,6 +643,15 @@
       "status": "doing",
       "start": "2026-11-10",
       "due": "2026-11-18",
+      "updates": [
+        {
+          "date": "2026-11-25",
+          "text": {
+            "en": "The software completed but PCB teams not take the PCB to update",
+            "th": "ซอฟต์แวร์เสร็จสมบูรณ์แล้ว แต่ทีม PCB ยังไม่ได้นำ PCB ไปอัปเดต"
+          }
+        }
+      ],
       "subtasks": [
         {
           "id": "10.1",
@@ -672,9 +681,10 @@
             "en": "Update software with PCB new EEPROM IC to test",
             "th": "อัปเดตซอฟต์แวร์ด้วยไอซี EEPROM PCB ใหม่เพื่อทดสอบ"
           },
-          "status": "todo",
+          "status": "done",
           "start": "2026-11-18",
-          "due": "2026-11-18"
+          "due": "2026-11-18",
+          "done": "2026-11-18"
         }
       ]
     }
