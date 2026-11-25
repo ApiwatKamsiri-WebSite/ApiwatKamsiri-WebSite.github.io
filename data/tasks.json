@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T07:00:12.323Z",
+  "updated": "2026-11-25T07:00:54.174Z",
   "tasks": [
     {
       "id": 1,
@@ -107,10 +107,10 @@
             "en": "Add reset record watchdog timer, stack overflow, SRAM error, bus error, and RSTR1",
             "th": "เพิ่มการบันทึกสาเหตุการรีเซ็ต (Reset Record) สำหรับกรณี Watchdog Timer, Stack Overflow, SRAM Error, Bus Error และ RSTR1"
           },
-          "status": "doing",
+          "status": "done",
           "start": "2026-11-09",
           "due": "2026-11-27",
-          "progress": 70,
+          "done": "2026-11-27",
           "links": [
             {
               "name": "RA2 Reset Log",
