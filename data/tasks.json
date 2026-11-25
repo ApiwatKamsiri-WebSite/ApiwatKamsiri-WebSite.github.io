@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-25T07:00:54.174Z",
+  "updated": "2026-11-25T07:01:12.745Z",
   "tasks": [
     {
       "id": 1,
@@ -8,9 +8,10 @@
         "th": "พัฒนาปัญหาซอฟแวร์ก่อน Day1"
       },
       "project": "All model",
-      "status": "doing",
+      "status": "done",
       "start": "2026-09-21",
       "due": "2026-11-27",
+      "done": "2026-11-27",
       "desc": {
         "en": "Abnormal Reset: Added software to record the reset cause, stack usage, operating mode, and timestamp in the black box.\n\nAbnormal Reset and Display Setting Reset\n\nAfter reducing the stack size to reproduce the issue more easily, the refrigerator reset and the display settings were also reset.",
         "th": "การรีเซ็ตผิดปกติ: เพิ่มซอฟต์แวร์สำหรับบันทึกสาเหตุการรีเซ็ต การใช้งาน Stack โหมดการทำงาน และเวลา ลงใน Black Box\n\nการรีเซ็ตผิดปกติและการรีเซ็ตค่าตั้งของ Display\n\nหลังจากลดขนาด Stack เพื่อให้จำลองปัญหาได้ง่ายขึ้น พบว่าตู้เย็นเกิดการรีเซ็ต และค่าตั้งของ Display ถูกรีเซ็ตด้วย"
